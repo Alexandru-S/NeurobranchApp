@@ -9,22 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38da7ae3-a1bc-41d9-baf2-83e00040289f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Checkbox.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Checkbox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Scale.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Scale.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/TextChoice.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/TextChoice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/TextSection.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/TextSection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Attributes.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Attributes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Epoch.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Epoch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/JSON.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/JSON.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" />
-    </list>
+    <list default="true" id="38da7ae3-a1bc-41d9-baf2-83e00040289f" name="Default" comment="" />
     <ignored path="NeurobranchApp.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,8 +55,8 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66729677">
-              <caret line="48" column="76" selection-start-line="48" selection-start-column="76" selection-end-line="48" selection-end-column="76" />
+            <state vertical-scroll-proportion="0.76937616">
+              <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -2321,7 +2306,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37124464" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37124464" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32832617" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37231758" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2499,8 +2484,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66729677">
-          <caret line="48" column="76" selection-start-line="48" selection-start-column="76" selection-end-line="48" selection-end-column="76" />
+        <state vertical-scroll-proportion="0.76937616">
+          <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
           <folding />
         </state>
       </provider>
