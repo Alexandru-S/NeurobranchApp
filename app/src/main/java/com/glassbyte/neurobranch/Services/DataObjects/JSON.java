@@ -68,7 +68,7 @@ public class JSON {
         ArrayList<Object> questionGroup = new ArrayList<>();
         try {
             for (int i = 0; i < receivedQuestions.length(); i++) {
-                ArrayList<String> questionSet= new ArrayList<>();
+                ArrayList<String> questionSet = new ArrayList<>();
 
                 JSONObject questionElement = receivedQuestions.getJSONObject(i);
                 String questionTitle = questionElement.getString("question");
@@ -77,7 +77,7 @@ public class JSON {
                 questionSet.add(questionTitle);
                 questionSet.add(type);
 
-                if(questionElement.has("options")) {
+                if (questionElement.has("options")) {
                     JSONArray answerElements = questionElement.getJSONArray("options");
 
                     for (int j = 0; j < answerElements.length(); j++) {
@@ -87,7 +87,7 @@ public class JSON {
                 }
                 questionGroup.add(questionSet);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return questionGroup;
@@ -118,7 +118,7 @@ public class JSON {
                 //prereqs
                 ArrayList<String> prerequisites = new ArrayList<>();
                 JSONArray conditions = trial.getJSONArray(DataFormatting.TRIAL_PREREQUISITES);
-                for(int j=0; j<conditions.length(); j++) {
+                for (int j = 0; j < conditions.length(); j++) {
                     JSONObject prerequisite = conditions.getJSONObject(j);
                     prerequisites.add(prerequisite.getString(prerequisite.keys().next()));
                 }
@@ -130,7 +130,7 @@ public class JSON {
                 String trialResearchGroupId = researchGroup.getString(DataFormatting.TRIAL_RESEARCH_GROUP_ID);
 
                 ArrayList<String> researcherNames = new ArrayList<>();
-                for(int j = 1; j < trialResearch.length(); j++) {
+                for (int j = 1; j < trialResearch.length(); j++) {
                     JSONObject researcherName = trialResearch.getJSONObject(j);
                     researcherNames.add(researcherName.getString(DataFormatting.TRIAL_RESEARCHER_NAME));
                 }
@@ -147,5 +147,35 @@ public class JSON {
             e.printStackTrace();
         }
         return trials;
+    }
+
+    public static JSONArray parseList(ArrayList<Object> list) {
+        ArrayList<JSONObject> response = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        try {
+            JSONObject type = new JSONObject();
+            type.put("qtype", list.get(0));
+            response.add(type);
+
+            JSONObject index = new JSONObject();
+            index.put("qindex", list.get(1));
+            response.add(index);
+
+            for (int i = 2; i < list.size(); i++) {
+                ArrayList<String> answers = (ArrayList<String>) list.get(i);
+                for (int j = 0; j < answers.size(); j++) {
+                    JSONObject answerObject = new JSONObject();
+                    answerObject.put("response" + j, answers.get(j));
+                    response.add(answerObject);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            for (JSONObject jsonObject : response) {
+                jsonArray.put(jsonObject);
+            }
+        }
+        return jsonArray;
     }
 }

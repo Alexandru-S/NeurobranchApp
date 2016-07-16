@@ -107,13 +107,6 @@ public class TextChoice extends android.support.v4.app.Fragment {
             radioButtons.add(radioButton.getId());
         }
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                System.out.println(getCheckedAnswer());
-            }
-        });
-
         contentLayout.addView(radioGroup);
 
         return contentLayout;
@@ -128,7 +121,7 @@ public class TextChoice extends android.support.v4.app.Fragment {
     }
 
     public ArrayList<String> getAnswers() {
-        return answers;
+        return getCheckedAnswer();
     }
 
     public void setAnswers(ArrayList<String> answers) {
@@ -167,7 +160,15 @@ public class TextChoice extends android.support.v4.app.Fragment {
         this.type = type;
     }
 
-    public String getCheckedAnswer() {
-        return answers.get(radioButtons.indexOf(radioGroup.getCheckedRadioButtonId()));
+    public ArrayList<String> getCheckedAnswer() {
+        if(radioGroup.getCheckedRadioButtonId() > -1) {
+            int index = radioButtons.indexOf(radioGroup.getCheckedRadioButtonId());
+            String checkedItem = answers.get(radioButtons.indexOf(radioGroup.getCheckedRadioButtonId()));
+            for (int i = 0; i < radioButtons.size(); i++) {
+                answers.set(i, "");
+            }
+            answers.set(index, checkedItem);
+        }
+        return answers;
     }
 }

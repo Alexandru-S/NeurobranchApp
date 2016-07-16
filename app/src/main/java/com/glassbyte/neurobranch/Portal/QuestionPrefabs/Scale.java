@@ -29,7 +29,8 @@ public class Scale extends android.support.v4.app.Fragment {
     SeekBarCompat seekBar;
 
     String title, type;
-    int response, questionNumber, totalQuestions;
+    ArrayList<String> response = new ArrayList<>();
+    int questionNumber, totalQuestions;
 
     ArrayList<Integer> idList = new ArrayList<>();
     ArrayList<Object> properties = new ArrayList<>();
@@ -145,12 +146,13 @@ public class Scale extends android.support.v4.app.Fragment {
         this.type = type;
     }
 
-    public int getResponse() {
+    public ArrayList<String> getResponse() {
         return response;
     }
 
-    public void setResponse(int response) {
-        this.response = response;
+    public void setResponse(Object response) {
+        this.response.clear();
+        this.response.add(String.valueOf(response));
     }
 
     public int getQuestionNumber() {

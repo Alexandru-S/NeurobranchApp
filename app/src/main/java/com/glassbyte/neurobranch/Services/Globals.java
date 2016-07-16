@@ -17,7 +17,7 @@ public class Globals {
     public static final String POST_TRIALS_ADDRESS = "http://localhost:3000/";
     public static final String POST_JOIN_TRIALS_ADDRESS = "http://localhost:3000/";
     public static final String GET_TRIALS_GLASSBYTE = "http://www.glassbyte.com/neurobranch_mock_data/trials.json";
-    public static final String GET_TRIALS_ADDRESS = GET_TRIALS_GLASSBYTE; //EMULATOR_LOOPBACK + ":" + REMOTE_PORT + "/api/trialdata";
+    public static final String GET_TRIALS_ADDRESS = EMULATOR_LOOPBACK + ":" + REMOTE_PORT + "/api/trialdata";
     public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";
 
     //programmatic layout helpers

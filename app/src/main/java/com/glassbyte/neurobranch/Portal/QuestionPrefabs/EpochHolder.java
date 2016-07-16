@@ -17,10 +17,15 @@ import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
 import com.glassbyte.neurobranch.Services.DataObjects.Question;
+import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
-import com.glassbyte.neurobranch.Services.Helpers.Debug;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -68,7 +73,6 @@ public class EpochHolder extends AppCompatActivity {
             }
 
             for(Question question : questions) {
-                System.out.println(question.getId());
                 if(question.getType() == Attributes.QuestionType.checkbox) {
                     Checkbox checkbox = new Checkbox();
                     checkbox.setProperties(properties);
@@ -105,8 +109,6 @@ public class EpochHolder extends AppCompatActivity {
                 }
             }
 
-            System.out.println(fragments.size() + " fragments in epoch");
-
             super.onCreate(savedInstanceState);
             setContentView(R.layout.question_holder);
 
@@ -115,7 +117,25 @@ public class EpochHolder extends AppCompatActivity {
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getApplicationContext(), "Asynchronously sync with server", Toast.LENGTH_LONG).show();
+                    new AlertDialog.Builder(EpochHolder.this)
+                            .setTitle("Respond to Trial")
+                            .setMessage("By clicking okay, you'll respond to the trial with the answers you've entered. This cannot be changed once clicked.")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Response response = new Response(Response.generateResponse("", "", "", fragments),
+                                            Attributes.ResponseType.trial_response);
+                                    System.out.println(response.getQuestionResponse());
+                                    Toast.makeText(getApplicationContext(), "Response being sent", Toast.LENGTH_LONG).show();
+                                    EpochHolder.this.finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).show();
                 }
             });
 

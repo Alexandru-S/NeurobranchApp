@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
  * Created by ed on 25/06/16.
  */
 public class Epoch {
-    String researcherGroup, id;
+    String researcherGroup, epochId, trialId, candidateId;
     int currentQuestion;
     boolean isNotified;
     long startTime, endTime;

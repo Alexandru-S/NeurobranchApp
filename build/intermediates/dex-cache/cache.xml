@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/ed/NeurobranchApp/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="542a26f08353f17a76d82e9adbeac900eb9897d6">
+        <dex dex="/home/ed/NeurobranchApp/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_f687933cdf6fd2d102f471861b4c43f58bb4355e/classes.dex" />
+    </item>
+
+</items>

@@ -13,38 +13,24 @@ public class Attributes {
     }
 
     public enum ResponseType {
-        post, confirmation, retrieval
+        trial_response
     }
 
-    public static QuestionType getQuestionType(String type) {
-        switch (type) {
-            case "checkbox":
-                return QuestionType.checkbox;
-            case "drawing":
-                return QuestionType.drawing;
-            case "multimedia":
-                return QuestionType.multimedia;
-            case "scale":
-                return QuestionType.scale;
-            case "choice":
-                return QuestionType.choice;
-            case "section":
-                return QuestionType.section;
-            default:
-                return QuestionType.undef;
+    public static QuestionType getQuestionType(String checkType) {
+        for (QuestionType questionType : QuestionType.values()) {
+            if (questionType.name().equals(checkType)) {
+                return questionType;
+            }
         }
+        return QuestionType.undef;
     }
 
-    public static Type getType(String type) {
-        switch(type) {
-            case "Food":
-                return Type.food;
-            case "Pharma":
-                return Type.pharma;
-            case "Biodevice":
-                return Type.biodevice;
-            default:
-                return Type.undef;
+    public static Type getType(String checkType) {
+        for (Type type : Type.values()) {
+            if (type.name().equals(checkType)) {
+                return type;
+            }
         }
+        return Type.undef;
     }
 }

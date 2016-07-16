@@ -29,6 +29,7 @@ public class TextSection extends android.support.v4.app.Fragment {
 
     EditText editText;
 
+    ArrayList<String> response = new ArrayList<>();
     ArrayList<Object> properties = new ArrayList<>();
 
     @Override
@@ -41,6 +42,7 @@ public class TextSection extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         ArrayList<String> questionParams = (ArrayList<String>) getProperties().get(getQuestionNumber());
+
         setTitle(questionParams.get(0));
         setType(questionParams.get(1));
 
@@ -100,13 +102,6 @@ public class TextSection extends android.support.v4.app.Fragment {
 
         contentLayout.addView(editText);
 
-        questionTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println(getTextContent());
-            }
-        });
-
         return contentLayout;
     }
 
@@ -150,7 +145,8 @@ public class TextSection extends android.support.v4.app.Fragment {
         this.type = type;
     }
 
-    public String getTextContent() {
-        return editText.getText().toString();
+    public ArrayList<String> getResponse() {
+        response.add(editText.getText().toString());
+        return this.response;
     }
 }

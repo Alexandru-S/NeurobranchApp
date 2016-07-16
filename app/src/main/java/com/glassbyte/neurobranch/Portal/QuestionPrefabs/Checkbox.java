@@ -169,6 +169,7 @@ public class Checkbox extends Fragment {
         for(CheckBox checkBox : checkboxes) {
             if(checkBox.isChecked())
                 answers.add(checkBox.getText().toString());
+            else answers.add("");
         }
         return answers;
     }
