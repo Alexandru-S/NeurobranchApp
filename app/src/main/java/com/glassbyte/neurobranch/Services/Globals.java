@@ -11,13 +11,15 @@ public class Globals {
     public static final int SPLASH_DURATION = 2000;
 
     //networking
-    public static final String EMULATOR_LOOPBACK = "http://10.0.2.2";
-    public static final String REMOTE_PORT = "3000";
+    public static final String BACKEND_URL = "http://localhost:3000/";
+    public static final String EMULATOR_LOOPBACK = "http://10.0.2.2:3000/";
 
-    public static final String POST_TRIALS_ADDRESS = "http://localhost:3000/";
-    public static final String POST_JOIN_TRIALS_ADDRESS = "http://localhost:3000/";
+    public static final String POST_TRIALS_ADDRESS = EMULATOR_LOOPBACK;
+    public static final String GET_TRIALS_ADDRESS = POST_TRIALS_ADDRESS + "api/trialdata";
+    public static final String POST_TRIAL_RESPONSE = POST_TRIALS_ADDRESS + "insert";
+
+    //deprecated static hosting
     public static final String GET_TRIALS_GLASSBYTE = "http://www.glassbyte.com/neurobranch_mock_data/trials.json";
-    public static final String GET_TRIALS_ADDRESS = EMULATOR_LOOPBACK + ":" + REMOTE_PORT + "/api/trialdata";
     public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";
 
     //programmatic layout helpers

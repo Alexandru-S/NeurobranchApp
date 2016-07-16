@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by ed on 25/06/16.
+ * Created by ed on 25/06/" + i +"6.
  */
 public class Response {
     Attributes.ResponseType responseType;
@@ -35,6 +35,26 @@ public class Response {
 
     public JSONObject getQuestionResponse() {
         return questionResponse;
+    }
+
+    public static String generateTrial(int i) {
+        return "{ trialname: '" + i +"'," +
+                "description: '" + i +"'," +
+                "trialtype: '" + i +"'," +
+                "researchgroup: '" + i +"'," +
+                "researchername: '" + i +"'," +
+                "organisation: '" + i +"'," +
+                "specialisation: '" + i +"'," +
+                "starttime: '" + i +"'," +
+                "endtime: '" + i +"'," +
+                "timeperiodfrequency: '" + i +"'," +
+                "notificationfrequency: '" + i +"'," +
+                "imageresource: '" + i +"'," +
+                "minage: '" + i +"'," +
+                "condition: '" + i +"'," +
+                "prereqtype: '" + i +"' }";
+
+
     }
 
     public static JSONObject generateResponse(String trialId, String epochId, String candidateId, ArrayList<Fragment> fragments) {

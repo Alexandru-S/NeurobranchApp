@@ -79,7 +79,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                new HTTPRequest.JoinTrial("test_user_id").execute();
+
             }
         });
     }

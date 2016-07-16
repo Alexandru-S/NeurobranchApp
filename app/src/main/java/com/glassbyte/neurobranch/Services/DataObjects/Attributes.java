@@ -13,7 +13,7 @@ public class Attributes {
     }
 
     public enum ResponseType {
-        trial_response
+        trial_response, post_trial
     }
 
     public static QuestionType getQuestionType(String checkType) {

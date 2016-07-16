@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.provider.Settings;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
 
@@ -40,6 +42,77 @@ public class HTTPRequest {
 
     public HTTPRequest() {}
 
+    //debug force post trial
+    public static class ForcePushTrial extends AsyncTask<String, Void, String> {
+        HttpURLConnection httpURLConnection = null;
+        BufferedReader bufferedReader = null;
+
+        Response response;
+
+        public ForcePushTrial(Response response) {
+            this.response = response;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                URL url = new URL(Globals.POST_TRIALS_ADDRESS);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application-json");
+                httpURLConnection.setRequestProperty("Accept", "application/json");
+
+                //headers
+                Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
+                writer.write(response.getQuestionResponse().toString());
+                writer.close();
+
+                //response
+                InputStream inputStream = httpURLConnection.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    return null;
+                }
+
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String inputLine;
+                while ((inputLine = bufferedReader.readLine()) != null) {
+                    buffer.append(inputLine).append("\n");
+                    if (buffer.length() == 0) {
+                        return null;
+                    }
+                }
+
+                return buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (httpURLConnection != null) {
+                        httpURLConnection.disconnect();
+                    }
+                    if (bufferedReader != null) {
+                        bufferedReader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
     public static class GetImageResource extends AsyncTask<String, Void, Drawable> {
 
         @Override
@@ -70,7 +143,7 @@ public class HTTPRequest {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                URL url = new URL(Globals.POST_JOIN_TRIALS_ADDRESS);
+                URL url = new URL(null);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");
@@ -121,7 +194,6 @@ public class HTTPRequest {
             super.onPostExecute(s);
         }
     }
-
 
     public static class ReceiveJSON extends AsyncTask<Void, Void, JSONArray> {
 
@@ -233,6 +305,11 @@ public class HTTPRequest {
     }
 
     public static class PostTrialResponse extends AsyncTask<String, Void, String> {
+        String response;
+
+        public PostTrialResponse(String response) {
+            this.response = response;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -241,12 +318,11 @@ public class HTTPRequest {
 
         @Override
         protected String doInBackground(String... strings) {
-            String JSONData = strings[0];
             HttpURLConnection httpURLConnection = null;
             BufferedReader bufferedReader = null;
 
             try {
-                URL url = new URL(Globals.POST_TRIALS_ADDRESS);
+                URL url = new URL(Globals.POST_TRIAL_RESPONSE);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");
@@ -255,7 +331,7 @@ public class HTTPRequest {
 
                 //headers
                 Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
-                writer.write(JSONData);
+                writer.write(String.valueOf(response));
                 writer.close();
 
                 //response
