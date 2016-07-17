@@ -111,7 +111,7 @@ public class JSON {
                 String trialSpecialisation = trial.getString(JSON.DataFormatting.TRIAL_SPECIALISATION);
                 String trialStartTime = trial.getString(JSON.DataFormatting.TRIAL_START_TIME);
                 String trialEndTime = trial.getString(JSON.DataFormatting.TRIAL_END_TIME);
-                String trialTimePeriodFreq = trial.getString(JSON.DataFormatting.TRIAL_TIME_PERIOD_FREQUENCY);
+                String trialTimePeriodFreq = "0"; //trial.getString(JSON.DataFormatting.TRIAL_TIME_PERIOD_FREQUENCY);
                 String trialNotificationFreq = trial.getString(JSON.DataFormatting.TRIAL_NOTIFICATION_FREQUENCY);
                 String trialImageResource = trial.getString(JSON.DataFormatting.TRIAL_IMAGE_RESOURCE);
 
@@ -125,6 +125,7 @@ public class JSON {
                 System.out.println(prerequisites);
 
                 //sub elements for researchers list
+                /*
                 JSONArray trialResearch = trial.getJSONArray(JSON.DataFormatting.TRIAL_RESEARCHER);
                 JSONObject researchGroup = trialResearch.getJSONObject(0);
                 String trialResearchGroupId = researchGroup.getString(DataFormatting.TRIAL_RESEARCH_GROUP_ID);
@@ -134,12 +135,12 @@ public class JSON {
                     JSONObject researcherName = trialResearch.getJSONObject(j);
                     researcherNames.add(researcherName.getString(DataFormatting.TRIAL_RESEARCHER_NAME));
                 }
-                System.out.println(researcherNames);
+                System.out.println(researcherNames);*/
 
                 //Bitmap imageResource = new HTTPRequest().new GetImageResource().execute(Globals.GET_TRIAL_IMAGE);
 
-                trials.add(new Trial(Attributes.getType(trialType), trialResearchGroupId, researcherNames,
-                        trialResearchGroupId, trialName, trialDesc, trialId, trialOrganisation, trialSpecialisation, null, //imageResource
+                trials.add(new Trial(Attributes.getType(trialType), null, null, null, //researcherNames.get(0), researcherNames, trialResearchGroupId,
+                        trialName, trialDesc, trialId, trialOrganisation, trialSpecialisation, null, //imageResource
                         Long.parseLong(trialStartTime), Long.parseLong(trialEndTime),
                         Integer.parseInt(trialTimePeriodFreq), Integer.parseInt(trialNotificationFreq), prerequisites));
             }
