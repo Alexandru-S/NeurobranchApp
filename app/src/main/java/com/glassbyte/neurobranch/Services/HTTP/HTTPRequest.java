@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.provider.Settings;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
@@ -305,10 +306,14 @@ public class HTTPRequest {
     }
 
     public static class PostTrialResponse extends AsyncTask<String, Void, String> {
-        String response;
+        Response response;
 
-        public PostTrialResponse(String response) {
+        public PostTrialResponse(Response response) {
             this.response = response;
+        }
+
+        public PostTrialResponse(JSONObject jsonObject) {
+            this.response = new Response(jsonObject, Attributes.ResponseType.trial_response);
         }
 
         @Override
@@ -322,7 +327,7 @@ public class HTTPRequest {
             BufferedReader bufferedReader = null;
 
             try {
-                URL url = new URL(Globals.POST_TRIAL_RESPONSE);
+                URL url = new URL(Globals.POST_QUESTION_RESPONSE);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");
@@ -331,7 +336,7 @@ public class HTTPRequest {
 
                 //headers
                 Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
-                writer.write(String.valueOf(response));
+                writer.write(response.getQuestionResponse().toString());
                 writer.close();
 
                 //response

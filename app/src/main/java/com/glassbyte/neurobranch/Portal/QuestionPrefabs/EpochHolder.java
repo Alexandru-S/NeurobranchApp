@@ -127,6 +127,9 @@ public class EpochHolder extends AppCompatActivity {
                                             Attributes.ResponseType.trial_response);
                                     System.out.println(response.getQuestionResponse());
                                     Toast.makeText(getApplicationContext(), "Response being sent", Toast.LENGTH_LONG).show();
+
+                                    new HTTPRequest.PostTrialResponse(response).execute();
+
                                     EpochHolder.this.finish();
                                 }
                             })
