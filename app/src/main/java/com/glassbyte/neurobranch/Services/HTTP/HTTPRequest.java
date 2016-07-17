@@ -54,6 +54,14 @@ public class HTTPRequest {
             this.response = response;
         }
 
+        public ForcePushTrial(String resString) {
+            try {
+                response = new Response(new JSONObject(resString), Attributes.ResponseType.post_trial);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -62,7 +70,7 @@ public class HTTPRequest {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                URL url = new URL(Globals.POST_TRIALS_ADDRESS);
+                URL url = new URL(Globals.POST_TRIAL_RESPONSE);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");

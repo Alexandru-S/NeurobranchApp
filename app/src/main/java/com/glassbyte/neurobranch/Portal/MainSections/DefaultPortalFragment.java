@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 
@@ -34,7 +35,7 @@ public class DefaultPortalFragment extends android.support.v4.app.Fragment {
         forcePushTrialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new HTTPRequest.ForcePushTrial(null).execute();
+                new HTTPRequest.ForcePushTrial(Response.generateTrial(1)).execute();
             }
         });
 
