@@ -9,7 +9,8 @@ import java.util.Date;
  */
 public class Formatting {
     public static final String ELLIPSIS = "[^iIl1\\.,']";
-    public static final int MAX_DESC_SIZE = 100;
+    public static final int MAX_DESC_SIZE = 110;
+    public static final int MAX_TITLE_SIZE = 50;
 
     public static String formatResearchers(ArrayList<String> researcherNames) {
         if(researcherNames.size() == 1) {

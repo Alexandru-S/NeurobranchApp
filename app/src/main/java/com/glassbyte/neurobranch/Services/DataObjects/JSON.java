@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -108,7 +109,7 @@ public class JSON {
                 String trialName = trial.getString(JSON.DataFormatting.TRIAL_NAME);
                 String trialDesc = trial.getString(JSON.DataFormatting.TRIAL_DESCRIPTION);
                 String trialType = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
-                String trialOrganisation = "Org"; //trial.getString(JSON.DataFormatting.TRIAL_ORGANISATION);
+                String trialOrganisation = trial.getString(JSON.DataFormatting.TRIAL_ORGANISATION);
                 String trialSpecialisation = trial.getString(JSON.DataFormatting.TRIAL_SPECIALISATION);
                 String trialStartTime = trial.getString(JSON.DataFormatting.TRIAL_START_TIME);
                 String trialEndTime = trial.getString(JSON.DataFormatting.TRIAL_END_TIME);
@@ -118,15 +119,16 @@ public class JSON {
 
                 //prereqs
                 ArrayList<String> prerequisites = new ArrayList<>();
-                JSONArray conditions = trial.getJSONArray(DataFormatting.TRIAL_PREREQUISITES);
+                prerequisites.add("null");
+                /*JSONArray conditions = trial.getJSONArray(DataFormatting.TRIAL_PREREQUISITES);
                 for (int j = 0; j < conditions.length(); j++) {
                     JSONObject prerequisite = conditions.getJSONObject(j);
                     prerequisites.add(prerequisite.getString(prerequisite.keys().next()));
                 }
-                System.out.println(prerequisites);
+                System.out.println(prerequisites);*/
 
                 //sub elements for researchers list
-                JSONArray trialResearch = trial.getJSONArray(DataFormatting.TRIAL_RESEARCHER);
+                /*JSONArray trialResearch = trial.getJSONArray(DataFormatting.TRIAL_RESEARCHER);
                 JSONObject researchGroup = trialResearch.getJSONObject(0);
                 System.out.println(researchGroup.toString());
                 String trialResearchGroupId = researchGroup.getString(DataFormatting.TRIAL_RESEARCH_GROUP_ID);
@@ -135,7 +137,7 @@ public class JSON {
                 ArrayList<String> researcherNames = new ArrayList<>();
                 researcherNames.add(researcherName);
 
-                System.out.println(trialResearchGroupId + " " + researcherName);
+                System.out.println(trialResearchGroupId + " " + researcherName);*/
 
                 /*
                 ArrayList<String> researcherNames = new ArrayList<>();
@@ -148,7 +150,10 @@ public class JSON {
 
                 //Bitmap imageResource = new HTTPRequest().new GetImageResource().execute(Globals.GET_TRIAL_IMAGE);
 
-                trials.add(new Trial(Attributes.getType(trialType), trialId, researcherNames, trialResearchGroupId, //researcher IDs and names
+                ArrayList<String> researcherNames = new ArrayList<>();
+                researcherNames.add("null");
+
+                trials.add(new Trial(Attributes.getType(trialType), trialId, researcherNames, "", //researcherNames, trialResearchGroupId, //researcher IDs and names
                         trialName, trialDesc, trialId, trialOrganisation, trialSpecialisation, null, //imageResource
                         Long.parseLong(trialStartTime), Long.parseLong(trialEndTime),
                         Integer.parseInt(trialTimePeriodFreq), Integer.parseInt(trialNotificationFreq), prerequisites));

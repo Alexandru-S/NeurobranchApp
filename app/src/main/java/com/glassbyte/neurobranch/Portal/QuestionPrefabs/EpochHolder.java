@@ -125,7 +125,8 @@ public class EpochHolder extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Response response = new Response(Response.generateResponse("", "", "", fragments),
+                                    Response response = new Response(Response.generateResponse(
+                                            getTrialId(), getEpochId(), getUserId(), fragments),
                                             Attributes.ResponseType.trial_response);
                                     System.out.println(response.getQuestionResponse());
                                     Toast.makeText(getApplicationContext(), "Response being sent", Toast.LENGTH_LONG).show();

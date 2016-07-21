@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.glassbyte.neurobranch.Services.Globals;
@@ -68,8 +69,12 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
                     }
                 });
 
+        ScrollView scrollView = new ScrollView(this.getActivity());
+        ScrollView.LayoutParams scrollEntryParams = new ScrollView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        scrollView.setLayoutParams(scrollEntryParams);
+
         RelativeLayout propertiesEntry = new RelativeLayout(this.getActivity());
-        propertiesEntry.setGravity(Gravity.CENTER);
         RelativeLayout.LayoutParams propertiesEntryParams =
                 new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -121,7 +126,9 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
         propertiesEntry.addView(tvEndTime);
         propertiesEntry.addView(tvDescription);
 
-        builder.setView(propertiesEntry);
+        scrollView.addView(propertiesEntry);
+
+        builder.setView(scrollView);
 
         return builder.create();
     }

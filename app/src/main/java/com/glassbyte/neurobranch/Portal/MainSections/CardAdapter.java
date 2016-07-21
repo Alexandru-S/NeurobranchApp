@@ -18,6 +18,7 @@ import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +43,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         final Trial trial = trials.get(position);
 
-        holder.title.setText(trial.getTrialName());
+        holder.title.setText(Formatting.truncateText(trial.getTrialName(), Formatting.MAX_TITLE_SIZE));
         holder.description.setText(Formatting.truncateText(trial.getTrialDescription(), Formatting.MAX_DESC_SIZE));
         holder.organisation.setText(trial.getOrganisation());
         holder.image.setImageDrawable(trial.getTrialImage());
