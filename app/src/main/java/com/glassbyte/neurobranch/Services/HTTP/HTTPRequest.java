@@ -211,9 +211,19 @@ public class HTTPRequest {
         URL url;
         boolean isNetworkConnected;
 
+        String trialId, epochId, userId;
+
         public ReceiveJSON(Context context, URL url) {
             this.context = context;
             this.url = url;
+        }
+
+        public ReceiveJSON(Context context, URL url, String trialId, String epochId, String userId) {
+            this.context = context;
+            this.url = url;
+            this.trialId = trialId;
+            this.epochId = epochId;
+            this.userId = userId;
         }
 
         @Override
@@ -274,6 +284,18 @@ public class HTTPRequest {
 
         public URL getUrl() {
             return url;
+        }
+
+        public String getTrialId() {
+            return trialId;
+        }
+
+        public String getEpochId() {
+            return epochId;
+        }
+
+        public String getUserId() {
+            return userId;
         }
     }
 

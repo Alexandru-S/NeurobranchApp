@@ -35,23 +35,25 @@ import java.util.concurrent.ExecutionException;
  * Created by ed on 04/07/2016.
  */
 public class EpochHolder extends AppCompatActivity {
-    Epoch epoch;
     ArrayList<Object> properties = new ArrayList<>();
     ArrayList<Fragment> fragments = new ArrayList<>();
 
     ViewPager viewPager;
 
-    public EpochHolder(){}
-
-    public EpochHolder(Epoch epoch) {
-        this.epoch = epoch;
-    }
+    String trialId, epochId, userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Bundle details = getIntent().getExtras();
+
+        setTrialId(details.getString("TRIAL_ID"));
+        setEpochId(details.getString("EPOCH_ID"));
+        setUserId(details.getString("USER_ID"));
+
         try {
             properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this,
-                    new URL(Globals.GET_QUESTIONS_ADDRESS)).execute().get());
+                    new URL(Globals.GET_QUESTIONS_ADDRESS), getTrialId(), getEpochId(), getUserId())
+                    .execute().get());
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
         } finally {
@@ -190,6 +192,30 @@ public class EpochHolder extends AppCompatActivity {
         } else {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
+    }
+
+    public String getTrialId() {
+        return trialId;
+    }
+
+    public void setTrialId(String trialId) {
+        this.trialId = trialId;
+    }
+
+    public String getEpochId() {
+        return epochId;
+    }
+
+    public void setEpochId(String epochId) {
+        this.epochId = epochId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     private class SlideAdapter extends FragmentStatePagerAdapter {

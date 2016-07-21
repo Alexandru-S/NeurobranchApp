@@ -108,7 +108,7 @@ public class JSON {
                 String trialName = trial.getString(JSON.DataFormatting.TRIAL_NAME);
                 String trialDesc = trial.getString(JSON.DataFormatting.TRIAL_DESCRIPTION);
                 String trialType = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
-                String trialOrganisation = trial.getString(JSON.DataFormatting.TRIAL_ORGANISATION);
+                String trialOrganisation = "Org"; //trial.getString(JSON.DataFormatting.TRIAL_ORGANISATION);
                 String trialSpecialisation = trial.getString(JSON.DataFormatting.TRIAL_SPECIALISATION);
                 String trialStartTime = trial.getString(JSON.DataFormatting.TRIAL_START_TIME);
                 String trialEndTime = trial.getString(JSON.DataFormatting.TRIAL_END_TIME);
@@ -130,7 +130,7 @@ public class JSON {
                 JSONObject researchGroup = trialResearch.getJSONObject(0);
                 System.out.println(researchGroup.toString());
                 String trialResearchGroupId = researchGroup.getString(DataFormatting.TRIAL_RESEARCH_GROUP_ID);
-                String researcherName = researchGroup.getString(DataFormatting.TRIAL_RESEARCHER_NAME);
+                String researcherName = "Researcher name"; //researchGroup.getString(DataFormatting.TRIAL_RESEARCHER_NAME);
 
                 ArrayList<String> researcherNames = new ArrayList<>();
                 researcherNames.add(researcherName);
