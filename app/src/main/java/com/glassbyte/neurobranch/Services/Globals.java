@@ -24,7 +24,7 @@ public class Globals {
     public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";
 
     //debug statics
-    public static final String MOCK_RESPONSE = "{\"trialid\":\"trialidbody111\",\"epochid\":\"epochidbody111\",\"candidateid\":\"candidateidbody111\"}"; //,\"response\":[{\"q0\":[{\"qtype\":\"checkbox\"},{\"qindex\":0},{\"response0\":\"\"},{\"response1\":\"\"},{\"response2\":\"\"},{\"response3\":\"\"}]},{\"q1\":[{\"qtype\":\"scale\"},{\"qindex\":1}]},{\"q2\":[{\"qtype\":\"choice\"},{\"qindex\":2},{\"response0\":\"This is a radio button!\"},{\"response1\":\"Radio buttons ahoy\"},{\"response2\":\"Is this a radio button\"},{\"response3\":\"Radio button\"}]},{\"q3\":[{\"qtype\":\"section\"},{\"qindex\":3},{\"response0\":\"\"}]}]}";
+    public static final String MOCK_RESPONSE = "{\"trialid\":\"trialidbody\",\"epochid\":\"epochidbody\",\"candidateid\":\"candidateidbody\",\"response\":[{\"q0\":[{\"qtype\":\"checkbox\"},{\"qindex\":0},{\"response0\":\"\"},{\"response1\":\"\"},{\"response2\":\"\"},{\"response3\":\"\"}]},{\"q1\":[{\"qtype\":\"scale\"},{\"qindex\":1}]},{\"q2\":[{\"qtype\":\"choice\"},{\"qindex\":2},{\"response0\":\"This is a radio button!\"},{\"response1\":\"Radio buttons ahoy\"},{\"response2\":\"Is this a radio button\"},{\"response3\":\"Radio button\"}]},{\"q3\":[{\"qtype\":\"section\"},{\"qindex\":3},{\"response0\":\"\"}]}]}";
 
     //programmatic layout helpers
     public static int getDp(Context context, float pixels) {
