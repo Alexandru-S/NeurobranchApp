@@ -77,8 +77,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     private void alertDescription(final Trial trial, final Context context) {
-        TrialInfo trialInfo = new TrialInfo(trial.getTrialName() + " (" + (trial.getOrganisation()) + ")",
-                trial.getTrialDescription(), Formatting.formatResearchers(trial.getResearcherName()),
+        TrialInfo trialInfo = new TrialInfo(trial.getTrialName(), trial.getTrialDescription(),
+                Formatting.formatResearchers(trial.getResearcherName()),
                 trial.getOrganisation(), trial.getStartTime(), trial.getEndTime());
         trialInfo.show(fragmentManager, "info");
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
