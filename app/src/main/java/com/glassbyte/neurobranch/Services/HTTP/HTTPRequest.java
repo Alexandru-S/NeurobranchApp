@@ -214,7 +214,7 @@ public class HTTPRequest {
         URL url;
         JSONCallback jsonCallback;
 
-        String trialId, epochId, userId;
+        String trialId, candidateId, questionId;
 
         public ReceiveJSON(Context context, URL url) {
             this.context = context;
@@ -227,12 +227,12 @@ public class HTTPRequest {
             this.jsonCallback = jsonCallback;
         }
 
-        public ReceiveJSON(Context context, URL url, String trialId, String epochId, String userId) {
+        public ReceiveJSON(Context context, URL url, String trialId, String questionId, String candidateId) {
             this.context = context;
             this.url = url;
             this.trialId = trialId;
-            this.epochId = epochId;
-            this.userId = userId;
+            this.questionId = questionId;
+            this.candidateId = candidateId;
         }
 
         @Override
@@ -289,12 +289,12 @@ public class HTTPRequest {
             return trialId;
         }
 
-        public String getEpochId() {
-            return epochId;
+        public String getQuestionId() {
+            return questionId;
         }
 
-        public String getUserId() {
-            return userId;
+        public String getCandidateId() {
+            return candidateId;
         }
     }
 

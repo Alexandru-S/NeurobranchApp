@@ -39,18 +39,18 @@ public class EpochHolder extends AppCompatActivity {
     ArrayList<Fragment> fragments = new ArrayList<>();
 
     ViewPager viewPager;
-    String trialId, epochId, userId;
+    String trialId, questionId, candidateId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle details = getIntent().getExtras();
 
-        //setTrialId(details.getString("TRIAL_ID"));
-        //setUserId(details.getString("CANDIDATE_ID"));
+        setTrialId(details.getString("TRIAL_ID"));
+        setCandidateId(details.getString("CANDIDATE_ID"));
 
         try {
             properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this,
-                    new URL(Globals.GET_QUESTIONS_ADDRESS), getTrialId(), getEpochId(), getUserId())
+                    new URL(Globals.GET_QUESTIONS_ADDRESS), getTrialId(), getQuestionId(), getCandidateId())
                     .execute().get());
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class EpochHolder extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     for(Fragment fragment : fragments) {
                                         Response response = new Response(Response.generateResponse(
-                                                "*questionid", "*candidateid", fragment),
+                                                "*questionid", getCandidateId(), fragment),
                                                 Attributes.ResponseType.trial_response);
                                         new HTTPRequest.PostTrialResponse(response).execute();
                                     }
@@ -202,20 +202,16 @@ public class EpochHolder extends AppCompatActivity {
         this.trialId = trialId;
     }
 
-    public String getEpochId() {
-        return epochId;
+    public String getQuestionId() { return questionId; }
+
+    public void setQuestionId(String questionId) { this.questionId = questionId; }
+
+    public String getCandidateId() {
+        return candidateId;
     }
 
-    public void setEpochId(String epochId) {
-        this.epochId = epochId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCandidateId(String candidateId) {
+        this.candidateId = candidateId;
     }
 
     private class SlideAdapter extends FragmentStatePagerAdapter {

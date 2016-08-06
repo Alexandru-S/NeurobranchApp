@@ -87,13 +87,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                context.startActivity(new Intent(context, EpochHolder.class));
                 Bundle bundle = new Bundle();
-
                 bundle.putString("TRIAL_ID", trial.getTrialId());
-                bundle.putString("CANDIDATE_ID", "");
+                bundle.putString("CANDIDATE_ID", "candidate" + String.valueOf(System.currentTimeMillis()));
 
                 Toast.makeText(context, "Trial accessed: " + trial.getTrialId(), Toast.LENGTH_LONG).show();
+
                 Intent intent = new Intent(context, EpochHolder.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);

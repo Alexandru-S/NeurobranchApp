@@ -59,27 +59,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EpochHolder.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EpochHolder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.6923077">
-              <caret line="48" column="55" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CardAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
+      <file leaf-file-name="HTTPRequest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/HTTP/HTTPRequest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="110" column="24" selection-start-line="110" selection-start-column="24" selection-end-line="110" selection-end-column="24" />
+              <caret line="292" column="29" selection-start-line="292" selection-start-column="29" selection-end-line="292" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CardAdapter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5724852">
+              <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2271#2460#0" expanded="true" />
                 <element signature="e#2459#2460#0" expanded="true" />
-                <element signature="e#4028#4029#0" expanded="true" />
-                <element signature="e#4064#4065#0" expanded="true" />
+                <element signature="e#4003#4004#0" expanded="true" />
+                <element signature="e#4039#4040#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1874,12 +1884,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/app/src/main/res/layout/trial_card.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/JSON.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/MyTrialsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Dialogs/TrialInfo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/HTTP/HTTPRequest.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" />
       </list>
     </option>
   </component>
@@ -2319,36 +2330,11 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="110" column="24" selection-start-line="110" selection-start-column="24" selection-end-line="110" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2271#2460#0" expanded="true" />
-            <element signature="e#2459#2460#0" expanded="true" />
-            <element signature="e#4028#4029#0" expanded="true" />
-            <element signature="e#4064#4065#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.52071005">
           <caret line="26" column="90" selection-start-line="26" selection-start-column="90" selection-end-line="26" selection-end-column="90" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/MyTrialsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
-          <folding>
-            <element signature="e#2715#3030#0" expanded="true" />
-            <element signature="e#3029#3030#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2375,11 +2361,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/HTTP/HTTPRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="292" column="29" selection-start-line="292" selection-start-column="29" selection-end-line="292" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/MyTrialsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
+          <folding>
+            <element signature="e#2715#3030#0" expanded="true" />
+            <element signature="e#3029#3030#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6923077">
-          <caret line="48" column="55" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5724852">
+          <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2271#2460#0" expanded="true" />
+            <element signature="e#2459#2460#0" expanded="true" />
+            <element signature="e#4003#4004#0" expanded="true" />
+            <element signature="e#4039#4040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
