@@ -1,6 +1,7 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,9 @@ import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
+import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
+
+import org.json.JSONArray;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,8 +34,13 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment {
     RecyclerView.LayoutManager layoutManager;
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ArrayList<Trial> trials = new ArrayList<>();
+        trials.add(new Trial("Retrieving Trials", "Please wait while trials are being retrieved from Neurobranch services.", "You", true));
+        adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+        recyclerView.setAdapter(adapter);
+        loadTrials();
     }
 
     @Override
@@ -41,8 +50,6 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        loadTrials();
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_portal_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -64,11 +71,23 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment {
 
     private void loadTrials() {
         if(Connectivity.isNetworkConnected(getActivity())) {
+            JSONCallback jsonCallback = new JSONCallback() {
+                @Override
+                public void onLoadCompleted(JSONArray object) {
+                    adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
+                    recyclerView.setAdapter(adapter);
+                }
+            };
             try {
                 HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS));
                 adapter = new CardAdapter(JSON.parseTrialJSON(httpRequest.execute().get()), getActivity().getSupportFragmentManager());
             } catch (InterruptedException | MalformedURLException | ExecutionException e1) {
                 e1.printStackTrace();
+                try {
+                    new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS), jsonCallback).execute();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             ArrayList<Trial> trials = new ArrayList<>();

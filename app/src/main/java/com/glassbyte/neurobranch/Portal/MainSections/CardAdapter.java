@@ -2,6 +2,7 @@ package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
-import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trial_card, parent, false);
-        return new DataObjectHolder(view);
+        return new DataObjectHolder(view, parent.getContext());
     }
 
     public static String capitalise(String line) {
@@ -80,7 +80,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         }
     }
 
-    private void alertDescription(Trial trial, final Context context) {
+    private void alertDescription(final Trial trial, final Context context) {
         TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(),
                 trial.getResearcherId(), trial.getInstitute(), trial.getDateCreated());
         trialInfo.show(fragmentManager, "info");
@@ -88,6 +88,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
                 context.startActivity(new Intent(context, EpochHolder.class));
+                Bundle bundle = new Bundle();
+
+                bundle.putString("TRIAL_ID", trial.getTrialId());
+                bundle.putString("CANDIDATE_ID", "");
+
+                Toast.makeText(context, "Trial accessed: " + trial.getTrialId(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, EpochHolder.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }
@@ -98,15 +107,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
-
         TextView title, description, institute, condition;
+        Context context;
 
-        public DataObjectHolder(final View itemView) {
+        public DataObjectHolder(final View itemView, Context context) {
             super(itemView);
+            this.context = context;
             title = (TextView) itemView.findViewById(R.id.trial_title);
             description = (TextView) itemView.findViewById(R.id.trial_desc);
             institute = (TextView) itemView.findViewById(R.id.trial_institute);
             condition = (TextView) itemView.findViewById(R.id.trial_condition);
+        }
+
+        public Context getContext(){
+            return context;
         }
     }
 }

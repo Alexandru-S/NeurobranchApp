@@ -10,6 +10,7 @@ import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
+import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +44,8 @@ public class HTTPRequest {
         POST_DATA, LOGIN, UPDATE_TRIAL_LIST, UPDATE_QS_AVAILABLE
     }
 
-    public HTTPRequest() {}
+    public HTTPRequest() {
+    }
 
     //debug force post trial
     public static class ForcePushTrial extends AsyncTask<String, Void, String> {
@@ -206,63 +208,67 @@ public class HTTPRequest {
         }
     }
 
-    public static class ReceiveJSON extends AsyncTask<Void, Void, JSONArray> {
+    public static class ReceiveJSON extends AsyncTask<Object, Object, JSONArray> {
 
         Context context;
-        ProgressDialog progressDialog;
         URL url;
-        boolean isNetworkConnected;
+        JSONCallback jsonCallback;
+
+        String trialId, epochId, userId;
 
         public ReceiveJSON(Context context, URL url) {
             this.context = context;
             this.url = url;
         }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            isNetworkConnected = Connectivity.isNetworkConnected(context);
-            if(isNetworkConnected) {
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("Loading...");
-                progressDialog.setIndeterminate(false);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setCancelable(true);
-                progressDialog.show();
-            }
+        public ReceiveJSON(Context context, URL url, JSONCallback jsonCallback) {
+            this.context = context;
+            this.url = url;
+            this.jsonCallback = jsonCallback;
+        }
+
+        public ReceiveJSON(Context context, URL url, String trialId, String epochId, String userId) {
+            this.context = context;
+            this.url = url;
+            this.trialId = trialId;
+            this.epochId = epochId;
+            this.userId = userId;
         }
 
         @Override
-        protected JSONArray doInBackground(Void...voids) {
-            if(isNetworkConnected) {
-                HttpURLConnection connection;
-                try {
-                    connection = (HttpURLConnection) getUrl().openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("Content-length", "0");
-                    connection.setUseCaches(false);
-                    connection.setAllowUserInteraction(false);
-                    connection.connect();
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
-                    int status = connection.getResponseCode();
-                    Writer writer = new StringWriter();
+        @Override
+        protected JSONArray doInBackground(Object... params) {
+            HttpURLConnection connection;
+            try {
+                connection = (HttpURLConnection) getUrl().openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Content-length", "0");
+                connection.setUseCaches(false);
+                connection.setAllowUserInteraction(false);
+                connection.connect();
 
-                    switch (status) {
-                        case 200:
-                        case 201:
-                            char[] buffer = new char[1024];
-                            BufferedReader br = new BufferedReader(
-                                    new InputStreamReader(connection.getInputStream()));
-                            int n;
-                            while ((n = br.read(buffer)) != -1) {
-                                writer.write(buffer, 0, n);
-                            }
-                            br.close();
-                            return new JSONArray(writer.toString());
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                int status = connection.getResponseCode();
+                Writer writer = new StringWriter();
+
+                switch (status) {
+                    case 200:
+                    case 201:
+                        char[] buffer = new char[1024];
+                        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream()));
+                        int n;
+                        while ((n = br.read(buffer)) != -1) {
+                            writer.write(buffer, 0, n);
+                        }
+                        br.close();
+                        return new JSONArray(writer.toString());
                 }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
             }
 
             return null;
@@ -271,11 +277,24 @@ public class HTTPRequest {
         @Override
         protected void onPostExecute(JSONArray jsonArray) {
             super.onPostExecute(jsonArray);
-            progressDialog.dismiss();
+            if(jsonCallback != null)
+                jsonCallback.onLoadCompleted(jsonArray);
         }
 
         public URL getUrl() {
             return url;
+        }
+
+        public String getTrialId() {
+            return trialId;
+        }
+
+        public String getEpochId() {
+            return epochId;
+        }
+
+        public String getUserId() {
+            return userId;
         }
     }
 
