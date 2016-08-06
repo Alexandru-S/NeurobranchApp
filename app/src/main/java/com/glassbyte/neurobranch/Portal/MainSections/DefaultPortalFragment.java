@@ -20,7 +20,6 @@ import org.json.JSONObject;
  */
 public class DefaultPortalFragment extends android.support.v4.app.Fragment {
     View view;
-    Button forcePushTrialBtn, forcePushResponseBtn;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -30,32 +29,6 @@ public class DefaultPortalFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.portal_default, container, false);
-
-        forcePushTrialBtn = (Button) view.findViewById(R.id.post_trial_btn);
-        forcePushTrialBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new HTTPRequest.ForcePushTrial(Response.generateTrial(1)).execute();
-            }
-        });
-
-        forcePushResponseBtn = (Button) view.findViewById(R.id.post_response_btn);
-        forcePushResponseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(Globals.MOCK_RESPONSE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println(jsonObject);
-                new HTTPRequest.PostTrialResponse(jsonObject).execute();
-                Toast.makeText(getActivity(), "Response posted", Toast.LENGTH_LONG).show();
-
-            }
-        });
 
         return view;
     }

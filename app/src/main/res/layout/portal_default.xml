@@ -10,16 +10,4 @@
         android:id="@+id/textView4"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/post_trial_btn"
-        android:text="Force Post Trial"/>
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/post_response_btn"
-        android:text="Force Post Response"/>
 </LinearLayout>

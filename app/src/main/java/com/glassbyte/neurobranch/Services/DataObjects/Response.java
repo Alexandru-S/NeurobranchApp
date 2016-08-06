@@ -21,7 +21,7 @@ public class Response {
     JSONObject questionResponse;
 
     enum ResponseFields {
-        id, trialid, epochid, candidateid, response
+        id, questionid, candidateid, response
     }
 
     public Response(JSONObject questionResponse, Attributes.ResponseType responseType) {
@@ -37,72 +37,41 @@ public class Response {
         return questionResponse;
     }
 
-    public static String generateTrial(int i) {
-        return "{ trialname: '" + i +"'," +
-                "description: '" + i +"'," +
-                "trialtype: '" + i +"'," +
-                "researchgroup: '" + i +"'," +
-                "researchername: '" + i +"'," +
-                "organisation: '" + i +"'," +
-                "specialisation: '" + i +"'," +
-                "starttime: '" + i +"'," +
-                "endtime: '" + i +"'," +
-                "timeperiodfrequency: '" + i +"'," +
-                "notificationfrequency: '" + i +"'," +
-                "imageresource: '" + i +"'," +
-                "minage: '" + i +"'," +
-                "condition: '" + i +"'," +
-                "prereqtype: '" + i +"' }";
-
-
-    }
-
-    public static JSONObject generateResponse(String trialId, String epochId, String candidateId, ArrayList<Fragment> fragments) {
+    public static JSONObject generateResponse(String questionId, String candidateId, Fragment fragment) {
         JSONObject response = new JSONObject();
-        JSONArray responseArray = new JSONArray();
         try {
-            response.put(ResponseFields.trialid.name(), trialId);
-            response.put(ResponseFields.epochid.name(), epochId);
+            response.put(ResponseFields.questionid.name(), questionId);
             response.put(ResponseFields.candidateid.name(), candidateId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        ArrayList<Object> questionResponse = new ArrayList<>();
 
-        for(int i=0; i<fragments.size(); i++) {
-            Object object = fragments.get(i);
-            ArrayList<Object> questionResponse = new ArrayList<>();
-
-            if(object.getClass() == Checkbox.class) {
-                questionResponse.add(Attributes.QuestionType.checkbox.name());
-                questionResponse.add(((Checkbox) object).getQuestionNumber());
-                questionResponse.add(((Checkbox) object).getAnswers());
-            } else if(object.getClass() == Scale.class) {
-                questionResponse.add(Attributes.QuestionType.scale.name());
-                questionResponse.add(((Scale) object).getQuestionNumber());
-                questionResponse.add(((Scale) object).getResponse());
-            } else if(object.getClass() == TextChoice.class) {
-                questionResponse.add(Attributes.QuestionType.choice.name());
-                questionResponse.add(((TextChoice) object).getQuestionNumber());
-                questionResponse.add(((TextChoice) object).getAnswers());
-            } else if(object.getClass() == TextSection.class) {
-                questionResponse.add(Attributes.QuestionType.section.name());
-                questionResponse.add(((TextSection) object).getQuestionNumber());
-                questionResponse.add(((TextSection) object).getResponse());
-            }
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("q" + i, JSON.parseList(questionResponse));
-                responseArray.put(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if (fragment.getClass() == Checkbox.class) {
+            questionResponse.add(Attributes.QuestionType.checkbox.name());
+            questionResponse.add(((Checkbox) fragment).getQuestionNumber());
+            questionResponse.add(((Checkbox) fragment).getAnswers());
+        } else if (fragment.getClass() == Scale.class) {
+            questionResponse.add(Attributes.QuestionType.scale.name());
+            questionResponse.add(((Scale) fragment).getQuestionNumber());
+            questionResponse.add(((Scale) fragment).getResponse());
+        } else if (fragment.getClass() == TextChoice.class) {
+            questionResponse.add(Attributes.QuestionType.choice.name());
+            questionResponse.add(((TextChoice) fragment).getQuestionNumber());
+            questionResponse.add(((TextChoice) fragment).getAnswers());
+        } else if (fragment.getClass() == TextSection.class) {
+            questionResponse.add(Attributes.QuestionType.section.name());
+            questionResponse.add(((TextSection) fragment).getQuestionNumber());
+            questionResponse.add(((TextSection) fragment).getResponse());
         }
         try {
-            response.put(ResponseFields.response.name(), responseArray);
+            response.put(ResponseFields.response.name(), JSON.parseList(questionResponse));
+            System.out.println("RESPONSE GENERATED " + JSON.parseList(questionResponse));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return response;
     }
 }

@@ -68,7 +68,7 @@ public class TrialsAvailableFragment extends android.support.v4.app.Fragment {
     private void loadTrials() {
         if(Connectivity.isNetworkConnected(getActivity())) {
             try {
-                HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.GET_TRIALS_ADDRESS));
+                HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS));
                 adapter = new CardAdapter(JSON.parseTrialJSON(httpRequest.execute().get()), getActivity().getSupportFragmentManager());
             } catch (InterruptedException | MalformedURLException | ExecutionException e1) {
                 e1.printStackTrace();

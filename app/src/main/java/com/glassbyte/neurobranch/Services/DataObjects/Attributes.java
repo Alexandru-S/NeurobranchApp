@@ -8,6 +8,10 @@ public class Attributes {
         food, pharma, biodevice, undef
     }
 
+    public enum TrialState {
+        created, active, cancelled, completed, undef
+    }
+
     public enum QuestionType {
         checkbox, drawing, multimedia, scale, choice, section, undef
     }
@@ -23,6 +27,15 @@ public class Attributes {
             }
         }
         return QuestionType.undef;
+    }
+
+    public static TrialState getTrialState(String checkState) {
+        for (TrialState trialState : TrialState.values()) {
+            if (trialState.name().equals(checkState)) {
+                return trialState;
+            }
+        }
+        return TrialState.undef;
     }
 
     public static Type getType(String checkType) {

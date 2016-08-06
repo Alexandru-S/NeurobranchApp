@@ -17,9 +17,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -335,17 +337,19 @@ public class HTTPRequest {
             BufferedReader bufferedReader = null;
 
             try {
-                URL url = new URL(Globals.POST_QUESTION_RESPONSE);
+                URL url = new URL(Globals.POST_RESPONSE_ADDRESS);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty("Content-Type", "application-json");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
+                httpURLConnection.connect();
 
-                //headers
-                Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
-                writer.write(response.getQuestionResponse().toString());
-                writer.close();
+                //body
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                wr.write(response.getQuestionResponse().toString());
+                wr.flush();
+                wr.close();
 
                 //response
                 InputStream inputStream = httpURLConnection.getInputStream();

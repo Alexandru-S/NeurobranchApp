@@ -123,13 +123,15 @@ public class EpochHolder extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Response response = new Response(Response.generateResponse("", "", "", fragments),
-                                            Attributes.ResponseType.trial_response);
-                                    System.out.println(response.getQuestionResponse());
-                                    Toast.makeText(getApplicationContext(), "Response being sent", Toast.LENGTH_LONG).show();
+                                    for(Fragment fragment : fragments) {
+                                        Response response = new Response(Response.generateResponse(
+                                                "*questionid", "*candidateid", fragment),
+                                                Attributes.ResponseType.trial_response);
+                                        new HTTPRequest.PostTrialResponse(response).execute();
+                                    }
 
-                                    new HTTPRequest.PostTrialResponse(response).execute();
-
+                                    String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";
+                                    Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                                     EpochHolder.this.finish();
                                 }
                             })

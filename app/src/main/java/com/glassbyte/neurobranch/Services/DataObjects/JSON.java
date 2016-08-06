@@ -14,29 +14,20 @@ import java.util.ArrayList;
 public class JSON {
 
     public static class DataFormatting {
-        //trial base attributes
+        //trial base attributes from trial object
         public static final String TRIAL_ID = "_id";
-        public static final String TRIAL_NAME = "trialname";
-        public static final String TRIAL_DESCRIPTION = "description";
+        public static final String TRIAL_NAME = "title";
+        public static final String TRIAL_BRIEF_DESCRIPTION = "briefdescription";
+        public static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
         public static final String TRIAL_TYPE = "trialtype";
-        public static final String TRIAL_ORGANISATION = "organisation";
-        public static final String TRIAL_SPECIALISATION = "specialisation";
-        public static final String TRIAL_START_TIME = "starttime";
-        public static final String TRIAL_END_TIME = "endtime";
-        public static final String TRIAL_TIME_PERIOD_FREQUENCY = "timeperiodfrequency";
-        public static final String TRIAL_NOTIFICATION_FREQUENCY = "notificationfrequency";
-        public static final String TRIAL_IMAGE_RESOURCE = "imageresource";
-
-        //prereqs
-        public static final String TRIAL_PREREQUISITES = "prerequisites";
-        public static final String TRIAL_PREREQ_MIN_AGE = "minage";
-        public static final String TRIAL_PREREQ_CONDITION = "condition";
-        public static final String TRIAL_PREREQ_PREREQ_TYPE = "prereqtype";
-
-        //researcher
-        public static final String TRIAL_RESEARCHER = "researcher";
-        public static final String TRIAL_RESEARCHER_NAME = "researchername";
-        public static final String TRIAL_RESEARCH_GROUP_ID = "researchgroup";
+        public static final String TRIAL_INSTITUTE = "institute";
+        public static final String TRIAL_CONDITION = "condition";
+        public static final String TRIAL_DATE_CREATED = "datecreated";
+        public static final String TRIAL_DATE_STARTED = "datestarted";
+        public static final String TRIAL_DATE_ENDED = "dateended";
+        public static final String TRIAL_CANDIDATE_QUOTA = "candidatequota";
+        public static final String TRIAL_STATE = "state";
+        public static final String TRIAL_RESEARCHER_ID = "researcherid";
     }
 
     public static JSONObject generatePost(ArrayList<String> metaKeys, ArrayList<String> metaValues,
@@ -103,46 +94,26 @@ public class JSON {
             for (int i = 0; i < retrievedTrials.length(); i++) {
                 JSONObject trial = retrievedTrials.getJSONObject(i);
 
-                String trialId = trial.getString(JSON.DataFormatting.TRIAL_ID);
-                String trialName = trial.getString(JSON.DataFormatting.TRIAL_NAME);
-                String trialDesc = trial.getString(JSON.DataFormatting.TRIAL_DESCRIPTION);
-                String trialType = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
-                String trialOrganisation = trial.getString(JSON.DataFormatting.TRIAL_ORGANISATION);
-                String trialSpecialisation = trial.getString(JSON.DataFormatting.TRIAL_SPECIALISATION);
-                String trialStartTime = trial.getString(JSON.DataFormatting.TRIAL_START_TIME);
-                String trialEndTime = trial.getString(JSON.DataFormatting.TRIAL_END_TIME);
-                String trialTimePeriodFreq = "0"; //trial.getString(JSON.DataFormatting.TRIAL_TIME_PERIOD_FREQUENCY);
-                String trialNotificationFreq = trial.getString(JSON.DataFormatting.TRIAL_NOTIFICATION_FREQUENCY);
-                String trialImageResource = trial.getString(JSON.DataFormatting.TRIAL_IMAGE_RESOURCE);
+                String title = trial.getString(JSON.DataFormatting.TRIAL_NAME);
+                String briefDesc = trial.getString(DataFormatting.TRIAL_BRIEF_DESCRIPTION);
+                String detailedDesc = trial.getString(DataFormatting.TRIAL_DETAILED_DESCRIPTION);
+                String type = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
+                String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
+                String condition = trial.getString(DataFormatting.TRIAL_CONDITION);
+                String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED);
+                String dateStarted = trial.getString(DataFormatting.TRIAL_DATE_STARTED);
+                String dateEnded = trial.getString(DataFormatting.TRIAL_DATE_ENDED);
+                String candidateQuota = trial.getString(DataFormatting.TRIAL_CANDIDATE_QUOTA);
+                String state = trial.getString(DataFormatting.TRIAL_STATE);
+                String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
+                String id = trial.getString(JSON.DataFormatting.TRIAL_ID);
 
-                //prereqs
-                ArrayList<String> prerequisites = new ArrayList<>();
-                JSONArray conditions = trial.getJSONArray(DataFormatting.TRIAL_PREREQUISITES);
-                for (int j = 0; j < conditions.length(); j++) {
-                    JSONObject prerequisite = conditions.getJSONObject(j);
-                    prerequisites.add(prerequisite.getString(prerequisite.keys().next()));
-                }
-                System.out.println(prerequisites);
-
-                //sub elements for researchers list
-                /*
-                JSONArray trialResearch = trial.getJSONArray(JSON.DataFormatting.TRIAL_RESEARCHER);
-                JSONObject researchGroup = trialResearch.getJSONObject(0);
-                String trialResearchGroupId = researchGroup.getString(DataFormatting.TRIAL_RESEARCH_GROUP_ID);
-
-                ArrayList<String> researcherNames = new ArrayList<>();
-                for (int j = 1; j < trialResearch.length(); j++) {
-                    JSONObject researcherName = trialResearch.getJSONObject(j);
-                    researcherNames.add(researcherName.getString(DataFormatting.TRIAL_RESEARCHER_NAME));
-                }
-                System.out.println(researcherNames);*/
-
-                //Bitmap imageResource = new HTTPRequest().new GetImageResource().execute(Globals.GET_TRIAL_IMAGE);
-
-                trials.add(new Trial(Attributes.getType(trialType), null, null, null, //researcherNames.get(0), researcherNames, trialResearchGroupId,
-                        trialName, trialDesc, trialId, trialOrganisation, trialSpecialisation, null, //imageResource
-                        Long.parseLong(trialStartTime), Long.parseLong(trialEndTime),
-                        Integer.parseInt(trialTimePeriodFreq), Integer.parseInt(trialNotificationFreq), prerequisites));
+                trials.add(new Trial(title, briefDesc, detailedDesc, Attributes.getType(type),
+                        institute, condition, Long.parseLong(dateCreated),
+                        0,//dateStarted == null ? 0 : Long.parseLong(dateStarted),
+                        0,//dateEnded == null ? 0 : Long.parseLong(dateEnded),
+                        Integer.parseInt(candidateQuota),
+                        Attributes.getTrialState(state), researcherId, id));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -150,33 +121,21 @@ public class JSON {
         return trials;
     }
 
-    public static JSONArray parseList(ArrayList<Object> list) {
-        ArrayList<JSONObject> response = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray();
+    public static JSONObject parseList(ArrayList<Object> list) {
+        JSONObject response = new JSONObject();
         try {
-            JSONObject type = new JSONObject();
-            type.put("qtype", list.get(0));
-            response.add(type);
-
-            JSONObject index = new JSONObject();
-            index.put("qindex", list.get(1));
-            response.add(index);
+            response.put("questiontype", list.get(0));
+            response.put("questionindex", list.get(1));
 
             for (int i = 2; i < list.size(); i++) {
                 ArrayList<String> answers = (ArrayList<String>) list.get(i);
                 for (int j = 0; j < answers.size(); j++) {
-                    JSONObject answerObject = new JSONObject();
-                    answerObject.put("response" + j, answers.get(j));
-                    response.add(answerObject);
+                    response.put("answer" + j, answers.get(j));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            for (JSONObject jsonObject : response) {
-                jsonArray.put(jsonObject);
-            }
         }
-        return jsonArray;
+        return response;
     }
 }

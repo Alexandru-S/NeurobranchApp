@@ -23,12 +23,9 @@ import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 @SuppressLint("ValidFragment")
 public class TrialInfo extends android.support.v4.app.DialogFragment {
 
-    TextView tvDescription, tvResearcher, tvStartTime, tvEndTime;
-    ImageView ivImage;
-
+    TextView tvDescription, tvResearcher, tvStartTime, tvInstitute;
     SetTrialInfoListener setTrialInfoListener;
-
-    String title, desc, researcher, organisation;
+    String title, desc, researcher, institute;
     long startTime, endTime;
 
 
@@ -42,13 +39,12 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public TrialInfo(String title, String desc, String researcher, String organisation, long startTime, long endTime) {
+    public TrialInfo(String title, String desc, String researcher, String institute, long startTime) {
         this.title = title;
         this.desc = desc;
         this.researcher = researcher;
-        this.organisation = organisation;
+        this.institute = institute;
         this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     @NonNull
@@ -75,50 +71,52 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
                         ViewGroup.LayoutParams.MATCH_PARENT);
         propertiesEntry.setLayoutParams(propertiesEntryParams);
 
+        tvInstitute = new TextView(this.getActivity());
+        RelativeLayout.LayoutParams instituteParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        instituteParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+        instituteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        instituteParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 8),
+                Globals.getDp(getActivity(), 0), Globals.getDp(getActivity(), 0));
+        tvInstitute.setLayoutParams(instituteParams);
+        tvInstitute.setText(getInstitute());
+        tvInstitute.setId(View.generateViewId());
+
         tvResearcher = new TextView(this.getActivity());
         RelativeLayout.LayoutParams researcherParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        researcherParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
-        researcherParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        researcherParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 16),
+        researcherParams.addRule(RelativeLayout.BELOW, tvInstitute.getId());
+        researcherParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 0),
                 Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 0));
         tvResearcher.setLayoutParams(researcherParams);
-        tvResearcher.setText(getResearcher());
+        String hostedBy = "Hosted by: " + getResearcher();
+        tvResearcher.setText(hostedBy);
         tvResearcher.setId(View.generateViewId());
 
         tvStartTime = new TextView(this.getActivity());
         RelativeLayout.LayoutParams startTimeParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         startTimeParams.addRule(RelativeLayout.BELOW, tvResearcher.getId());
-        startTimeParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 8),
+        startTimeParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 0),
                 Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 0));
         tvStartTime.setLayoutParams(startTimeParams);
-        tvStartTime.setText("Start time: " + Formatting.formatTime(getStartTime()));
+        String startTime = "Created: " + Formatting.formatTime(getStartTime());
+        tvStartTime.setText(startTime);
         tvStartTime.setId(View.generateViewId());
-
-        tvEndTime = new TextView(this.getActivity());
-        RelativeLayout.LayoutParams endTimeParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        endTimeParams.addRule(RelativeLayout.BELOW, tvStartTime.getId());
-        endTimeParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 0),
-                Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 0));
-        tvEndTime.setLayoutParams(endTimeParams);
-        tvEndTime.setText("End time: " + Formatting.formatTime(getEndTime()));
-        tvEndTime.setId(View.generateViewId());
 
         tvDescription = new TextView(this.getActivity());
         RelativeLayout.LayoutParams descParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        descParams.addRule(RelativeLayout.BELOW, tvEndTime.getId());
+        descParams.addRule(RelativeLayout.BELOW, tvStartTime.getId());
         descParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 16),
                 Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 16));
         tvDescription.setLayoutParams(descParams);
         tvDescription.setText(getDesc());
         tvDescription.setId(View.generateViewId());
 
+        propertiesEntry.addView(tvInstitute);
         propertiesEntry.addView(tvResearcher);
         propertiesEntry.addView(tvStartTime);
-        propertiesEntry.addView(tvEndTime);
         propertiesEntry.addView(tvDescription);
 
         builder.setView(propertiesEntry);
@@ -130,47 +128,19 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDesc() {
         return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     public String getResearcher() {
         return researcher;
     }
 
-    public void setResearcher(String researcher) {
-        this.researcher = researcher;
-    }
-
-    public String getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(String organisation) {
-        this.organisation = organisation;
+    public String getInstitute() {
+        return institute;
     }
 
     public long getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
     }
 }
