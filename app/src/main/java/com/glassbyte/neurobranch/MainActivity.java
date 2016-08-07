@@ -1,7 +1,10 @@
 package com.glassbyte.neurobranch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,18 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
 import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
-import com.glassbyte.neurobranch.Portal.MainSections.ProfileFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
-import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
-import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Settings.Settings;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
     DrawerLayout drawer;
+    TextView navEmailHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +96,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        ArrayList<Object> properties = new ArrayList<>();
-        try {
-            if (Connectivity.isNetworkConnected(this)) {
-                properties = Epoch.populateEpoch(properties, this);
-            }
-        } finally {
-            if (id == R.id.action_settings) {
-                startActivity(new Intent(this, Settings.class));
-            } else if (id == R.id.mock_epoch) {
-                if(!properties.isEmpty())
-                    startActivity(new Intent(this, EpochHolder.class));
-            }
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, Settings.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,14 +108,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.home){
+        if (id == R.id.home) {
             Fragments.setFragment(getSupportFragmentManager(), new DefaultPortalFragment());
         } else if (id == R.id.my_trials) {
             Fragments.setFragment(getSupportFragmentManager(), new MyTrialsFragment());
         } else if (id == R.id.trials_available) {
             Fragments.setFragment(getSupportFragmentManager(), new TrialsAvailableFragment());
-        } else if (id == R.id.profile) {
-            Fragments.setFragment(getSupportFragmentManager(), new ProfileFragment());
+        } else if (id == R.id.signout) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            sharedPreferences.edit().putString("id", "").apply();
+            sharedPreferences.edit().putString("email", "").apply();
+            startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+            MainActivity.this.finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -289,7 +289,7 @@ public class HTTPRequest {
                 JSONObject jsonObject = new JSONObject(s);
                 System.out.println(jsonObject);
                 if(jsonObject.get("isMatch").equals(true)) {
-                    loginCallback.onLoggedIn();
+                    loginCallback.onLoggedIn(jsonObject.get("id").toString());
                 } else {
                     loginCallback.onLoginFailed();
                 }

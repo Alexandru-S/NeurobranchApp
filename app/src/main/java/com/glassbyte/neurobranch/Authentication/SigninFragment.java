@@ -1,7 +1,9 @@
 package com.glassbyte.neurobranch.Authentication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,6 +32,8 @@ public class SigninFragment extends Fragment {
     EditText et_email, et_password;
     String email, password;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +60,10 @@ public class SigninFragment extends Fragment {
 
                 LoginCallback loginCallback = new LoginCallback() {
                     @Override
-                    public void onLoggedIn() {
+                    public void onLoggedIn(String id) {
+                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        sharedPreferences.edit().putString("id", id).apply();
+
                         startActivity(new Intent(getContext(), MainActivity.class));
                         getActivity().finish();
                     }
@@ -67,12 +74,7 @@ public class SigninFragment extends Fragment {
                     }
                 };
 
-                HTTPRequest.CandidateLogin candidateLogin = new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback);
-                try {
-                    candidateLogin.execute().get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
             }
         });
 

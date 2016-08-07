@@ -15,9 +15,9 @@
             android:icon="@drawable/cloud"
             android:title="Trials Available" />
         <item
-            android:id="@+id/profile"
+            android:id="@+id/signout"
             android:icon="@drawable/identity"
-            android:title="Profile" />
+            android:title="Sign Out" />
     </group>
 
 </menu>

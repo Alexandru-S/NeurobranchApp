@@ -1,10 +1,13 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
@@ -14,12 +17,14 @@ import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Created by ed on 10/06/16.
  */
 public class DefaultPortalFragment extends android.support.v4.app.Fragment {
     View view;
+    TextView tv_welcomeMessage;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -29,6 +34,10 @@ public class DefaultPortalFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.portal_default, container, false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        tv_welcomeMessage = (TextView) view.findViewById(R.id.welcomemessage);
+        tv_welcomeMessage.setText("User id: " + sharedPreferences.getString("id", ""));
 
         return view;
     }

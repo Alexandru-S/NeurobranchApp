@@ -7,8 +7,4 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/mock_epoch"
-        android:title="Mock Epoch"/>
-
 </menu>
