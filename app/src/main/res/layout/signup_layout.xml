@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal500"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,6 +11,15 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:padding="32dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,64 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="2"
-                    android:adjustViewBounds="true"
-                    android:background="@color/grey300"
-                    android:paddingBottom="10dp"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingTop="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/identity_login_field" />
-
-                <EditText
-                    android:id="@+id/et_forename_signup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/grey200"
-                    android:hint="Forename:"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/grey400" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="2"
-                    android:adjustViewBounds="true"
-                    android:background="@color/grey300"
-                    android:paddingBottom="10dp"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingTop="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/identity_login_field" />
-
-                <EditText
-                    android:id="@+id/et_surname_signup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/grey200"
-                    android:hint="Surname:"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/grey400" />
             </LinearLayout>
 
             <LinearLayout
@@ -214,22 +171,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="@color/cyan700"
+                android:background="@color/teal500"
                 android:text="SIGN UP"
                 android:textColor="@android:color/white" />
 
             <RelativeLayout
                 android:id="@+id/auth_options"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/tv_sign_up_disclaimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="By signing up to our services, you agree to abide by our terms and conditions..."
-                    android:textColor="@android:color/white" />
+                    android:text="By signing up to our services, you agree to the terms of use, privacy policy, &amp; cookie policies."
+                    android:textColor="@color/teal500" />
+
+                <View
+                    android:layout_below="@id/tv_sign_up_disclaimer"
+                    android:id="@+id/divisor_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="8dip"/>
+
+                <TextView
+                    android:layout_below="@id/divisor_signup"
+                    android:id="@+id/tv_sign_up_redirect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Already have a Neurobranch account? Click here."
+                    android:textColor="@color/teal500" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

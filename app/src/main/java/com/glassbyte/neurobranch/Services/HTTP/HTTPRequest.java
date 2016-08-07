@@ -11,6 +11,7 @@ import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
+import com.glassbyte.neurobranch.Services.Interfaces.LoginCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,97 +49,6 @@ public class HTTPRequest {
     }
 
     //debug force post trial
-    public static class ForcePushTrial extends AsyncTask<String, Void, String> {
-        HttpURLConnection httpURLConnection = null;
-        BufferedReader bufferedReader = null;
-
-        Response response;
-
-        public ForcePushTrial(Response response) {
-            this.response = response;
-        }
-
-        public ForcePushTrial(String resString) {
-            try {
-                response = new Response(new JSONObject(resString), Attributes.ResponseType.post_trial);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                URL url = new URL(Globals.POST_TRIAL_RESPONSE);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty("Content-Type", "application-json");
-                httpURLConnection.setRequestProperty("Accept", "application/json");
-
-                //headers
-                Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
-                writer.write(response.getQuestionResponse().toString());
-                writer.close();
-
-                //response
-                InputStream inputStream = httpURLConnection.getInputStream();
-                StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
-
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String inputLine;
-                while ((inputLine = bufferedReader.readLine()) != null) {
-                    buffer.append(inputLine).append("\n");
-                    if (buffer.length() == 0) {
-                        return null;
-                    }
-                }
-
-                return buffer.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (httpURLConnection != null) {
-                        httpURLConnection.disconnect();
-                    }
-                    if (bufferedReader != null) {
-                        bufferedReader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-    }
-
-    public static class GetImageResource extends AsyncTask<String, Void, Drawable> {
-
-        @Override
-        protected Drawable doInBackground(String... strings) {
-            try {
-                InputStream is = (InputStream) new URL(strings[0]).getContent();
-                return Drawable.createFromStream(is, null);
-            } catch (Exception e) {
-                return null;
-            }
-        }
-    }
-
     public static class JoinTrial extends AsyncTask<String, Void, String> {
         String userID;
         HttpURLConnection httpURLConnection = null;
@@ -298,7 +208,21 @@ public class HTTPRequest {
         }
     }
 
-    public class AreNewQsAvailable extends AsyncTask<String, Void, Boolean> {
+    public static class CandidateLogin extends AsyncTask<String, Void, String> {
+
+        JSONObject loginDetails;
+        LoginCallback loginCallback;
+
+        public CandidateLogin(String email, String password, LoginCallback loginCallback) {
+            try {
+                loginDetails = new JSONObject();
+                loginDetails.put("email", email);
+                loginDetails.put("password", password);
+                this.loginCallback = loginCallback;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected void onPreExecute() {
@@ -306,17 +230,90 @@ public class HTTPRequest {
         }
 
         @Override
-        protected Boolean doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+                URL url = new URL(Globals.CANDIDATE_LOGIN_ADDRESS);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+                httpURLConnection.setRequestProperty("Accept", "application/json");
+                httpURLConnection.connect();
+
+                //body
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                wr.write(loginDetails.toString());
+                wr.flush();
+                wr.close();
+
+                //response
+                InputStream inputStream = httpURLConnection.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    return null;
+                }
+
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String inputLine;
+                while ((inputLine = bufferedReader.readLine()) != null) {
+                    buffer.append(inputLine).append("\n");
+                    if (buffer.length() == 0) {
+                        return null;
+                    }
+                }
+
+                return buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (httpURLConnection != null) {
+                        httpURLConnection.disconnect();
+                    }
+                    if (bufferedReader != null) {
+                        bufferedReader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
+        protected void onPostExecute(String s) {
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                System.out.println(jsonObject);
+                if(jsonObject.get("isMatch").equals(true)) {
+                    loginCallback.onLoggedIn();
+                } else {
+                    loginCallback.onLoginFailed();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                super.onPostExecute(s);
+            }
         }
     }
 
-    public class UserLogin extends AsyncTask<String, Void, JSONObject> {
+    public static class CreateCandidateAccount extends AsyncTask<String, Void, String> {
+
+        JSONObject candidateSignUpDetails;
+
+        public CreateCandidateAccount(String email, String password){
+            try {
+                candidateSignUpDetails = new JSONObject();
+                candidateSignUpDetails.put("email", email);
+                candidateSignUpDetails.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         protected void onPreExecute() {
@@ -324,13 +321,62 @@ public class HTTPRequest {
         }
 
         @Override
-        protected JSONObject doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+                URL url = new URL(Globals.CANDIDATE_SIGNUP_ADDRESS);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+                httpURLConnection.setRequestProperty("Accept", "application/json");
+                httpURLConnection.connect();
+
+                //body
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                wr.write(candidateSignUpDetails.toString());
+                wr.flush();
+                wr.close();
+
+                //response
+                InputStream inputStream = httpURLConnection.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    return null;
+                }
+
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String inputLine;
+                while ((inputLine = bufferedReader.readLine()) != null) {
+                    buffer.append(inputLine).append("\n");
+                    if (buffer.length() == 0) {
+                        return null;
+                    }
+                }
+
+                return buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (httpURLConnection != null) {
+                        httpURLConnection.disconnect();
+                    }
+                    if (bufferedReader != null) {
+                        bufferedReader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 

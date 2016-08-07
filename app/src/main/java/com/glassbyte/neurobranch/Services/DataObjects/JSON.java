@@ -51,13 +51,6 @@ public class JSON {
     }
 
     public static ArrayList<Object> parseQuestions(JSONArray receivedQuestions) {
-        //0: string -> group #
-        //1: arrayList -> q, type, answer, answer, answer...answer
-        //2: arrayList -> q, type
-        //...
-        //n
-        System.out.println(receivedQuestions);
-
         ArrayList<Object> questionGroup = new ArrayList<>();
         try {
             for (int i = 0; i < receivedQuestions.length(); i++) {
@@ -88,8 +81,6 @@ public class JSON {
 
     public static ArrayList<Trial> parseTrialJSON(JSONArray retrievedTrials) {
         ArrayList<Trial> trials = new ArrayList<>();
-        Drawable cardIcon = null; //ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null);
-
         try {
             System.out.println(retrievedTrials);
 
@@ -111,10 +102,8 @@ public class JSON {
                 String id = trial.getString(JSON.DataFormatting.TRIAL_ID);
 
                 trials.add(new Trial(title, briefDesc, detailedDesc, Attributes.getType(type),
-                        institute, condition, Long.parseLong(dateCreated),
-                        0,//dateStarted == null ? 0 : Long.parseLong(dateStarted),
-                        0,//dateEnded == null ? 0 : Long.parseLong(dateEnded),
-                        Integer.parseInt(candidateQuota),
+                        institute, condition, Long.parseLong(dateCreated), Long.parseLong(dateStarted),
+                        Long.parseLong(dateEnded), Integer.parseInt(candidateQuota),
                         Attributes.getTrialState(state), researcherId, id));
             }
         } catch (JSONException e) {

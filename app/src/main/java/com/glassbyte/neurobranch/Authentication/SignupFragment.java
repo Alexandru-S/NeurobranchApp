@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 
 /**
  * Created by ed on 10/06/16.
@@ -18,8 +20,9 @@ import com.glassbyte.neurobranch.R;
 public class SignupFragment extends Fragment {
     View view;
     Button btn_signup;
-    EditText et_forename, et_surname, et_email, et_verify_email, et_password, et_verify_password;
-    private String forename, surname, email, verifyEmail, password, verifyPassword;
+    EditText et_email, et_verify_email, et_password, et_verify_password;
+    private String email, verifyEmail, password, verifyPassword;
+    TextView tv_redirectSignin;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,18 +36,37 @@ public class SignupFragment extends Fragment {
         view = inflater.inflate(R.layout.signup_layout, container, false);
 
         btn_signup = (Button) view.findViewById(R.id.btn_signup_signup);
-        et_forename = (EditText) view.findViewById(R.id.et_forename_signup);
-        et_surname = (EditText) view.findViewById(R.id.et_surname_signup);
         et_email = (EditText) view.findViewById(R.id.et_email_signup);
         et_verify_email = (EditText) view.findViewById(R.id.et_email_signup_verify);
         et_password = (EditText) view.findViewById(R.id.et_password_signup);
         et_verify_password = (EditText) view.findViewById(R.id.et_password_signup_verify);
+        tv_redirectSignin = (TextView) view.findViewById(R.id.tv_sign_up_redirect);
+        tv_redirectSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
+            }
+        });
 
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
-                Toast.makeText(getContext(), "Thanks for making an account!", Toast.LENGTH_LONG).show();
+                setEmail(et_email.getText().toString());
+                setVerifyEmail(et_verify_email.getText().toString());
+                setPassword(et_password.getText().toString());
+                setVerifyPassword(et_verify_password.getText().toString());
+
+                if(!isEmailMatch()) {
+                    Toast.makeText(getContext(), "Email addresses do not match!", Toast.LENGTH_SHORT).show();
+                }
+                if(!isPasswordMatch()) {
+                    Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
+                if(isEmailMatch() && isPasswordMatch()) {
+                    new HTTPRequest.CreateCandidateAccount(getEmail(), getPassword()).execute();
+                    AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
+                    Toast.makeText(getContext(), "Please verify your account for enabling all functionality.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -52,27 +74,11 @@ public class SignupFragment extends Fragment {
     }
 
     public boolean isEmailMatch() {
-        return et_email.getText().equals(et_verify_email.getText());
+        return getEmail().equals(getVerifyEmail());
     }
 
     public boolean isPasswordMatch() {
-        return et_password.getText().equals(et_verify_password.getText());
-    }
-
-    public String getForename() {
-        return forename;
-    }
-
-    public void setForename(String forename) {
-        this.forename = forename;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+        return getPassword().equals(getVerifyPassword());
     }
 
     public String getEmail() {

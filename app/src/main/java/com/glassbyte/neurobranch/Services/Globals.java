@@ -21,11 +21,10 @@ public class Globals {
 
     //candidate actions
     public static final String CANDIDATE_SIGNUP_ADDRESS = HOST_ADDRESS + "/api/create-candidate";
-    public static String CANDIDATE_LOGIN_ADDRESS(String email, String password) {
-        return HOST_ADDRESS + "/api/candidate-login/" + email + "/" + password;
-    }
+    public static final String CANDIDATE_LOGIN_ADDRESS = HOST_ADDRESS + "/api/candidate-login";
+
     public static final String RETRIEVE_TRIALS_ADDRESS = HOST_ADDRESS + "/api/get-trials";
-    public static String POST_RESPONSE_ADDRESS = HOST_ADDRESS + "/api/create-response/";
+    public static final String POST_RESPONSE_ADDRESS = HOST_ADDRESS + "/api/create-response/";
 
     //deprecated static hosting
     public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";

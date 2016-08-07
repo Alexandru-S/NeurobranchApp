@@ -8,10 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.glassbyte.neurobranch.MainActivity;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Interfaces.LoginCallback;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ed on 10/06/16.
@@ -20,6 +26,9 @@ public class SigninFragment extends Fragment {
     View view;
     Button btn_login;
     TextView tv_signup, tv_lost_password;
+
+    EditText et_email, et_password;
+    String email, password;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,11 +45,34 @@ public class SigninFragment extends Fragment {
         tv_signup = (TextView) view.findViewById(R.id.tv_sign_up);
         tv_lost_password = (TextView) view.findViewById(R.id.tv_lost_password);
 
+        et_email = (EditText) view.findViewById(R.id.et_email);
+        et_password = (EditText) view.findViewById(R.id.et_password);
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MainActivity.class));
-                getActivity().finish();
+                setEmail(et_email.getText().toString());
+                setPassword(et_password.getText().toString());
+
+                LoginCallback loginCallback = new LoginCallback() {
+                    @Override
+                    public void onLoggedIn() {
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onLoginFailed() {
+                        Toast.makeText(getContext(), "Incorrect login details provided!", Toast.LENGTH_SHORT).show();
+                    }
+                };
+
+                HTTPRequest.CandidateLogin candidateLogin = new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback);
+                try {
+                    candidateLogin.execute().get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -59,5 +91,21 @@ public class SigninFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

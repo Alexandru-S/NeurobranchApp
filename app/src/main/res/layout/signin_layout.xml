@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal500"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/cyan700"
+            android:background="@color/teal500"
             android:text="LOGIN"
             android:textColor="@android:color/white" />
 
@@ -107,7 +107,7 @@
                 android:layout_alignParentStart="true"
                 android:gravity="center"
                 android:text="Sign Up"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/teal500" />
 
             <TextView
                 android:id="@+id/tv_lost_password"
@@ -116,7 +116,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="Lost Password?"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/teal500" />
         </RelativeLayout>
 
     </LinearLayout>
