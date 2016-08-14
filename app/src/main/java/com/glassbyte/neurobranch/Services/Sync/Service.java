@@ -19,7 +19,6 @@ import java.util.Calendar;
  */
 public class Service {
     public static class SyncService extends IntentService {
-
         public SyncService() {
             super("SyncService");
         }
@@ -27,7 +26,7 @@ public class Service {
         @Override
         protected void onHandleIntent(Intent intent) {
             //poll user account on hour elapse
-            WebServer.synchronise();
+            WebServer.synchronise(getApplicationContext());
         }
 
         public static boolean isSyncRunning(Class<?> serviceClass, Activity activity) {

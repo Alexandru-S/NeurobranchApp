@@ -71,6 +71,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+
+        <!-- boot alarms -->
+        <receiver android:name=".Services.Sync.Service$BootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".Services.Sync.Service$AlarmReceiver"/>
+        <service android:name=".Services.Sync.Service$SyncService"/>
     </application>
 
 </manifest>

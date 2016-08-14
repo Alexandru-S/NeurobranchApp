@@ -11,14 +11,22 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
+import com.glassbyte.neurobranch.Services.Sync.Service;
+import com.glassbyte.neurobranch.Services.Sync.WebServer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by ed on 10/06/16.
  */
-public class Settings extends PreferenceActivity {
+public class Settings extends PreferenceActivity implements GetDetailsCallback {
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     PreferenceScreen preferenceScreen;
+
+    Preference idPreference, emailPreference, verifiedPreference;
 
     @SuppressLint("ValidFragment")
     @Override
@@ -30,70 +38,10 @@ public class Settings extends PreferenceActivity {
                 super.onCreate(savedInstanceState);
                 setTheme(R.style.AppTheme);
 
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-                preferenceScreen = getPreferenceManager().createPreferenceScreen(this.getActivity());
+                System.out.println(WebServer.PollAccount.getCandidateId(Settings.this));
 
-                //headings for each category of user preference
-                PreferenceCategory profileSection, notificationSection, updateSection, otherSection;
-
-                profileSection = new PreferenceCategory(this.getActivity());
-                profileSection.setTitle("Profile Settings");
-                profileSection.setKey("profile_section");
-
-                notificationSection = new PreferenceCategory(this.getActivity());
-                notificationSection.setTitle("Notification Settings");
-                notificationSection.setKey("profile_section");
-
-                updateSection = new PreferenceCategory(this.getActivity());
-                updateSection.setTitle("Sync/Update Settings");
-                updateSection.setKey("profile_section");
-
-                otherSection = new PreferenceCategory(this.getActivity());
-                otherSection.setTitle("Miscellaneous Settings");
-                otherSection.setKey("profile_section");
-
-                //preferences for each category
-                final Preference name = new Preference(this.getActivity());
-                name.setTitle("Name");
-                name.setSummary("Name here");
-                name.setKey("name_pref");
-
-                Preference changeUsername = new Preference(this.getActivity());
-                changeUsername.setTitle("Username");
-                changeUsername.setSummary("Username here");
-
-                Preference changeDOB = new Preference(this.getActivity());
-                changeDOB.setTitle("Date of Birth");
-                changeDOB.setSummary("DOB here");
-
-                Preference changePhoneNumber = new Preference(this.getActivity());
-                changePhoneNumber.setTitle("Phone Number");
-                changePhoneNumber.setSummary("Phone number here");
-
-                /*
-                    allowing the user to decide how frequent that notifications should notify the
-                    user to complete a given trial, allowing the user to choose how bombarded they
-                    want to be depending on their preferences
-                 */
-                Preference notificationFrequency = new Preference(this.getActivity());
-                notificationFrequency.setTitle("Notification Frequency");
-                notificationFrequency.setSummary("Summary");
-
-                Preference updateFrequency = new Preference(this.getActivity());
-                updateFrequency.setTitle("Content Update Frequency");
-                updateFrequency.setSummary("Summary");
-
-                preferenceScreen.addPreference(profileSection);
-                preferenceScreen.addPreference(notificationSection);
-                preferenceScreen.addPreference(updateSection);
-                preferenceScreen.addPreference(otherSection);
-
-                profileSection.addPreference(name);
-                profileSection.addPreference(changeUsername);
-                profileSection.addPreference(changeDOB);
-                profileSection.addPreference(changePhoneNumber);
-
-                setPreferenceScreen(preferenceScreen);
+                new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(Settings.this),
+                        Settings.this).execute();
             }
 
             @Override
@@ -101,5 +49,55 @@ public class Settings extends PreferenceActivity {
                 super.onActivityCreated(savedInstanceState);
             }
         }).commit();
+    }
+
+    @Override
+    public void onRetrieved(JSONObject jsonObject) {
+        try {
+            String id = jsonObject.getString("_id");
+            String email = jsonObject.getString("email");
+            String isVerified = jsonObject.getString("isverified");
+            if(isVerified.equals("true"))
+                isVerified = "Verified";
+            else isVerified = "Unverified";
+
+            createSettings(id, email, isVerified);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createSettings(String id, String email, String isVerified) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+        preferenceScreen = getPreferenceManager().createPreferenceScreen(Settings.this);
+
+        //headings for each category of user preference
+        PreferenceCategory profileSection;
+
+        profileSection = new PreferenceCategory(Settings.this);
+        profileSection.setTitle("Profile Details");
+        profileSection.setKey("profile_section");
+
+        //preferences for each category
+        idPreference = new Preference(Settings.this);
+        idPreference.setTitle("ID");
+        idPreference.setSummary(id);
+
+        emailPreference = new Preference(Settings.this);
+        emailPreference.setTitle("Email");
+        emailPreference.setSummary(email);
+        emailPreference.setKey("email_pref");
+
+        verifiedPreference = new Preference(Settings.this);
+        verifiedPreference.setTitle("Verification Status");
+        verifiedPreference.setSummary(isVerified);
+
+        preferenceScreen.addPreference(profileSection);
+
+        profileSection.addPreference(idPreference);
+        profileSection.addPreference(emailPreference);
+        profileSection.addPreference(verifiedPreference);
+
+        setPreferenceScreen(preferenceScreen);
     }
 }

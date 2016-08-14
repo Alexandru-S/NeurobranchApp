@@ -1,9 +1,9 @@
 package com.glassbyte.neurobranch;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,13 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
 import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
+import com.glassbyte.neurobranch.Services.Sync.Service;
 import com.glassbyte.neurobranch.Settings.Settings;
 
 public class MainActivity extends AppCompatActivity
@@ -30,8 +30,19 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     DrawerLayout drawer;
 
+    Service.AlarmReceiver alarmReceiver = new Service().new AlarmReceiver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean alarmUp = (PendingIntent.getBroadcast(this, 0,
+                new Intent(this, Service.SyncService.class),
+                PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (alarmUp)
+            System.out.println("Synchronisation alarm is already active");
+        else
+            alarmReceiver.setAlarm(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -116,7 +127,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.signout) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
             sharedPreferences.edit().putString("id", "").apply();
-            sharedPreferences.edit().putString("email", "").apply();
             startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
             MainActivity.this.finish();
         }

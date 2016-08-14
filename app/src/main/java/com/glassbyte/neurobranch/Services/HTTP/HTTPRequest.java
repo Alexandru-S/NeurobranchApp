@@ -1,17 +1,15 @@
 package com.glassbyte.neurobranch.Services.HTTP;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.provider.Settings;
 
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
 import com.glassbyte.neurobranch.Services.Globals;
-import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
+import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.LoginCallback;
+import com.glassbyte.neurobranch.Services.Sync.WebServer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,17 +17,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -205,6 +199,63 @@ public class HTTPRequest {
 
         public String getCandidateId() {
             return candidateId;
+        }
+    }
+
+    public static class GetCandidateDetails extends AsyncTask<JSONObject, Void, JSONObject> {
+        GetDetailsCallback detailsCallback;
+        String candidateId;
+
+        public GetCandidateDetails(String candidateId, GetDetailsCallback detailsCallback) {
+            this.candidateId = candidateId;
+            this.detailsCallback = detailsCallback;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected JSONObject doInBackground(JSONObject... jsonObjects) {
+            HttpURLConnection connection;
+            try {
+                URL url = new URL(Globals.CANDIDATE_GET_INFO(candidateId));
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Content-length", "0");
+                connection.setUseCaches(false);
+                connection.setAllowUserInteraction(false);
+                connection.connect();
+
+                int status = connection.getResponseCode();
+                Writer writer = new StringWriter();
+
+                switch (status) {
+                    case 200:
+                    case 201:
+                        char[] buffer = new char[1024];
+                        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream()));
+                        int n;
+                        while ((n = br.read(buffer)) != -1) {
+                            writer.write(buffer, 0, n);
+                        }
+                        br.close();
+                        System.out.println(writer.toString());
+                        return new JSONObject(writer.toString());
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject s) {
+            detailsCallback.onRetrieved(s);
+            super.onPostExecute(s);
         }
     }
 

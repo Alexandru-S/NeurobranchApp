@@ -22,6 +22,9 @@ public class Globals {
     //candidate actions
     public static final String CANDIDATE_SIGNUP_ADDRESS = HOST_ADDRESS + "/api/create-candidate";
     public static final String CANDIDATE_LOGIN_ADDRESS = HOST_ADDRESS + "/api/candidate-login";
+    public static String CANDIDATE_GET_INFO(String candidateId) {
+        return HOST_ADDRESS + "/api/get-candidates/" + candidateId;
+    }
 
     public static final String RETRIEVE_TRIALS_ADDRESS = HOST_ADDRESS + "/api/get-trials";
     public static final String POST_RESPONSE_ADDRESS = HOST_ADDRESS + "/api/create-response/";
