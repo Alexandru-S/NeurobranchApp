@@ -74,20 +74,16 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment {
             JSONCallback jsonCallback = new JSONCallback() {
                 @Override
                 public void onLoadCompleted(JSONArray object) {
+                    System.out.println("ayyyyyy");
                     adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
                     recyclerView.setAdapter(adapter);
                 }
             };
             try {
-                HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS));
+                HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS), jsonCallback);
                 adapter = new CardAdapter(JSON.parseTrialJSON(httpRequest.execute().get()), getActivity().getSupportFragmentManager());
             } catch (InterruptedException | MalformedURLException | ExecutionException e1) {
                 e1.printStackTrace();
-                try {
-                    new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS), jsonCallback).execute();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
             }
         } else {
             ArrayList<Trial> trials = new ArrayList<>();

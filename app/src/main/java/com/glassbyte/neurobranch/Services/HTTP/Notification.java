@@ -32,16 +32,16 @@ public class Notification {
             notifyUser(context, bundle);
         }
 
-        public static void notifyUser(Context context, Bundle dateBundle) {
+        public static void notifyUser(Context context, Bundle dataBundle) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                             R.drawable.web_hi_res_512))
                     .setSmallIcon(R.drawable.cloud)
                     .setContentTitle("New questions can be answered")
-                    .setContentText(dateBundle.getString("TRIAL_ID"));
+                    .setContentText(dataBundle.getString("TRIAL_ID"));
 
             Intent resultIntent = new Intent(context, EpochHolder.class);
-            resultIntent.putExtras(dateBundle);
+            resultIntent.putExtras(dataBundle);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
             taskStackBuilder.addParentStack(EpochHolder.class).addNextIntent(resultIntent);
 
