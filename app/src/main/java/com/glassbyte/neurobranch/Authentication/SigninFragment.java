@@ -73,8 +73,9 @@ public class SigninFragment extends Fragment {
                         Toast.makeText(getContext(), "Incorrect login details provided!", Toast.LENGTH_SHORT).show();
                     }
                 };
-
-                new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
+                System.out.println(getEmail() + " " + getPassword());
+                if(getEmail() != null || getPassword() != null)
+                    new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
             }
         });
 

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
     DrawerLayout drawer;
-    TextView navEmailHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

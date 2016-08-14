@@ -1,20 +1,17 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
+import com.glassbyte.neurobranch.Services.HTTP.Notification;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 
 import java.util.ArrayList;
@@ -46,13 +43,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         final Trial trial = trials.get(position);
 
         holder.title.setText(trial.getTitle());
-        holder.description.setText(trial.getBriefDescription());
+        holder.description.setText(Formatting.truncateText(trial.getBriefDescription(), Formatting.MAX_DESC_SIZE));
         holder.institute.setText(trial.getInstitute());
-        holder.condition.setText(capitalise(trial.getCondition()));
+        holder.condition.setText(trial.getCondition() != null ? capitalise(trial.getCondition()) : null);
 
         final Context context = holder.title.getContext();
 
-        if(!trial.isOffline()) {
+        if (!trial.isOffline()) {
             holder.description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -87,15 +84,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                Bundle bundle = new Bundle();
-                bundle.putString("TRIAL_ID", trial.getTrialId());
-                bundle.putString("CANDIDATE_ID", "candidate" + String.valueOf(System.currentTimeMillis()));
-
-                Toast.makeText(context, "Trial accessed: " + trial.getTrialId(), Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(context, EpochHolder.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                Notification.NotificationService.notifyUserWeb(context, trial.getTrialId());
             }
         });
     }
@@ -118,7 +107,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             condition = (TextView) itemView.findViewById(R.id.trial_condition);
         }
 
-        public Context getContext(){
+        public Context getContext() {
             return context;
         }
     }

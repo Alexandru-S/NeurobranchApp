@@ -1,7 +1,9 @@
 package com.glassbyte.neurobranch.Portal.QuestionPrefabs;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.glassbyte.neurobranch.MainActivity;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
@@ -44,9 +47,8 @@ public class EpochHolder extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle details = getIntent().getExtras();
-
         setTrialId(details.getString("TRIAL_ID"));
-        setCandidateId(details.getString("CANDIDATE_ID"));
+        Toast.makeText(getApplicationContext(), getTrialId(), Toast.LENGTH_SHORT).show();
 
         try {
             properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this,
@@ -125,7 +127,9 @@ public class EpochHolder extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     for(Fragment fragment : fragments) {
                                         Response response = new Response(Response.generateResponse(
-                                                "*questionid", getCandidateId(), fragment),
+                                                getTrialId(),
+                                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("id", ""),
+                                                fragment),
                                                 Attributes.ResponseType.trial_response);
                                         new HTTPRequest.PostTrialResponse(response).execute();
                                     }
@@ -181,6 +185,7 @@ public class EpochHolder extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             EpochHolder.this.finish();
+                            startActivity(new Intent(EpochHolder.this, MainActivity.class));
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
