@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by ed on 10/06/16.
  */
-public class MyTrialsFragment extends android.support.v4.app.Fragment {
+public class MyTrialsFragment extends android.support.v4.app.Fragment implements JSONCallback {
     View view;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -71,26 +71,30 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment {
 
     private void loadTrials() {
         if(Connectivity.isNetworkConnected(getActivity())) {
-            JSONCallback jsonCallback = new JSONCallback() {
-                @Override
-                public void onLoadCompleted(JSONArray object) {
-                    System.out.println("ayyyyyy");
-                    adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
-                    recyclerView.setAdapter(adapter);
-                }
-            };
             try {
-                HTTPRequest.ReceiveJSON httpRequest = new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS), jsonCallback);
-                adapter = new CardAdapter(JSON.parseTrialJSON(httpRequest.execute().get()), getActivity().getSupportFragmentManager());
-            } catch (InterruptedException | MalformedURLException | ExecutionException e1) {
-                e1.printStackTrace();
+                ArrayList<Trial> trials = new ArrayList<>();
+                trials.add(new Trial("Trial Loading...", "Please wait while trials are loaded", "You", false));
+                new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS),
+                        MyTrialsFragment.this).execute();
+                adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
         } else {
             ArrayList<Trial> trials = new ArrayList<>();
-            trials.add(new Trial("Internet unavailable", "Please enable an internet connection in order to use Neurobranch services.", "You", true));
+            trials.add(new Trial("Internet unavailable",
+                    "Please enable an internet connection in order to use Neurobranch services.",
+                    "You", true));
             adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
         }
 
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onLoadCompleted(JSONArray object) {
+        System.out.println("load completed?");
+        adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
     }
 }
