@@ -62,7 +62,7 @@
             android:screenOrientation="portrait"
             android:name=".Portal.QuestionPrefabs.EpochHolder"
             android:parentActivityName=".MainActivity"
-            android:label="Debug Questions"
+            android:label="Trial Responses"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

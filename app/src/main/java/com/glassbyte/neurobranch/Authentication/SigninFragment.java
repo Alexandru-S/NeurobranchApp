@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.MainActivity;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.LoginCallback;
 
 import java.util.concurrent.ExecutionException;
@@ -31,8 +33,6 @@ public class SigninFragment extends Fragment {
 
     EditText et_email, et_password;
     String email, password;
-
-    SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,38 +58,41 @@ public class SigninFragment extends Fragment {
                 setEmail(et_email.getText().toString());
                 setPassword(et_password.getText().toString());
 
-                LoginCallback loginCallback = new LoginCallback() {
-                    @Override
-                    public void onLoggedIn(String id) {
-                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        sharedPreferences.edit().putString("id", id).apply();
+                if (getEmail().isEmpty() || getPassword().isEmpty()) {
+                    Toast.makeText(getActivity(), "Please input all fields for login", Toast.LENGTH_LONG).show();
+                } else {
+                    LoginCallback loginCallback = new LoginCallback() {
+                        @Override
+                        public void onLoggedIn(String id) {
+                            Manager.getInstance().setPreference(Preferences.id, id, getActivity());
 
-                        startActivity(new Intent(getContext(), MainActivity.class));
-                        getActivity().finish();
-                    }
+                            startActivity(new Intent(getContext(), MainActivity.class));
+                            getActivity().finish();
+                        }
 
-                    @Override
-                    public void onLoginFailed() {
-                        Toast.makeText(getContext(), "Incorrect login details provided!", Toast.LENGTH_SHORT).show();
-                    }
-                };
-                System.out.println(getEmail() + " " + getPassword());
-                if(getEmail() != null || getPassword() != null)
-                    new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
+                        @Override
+                        public void onLoginFailed() {
+                            Toast.makeText(getContext(), "Incorrect login details provided!", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    System.out.println(getEmail() + " " + getPassword());
+                    if (getEmail() != null || getPassword() != null)
+                        new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
+                }
             }
         });
 
         tv_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthenticationActivity.setFragment(getFragmentManager(), new SignupFragment());
+                Manager.getInstance().setFragment(getFragmentManager(), new SignupFragment());
             }
         });
 
         tv_lost_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthenticationActivity.setFragment(getFragmentManager(), new LostPasswordFragment());
+                Manager.getInstance().setFragment(getFragmentManager(), new LostPasswordFragment());
             }
         });
 

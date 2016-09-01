@@ -51,24 +51,26 @@ public class JSON {
     }
 
     public static ArrayList<Object> parseQuestions(JSONArray receivedQuestions) {
+        System.out.println(receivedQuestions);
         ArrayList<Object> questionGroup = new ArrayList<>();
         try {
             for (int i = 0; i < receivedQuestions.length(); i++) {
                 ArrayList<String> questionSet = new ArrayList<>();
 
                 JSONObject questionElement = receivedQuestions.getJSONObject(i);
-                String questionTitle = questionElement.getString("question");
+                String questionTitle = questionElement.getString("title");
                 String type = questionElement.getString("questiontype");
 
                 questionSet.add(questionTitle);
                 questionSet.add(type);
 
-                if (questionElement.has("options")) {
-                    JSONArray answerElements = questionElement.getJSONArray("options");
+                if (questionElement.has("answers")) {
+                    JSONObject answerElements = questionElement.getJSONObject("answers");
 
                     for (int j = 0; j < answerElements.length(); j++) {
-                        JSONObject answer = answerElements.getJSONObject(j);
-                        questionSet.add(answer.getString("answer"));
+                        String answer = answerElements.get("answer" + j).toString();
+                        System.out.println(answer);
+                        questionSet.add(answer);
                     }
                 }
                 questionGroup.add(questionSet);
@@ -94,8 +96,8 @@ public class JSON {
                 String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
                 String condition = trial.getString(DataFormatting.TRIAL_CONDITION);
                 String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED);
-                String dateStarted = trial.getString(DataFormatting.TRIAL_DATE_STARTED);
-                String dateEnded = trial.getString(DataFormatting.TRIAL_DATE_ENDED);
+                String dateStarted = "0"; //trial.getString(DataFormatting.TRIAL_DATE_STARTED);
+                String dateEnded = "0"; //trial.getString(DataFormatting.TRIAL_DATE_ENDED);
                 String candidateQuota = trial.getString(DataFormatting.TRIAL_CANDIDATE_QUOTA);
                 String state = trial.getString(DataFormatting.TRIAL_STATE);
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);

@@ -51,9 +51,8 @@ public class EpochHolder extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), getTrialId(), Toast.LENGTH_SHORT).show();
 
         try {
-            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this,
-                    new URL(Globals.GET_QUESTIONS_ADDRESS), getTrialId(), getQuestionId(), getCandidateId())
-                    .execute().get());
+            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this, new URL(
+                    Globals.retrieveTrialQuestions(getTrialId())), getTrialId(), getQuestionId(), getCandidateId()).execute().get());
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
         } finally {

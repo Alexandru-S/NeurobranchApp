@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 /**
  * Created by ed on 10/06/16.
@@ -33,7 +34,7 @@ public class LostPasswordFragment extends Fragment {
         btn_reset_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
+                Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
                 Toast.makeText(getContext(), "You should receive an email soon for resetting your password",
                         Toast.LENGTH_LONG).show();
             }

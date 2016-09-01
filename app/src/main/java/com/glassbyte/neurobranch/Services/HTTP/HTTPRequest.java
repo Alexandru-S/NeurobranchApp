@@ -9,7 +9,6 @@ import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.LoginCallback;
-import com.glassbyte.neurobranch.Services.Sync.WebServer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -169,6 +168,7 @@ public class HTTPRequest {
                             writer.write(buffer, 0, n);
                         }
                         br.close();
+                        System.out.println("Ayyyyyy lmao: " + writer.toString());
                         return new JSONArray(writer.toString());
                 }
             } catch (IOException | JSONException e) {
@@ -220,7 +220,7 @@ public class HTTPRequest {
         protected JSONObject doInBackground(JSONObject... jsonObjects) {
             HttpURLConnection connection;
             try {
-                URL url = new URL(Globals.CANDIDATE_GET_INFO(candidateId));
+                URL url = new URL(Globals.getCandidateInfo(candidateId));
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Content-length", "0");

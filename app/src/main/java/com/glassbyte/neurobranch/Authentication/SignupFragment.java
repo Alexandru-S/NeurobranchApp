@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 /**
  * Created by ed on 10/06/16.
@@ -44,7 +45,7 @@ public class SignupFragment extends Fragment {
         tv_redirectSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
+                Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
             }
         });
 
@@ -64,7 +65,7 @@ public class SignupFragment extends Fragment {
                 }
                 if(isEmailMatch() && isPasswordMatch()) {
                     new HTTPRequest.CreateCandidateAccount(getEmail(), getPassword()).execute();
-                    AuthenticationActivity.setFragment(getFragmentManager(), new SigninFragment());
+                    Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
                     Toast.makeText(getContext(), "Please verify your account for enabling all functionality.", Toast.LENGTH_LONG).show();
                 }
             }

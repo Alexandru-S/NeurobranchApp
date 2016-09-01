@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.glassbyte.neurobranch.MainActivity;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 /**
  * Created by ed on 10/06/16.
@@ -26,24 +29,10 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authentication_frame);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AuthenticationActivity.this);
-        if(!sharedPreferences.getString("id", "").equals("")) {
-            startActivity(new Intent(AuthenticationActivity.this, MainActivity.class));
-        }
+        if (!Manager.getInstance().getPreference(Preferences.id, getApplicationContext()).isEmpty())
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        else Toast.makeText(getApplicationContext(), "No id attributed to user", Toast.LENGTH_LONG).show();
 
-        getSupportFragmentManager().addOnBackStackChangedListener(
-                new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-
-            }
-        });
-
-        setFragment(getSupportFragmentManager(), new SigninFragment());
-    }
-
-    public static void setFragment(FragmentManager fragmentManager, Fragment fragment) {
-        fragmentManager.beginTransaction().replace(R.id.auth_frame, fragment)
-                .addToBackStack(null).commit();
+        Manager.getInstance().setFragment(getSupportFragmentManager(), new SigninFragment());
     }
 }

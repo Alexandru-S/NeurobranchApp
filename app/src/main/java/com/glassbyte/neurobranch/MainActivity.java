@@ -19,7 +19,9 @@ import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
 import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Sync.Service;
 import com.glassbyte.neurobranch.Settings.Settings;
 
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         if (drawer != null) {
             drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
                 @Override
@@ -125,8 +128,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.trials_available) {
             Fragments.setFragment(getSupportFragmentManager(), new TrialsAvailableFragment());
         } else if (id == R.id.signout) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-            sharedPreferences.edit().putString("id", "").apply();
+            Manager.getInstance().setPreference(Preferences.id, null, MainActivity.this);
             startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
             MainActivity.this.finish();
         }
