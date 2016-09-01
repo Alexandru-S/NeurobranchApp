@@ -1,7 +1,5 @@
 package com.glassbyte.neurobranch.Services.Sync;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -26,17 +24,7 @@ public class Service {
         @Override
         protected void onHandleIntent(Intent intent) {
             //poll user account on hour elapse
-            WebServer.synchronise(getApplicationContext());
-        }
-
-        public static boolean isSyncRunning(Class<?> serviceClass, Activity activity) {
-            ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
-            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (serviceClass.getName().equals(service.service.getClassName())) {
-                    return true;
-                }
-            }
-            return false;
+            WebServer.synchronise(getApplicationContext(), "");
         }
     }
 

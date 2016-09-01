@@ -21,7 +21,7 @@ public class Response {
     JSONObject questionResponse;
 
     enum ResponseFields {
-        id, questionid, candidateid, response
+        id, trialid, questionid, candidateid, response
     }
 
     public Response(JSONObject questionResponse, Attributes.ResponseType responseType) {
@@ -37,9 +37,10 @@ public class Response {
         return questionResponse;
     }
 
-    public static JSONObject generateResponse(String questionId, String candidateId, Fragment fragment) {
+    public static JSONObject generateResponse(String trialid, String questionId, String candidateId, Fragment fragment) {
         JSONObject response = new JSONObject();
         try {
+            response.put(ResponseFields.trialid.name(), trialid);
             response.put(ResponseFields.questionid.name(), questionId);
             response.put(ResponseFields.candidateid.name(), candidateId);
         } catch (JSONException e) {

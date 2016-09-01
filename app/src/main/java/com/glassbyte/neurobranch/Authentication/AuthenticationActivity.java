@@ -31,7 +31,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         if (!Manager.getInstance().getPreference(Preferences.id, getApplicationContext()).isEmpty())
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        else Toast.makeText(getApplicationContext(), "No id attributed to user", Toast.LENGTH_LONG).show();
 
         Manager.getInstance().setFragment(getSupportFragmentManager(), new SigninFragment());
     }

@@ -438,10 +438,6 @@ public class HTTPRequest {
             this.response = response;
         }
 
-        public PostTrialResponse(JSONObject jsonObject) {
-            this.response = new Response(jsonObject, Attributes.ResponseType.trial_response);
-        }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

@@ -5,7 +5,7 @@ package com.glassbyte.neurobranch.Services.DataObjects;
  */
 public class Attributes {
     public enum Type {
-        food, pharma, biodevice, undef
+        food, pharma, biodevice, behavioural, undef
     }
 
     public enum TrialState {
@@ -17,7 +17,7 @@ public class Attributes {
     }
 
     public enum ResponseType {
-        trial_response, post_trial
+        trial_response
     }
 
     public static QuestionType getQuestionType(String checkType) {

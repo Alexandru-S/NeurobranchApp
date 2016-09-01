@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
-import com.glassbyte.neurobranch.Services.HTTP.Notification;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 import java.util.ArrayList;
 
@@ -83,7 +83,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                Notification.NotificationService.notifyUserWeb(context, trial.getTrialId());
+                Manager.getInstance().notifyUserWeb(context, trial.getTrialId());
             }
         });
     }

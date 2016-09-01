@@ -3,7 +3,7 @@ package com.glassbyte.neurobranch.Services.Sync;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-import com.glassbyte.neurobranch.Services.HTTP.Notification;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 import org.json.JSONObject;
 
@@ -11,8 +11,8 @@ import org.json.JSONObject;
  * Created by ed on 14/08/16.
  */
 public class WebServer {
-    public static void synchronise(Context context) {
-        Notification.NotificationService.notifyUserWeb(context, "trial id");
+    public static void synchronise(Context context, String trialid) {
+        Manager.getInstance().notifyUserWeb(context, trialid);
     }
 
     public static class PollAccount {

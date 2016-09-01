@@ -21,8 +21,10 @@ import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
 import com.glassbyte.neurobranch.Services.DataObjects.Question;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +129,8 @@ public class EpochHolder extends AppCompatActivity {
                                     for(Fragment fragment : fragments) {
                                         Response response = new Response(Response.generateResponse(
                                                 getTrialId(),
-                                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("id", ""),
+                                                getQuestionId(),
+                                                Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
                                                 fragment),
                                                 Attributes.ResponseType.trial_response);
                                         new HTTPRequest.PostTrialResponse(response).execute();
