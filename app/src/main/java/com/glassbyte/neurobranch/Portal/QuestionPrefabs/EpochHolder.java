@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by ed on 04/07/2016.
+ * Created by ed on 04/07/2016
  */
 public class EpochHolder extends AppCompatActivity {
     ArrayList<Object> properties = new ArrayList<>();

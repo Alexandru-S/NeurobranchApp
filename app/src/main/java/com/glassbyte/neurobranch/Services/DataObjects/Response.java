@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by ed on 25/06/" + i +"6.
+ * Created by ed on 25/06/2016
  */
 public class Response {
     Attributes.ResponseType responseType;

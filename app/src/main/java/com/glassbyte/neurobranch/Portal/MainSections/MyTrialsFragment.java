@@ -93,7 +93,6 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void onLoadCompleted(JSONArray object) {
-        System.out.println("load completed?");
         adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
     }

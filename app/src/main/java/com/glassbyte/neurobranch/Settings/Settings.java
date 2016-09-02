@@ -11,7 +11,10 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Sync.Service;
 import com.glassbyte.neurobranch.Services.Sync.WebServer;
@@ -41,7 +44,7 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
                 System.out.println(WebServer.PollAccount.getCandidateId(Settings.this));
 
                 new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(Settings.this),
-                        Settings.this).execute();
+                            Settings.this).execute();
             }
 
             @Override

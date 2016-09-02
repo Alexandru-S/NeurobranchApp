@@ -40,10 +40,8 @@ public class MainActivity extends AppCompatActivity
                 new Intent(this, Service.SyncService.class),
                 PendingIntent.FLAG_NO_CREATE) != null);
 
-        if (alarmUp)
-            System.out.println("Synchronisation alarm is already active");
-        else
-            alarmReceiver.setAlarm(this);
+        if (alarmUp) System.out.println("Synchronisation alarm is already active");
+        else alarmReceiver.setAlarm(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

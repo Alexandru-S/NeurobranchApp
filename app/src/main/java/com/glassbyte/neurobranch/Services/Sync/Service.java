@@ -13,7 +13,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import java.util.Calendar;
 
 /**
- * Created by ed on 14/08/16.
+ * Created by ed on 14/08/16
  */
 public class Service {
     public static class SyncService extends IntentService {

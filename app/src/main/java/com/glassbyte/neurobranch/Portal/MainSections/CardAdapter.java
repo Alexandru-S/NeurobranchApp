@@ -6,21 +6,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
+import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
+import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
+import com.glassbyte.neurobranch.Services.Sync.WebServer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
  * Created by ed on 25/06/16.
  */
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder> {
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder> implements GetDetailsCallback {
     ArrayList<Trial> trials;
     android.support.v4.app.FragmentManager fragmentManager;
+    private Context context;
+    private Trial trial;
 
     public CardAdapter(ArrayList<Trial> trials, android.support.v4.app.FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -46,7 +58,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         holder.institute.setText(trial.getInstitute());
         holder.condition.setText(trial.getCondition() != null ? capitalise(trial.getCondition()) : null);
 
-        final Context context = holder.title.getContext();
+        this.context = holder.title.getContext();
 
         if (!trial.isOffline()) {
             holder.description.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +95,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                Manager.getInstance().notifyUserWeb(context, trial.getTrialId());
+
+                /*if (getTrial().getTrialType().equals(Attributes.Type.behavioural)) {
+                    Toast.makeText(getContext(), "Delegate eligibility form", Toast.LENGTH_LONG).show();
+                } else {
+
+                }*/
+                System.out.println("Joining a trial");
+                new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                        Preferences.id, getContext()), trial.getTrialId()).execute();
+
+                //Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
+
+                /*
+                new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(context),
+                        CardAdapter.this).execute();*/
             }
         });
     }
@@ -92,6 +118,26 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     public int getItemCount() {
         return trials.size();
     }
+
+    @Override
+    public void onRetrieved(JSONObject jsonObject) {
+        try {
+            Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
+            if(jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
+                Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
+            } else {
+                Toast.makeText(getContext(), "Please verify your account in order to join trials", Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public Trial getTrial() { return trial; }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView title, description, institute, condition;

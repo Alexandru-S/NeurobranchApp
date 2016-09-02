@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
+import com.glassbyte.neurobranch.Services.Enums.RequestType;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
@@ -26,29 +27,24 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ed on 25/06/16.
+ * Created by ed on 25/06/16
  */
 public class HTTPRequest {
 
-    public enum RequestType {
-        POST, GET
-    }
-
-    public enum UpdateType {
-        POST_DATA, LOGIN, UPDATE_TRIAL_LIST, UPDATE_QS_AVAILABLE
-    }
-
-    public HTTPRequest() {
-    }
-
     //debug force post trial
     public static class JoinTrial extends AsyncTask<String, Void, String> {
-        String userID;
+        JSONObject details;
         HttpURLConnection httpURLConnection = null;
         BufferedReader bufferedReader = null;
 
-        public JoinTrial(String userID) {
-            this.userID = userID;
+        public JoinTrial(String userId, String trialId) {
+            details = new JSONObject();
+            try {
+                details.put("userid", userId);
+                details.put("trialid", trialId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -59,32 +55,27 @@ public class HTTPRequest {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                URL url = new URL(null);
+                URL url = new URL(Globals.ADD_TO_REQUESTED_LIST);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty("Content-Type", "application-json");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
 
                 //headers
                 Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
-                writer.write(userID);
+                writer.write(details.toString());
                 writer.close();
+
+                System.out.println("Requesting to join with details " + details.toString());
 
                 //response
                 InputStream inputStream = httpURLConnection.getInputStream();
                 StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
-
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String inputLine;
                 while ((inputLine = bufferedReader.readLine()) != null) {
                     buffer.append(inputLine).append("\n");
-                    if (buffer.length() == 0) {
-                        return null;
-                    }
                 }
 
                 return buffer.toString();
@@ -92,12 +83,10 @@ public class HTTPRequest {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (httpURLConnection != null) {
-                        httpURLConnection.disconnect();
-                    }
-                    if (bufferedReader != null) {
-                        bufferedReader.close();
-                    }
+                    assert httpURLConnection!=null;
+                    httpURLConnection.disconnect();
+                    assert bufferedReader != null;
+                    bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -112,17 +101,10 @@ public class HTTPRequest {
     }
 
     public static class ReceiveJSON extends AsyncTask<Object, Object, JSONArray> {
-
         Context context;
         URL url;
         JSONCallback jsonCallback;
-
         String trialId, candidateId, questionId;
-
-        public ReceiveJSON(Context context, URL url) {
-            this.context = context;
-            this.url = url;
-        }
 
         public ReceiveJSON(Context context, URL url, JSONCallback jsonCallback) {
             this.context = context;
@@ -148,7 +130,7 @@ public class HTTPRequest {
             HttpURLConnection connection;
             try {
                 connection = (HttpURLConnection) getUrl().openConnection();
-                connection.setRequestMethod("GET");
+                connection.setRequestMethod(RequestType.GET.name());
                 connection.setRequestProperty("Content-length", "0");
                 connection.setUseCaches(false);
                 connection.setAllowUserInteraction(false);
@@ -168,7 +150,6 @@ public class HTTPRequest {
                             writer.write(buffer, 0, n);
                         }
                         br.close();
-                        System.out.println("Ayyyyyy lmao: " + writer.toString());
                         return new JSONArray(writer.toString());
                 }
             } catch (IOException | JSONException e) {
@@ -303,17 +284,11 @@ public class HTTPRequest {
                 //response
                 InputStream inputStream = httpURLConnection.getInputStream();
                 StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    return null;
-                }
 
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String inputLine;
                 while ((inputLine = bufferedReader.readLine()) != null) {
                     buffer.append(inputLine).append("\n");
-                    if (buffer.length() == 0) {
-                        return null;
-                    }
                 }
 
                 return buffer.toString();
@@ -321,12 +296,10 @@ public class HTTPRequest {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (httpURLConnection != null) {
-                        httpURLConnection.disconnect();
-                    }
-                    if (bufferedReader != null) {
-                        bufferedReader.close();
-                    }
+                    assert httpURLConnection != null;
+                    httpURLConnection.disconnect();
+                    assert bufferedReader != null;
+                    bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -412,12 +385,10 @@ public class HTTPRequest {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (httpURLConnection != null) {
-                        httpURLConnection.disconnect();
-                    }
-                    if (bufferedReader != null) {
-                        bufferedReader.close();
-                    }
+                    assert httpURLConnection != null;
+                    httpURLConnection.disconnect();
+                    assert bufferedReader != null;
+                    bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

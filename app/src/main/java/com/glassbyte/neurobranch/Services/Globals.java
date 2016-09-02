@@ -33,6 +33,9 @@ public class Globals {
     public static final String RETRIEVE_TRIALS_ADDRESS = HOST_ADDRESS + "/api/get-trials";
     public static final String POST_RESPONSE_ADDRESS = HOST_ADDRESS + "/api/create-response/";
 
+    public static final String ADD_TO_REQUESTED_LIST = HOST_ADDRESS + "/api/create-requested-candidate";
+
+
     //deprecated static hosting
     public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";
 
