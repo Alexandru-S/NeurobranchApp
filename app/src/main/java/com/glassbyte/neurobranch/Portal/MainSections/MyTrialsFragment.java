@@ -98,6 +98,9 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
     @Override
     public void onLoadCompleted(JSONArray object) {
         ArrayList<Trial> trials = JSON.parseTrialJSON(object);
+        for(Trial trial : trials)
+            System.out.println(trial.getTitle());
+
         if (trials.size() == 0) {
             trials.add(new Trial("No Trials Currently Available",
                     "There are no trials available to you at this time", "You", false));

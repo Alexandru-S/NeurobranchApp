@@ -1,6 +1,8 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
@@ -92,21 +96,31 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
-                System.out.println(trial.getTrialType());
-
-                //if (getTrial().getTrialType().equals(Attributes.Type.behavioural)) {
-                //    Toast.makeText(getContext(), "Delegate eligibility form", Toast.LENGTH_LONG).show();
-                //} else {
-
-                //}
-
-
-                //new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                 //       Preferences.id, getContext()), trial.getTrialId()).execute();
-
-                //Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
-
+                new AlertDialog.Builder(context)
+                        .setTitle("Trial Waiver Form")
+                        .setMessage(trial.getWaiver())
+                        .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(context, "I agreed to the waiver", Toast.LENGTH_LONG).show();
+                                if (trial.getTrialType().equals("behavioural")) {
+                                    Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
+                                    //create new request for filling in eligibility form
+                                } else {
+                                    //else launch a request to join the trial as a candidate
+                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                            Preferences.id, getContext()), trial.getTrialId()).execute();
+                                }
+                            }
+                        })
+                        .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(context, "I disagreed to the waiver", Toast.LENGTH_LONG).show();
+                            }
+                        }).show();
                 /*
+                Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
                 new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(context),
                         CardAdapter.this).execute();*/
             }

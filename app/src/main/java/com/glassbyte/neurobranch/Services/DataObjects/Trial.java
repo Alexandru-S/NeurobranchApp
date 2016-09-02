@@ -7,7 +7,7 @@ public class Trial {
     String title;
     String briefDescription;
     String detailedDescription;
-    Attributes.Type trialType;
+    String trialType;
     String institute;
     String condition;
     long dateCreated;
@@ -18,8 +18,9 @@ public class Trial {
     String researcherId;
     String trialId;
     boolean isClickable;
-    long duration, frequency;
-    String screeningForm, eligibilityForm;
+    long duration;
+    String frequency;
+    String waiver, eligibilityForm;
 
     public Trial(String title, String briefDescription, String institute, boolean isClickable) {
         this.title = title;
@@ -29,8 +30,8 @@ public class Trial {
     }
 
     public Trial(String trialId, String title, String briefDescription, String detailedDescription,
-                 Attributes.Type trialType, String institute, String condition, long duration,
-                 long frequency, String screeningForm, String eligibilityForm, long dateCreated,
+                 String trialType, String institute, String condition, long duration,
+                 String frequency, String waiver, String eligibilityForm, long dateCreated,
                  long dateStarted, long dateEnded, int candidateQuota,
                  Attributes.TrialState trialState, String researcherId) {
         this.trialId = trialId;
@@ -42,7 +43,7 @@ public class Trial {
         this.condition = condition;
         this.duration = duration;
         this.frequency = frequency;
-        this.screeningForm = screeningForm;
+        this.waiver = waiver;
         this.eligibilityForm = eligibilityForm;
         this.dateCreated = dateCreated;
         this.dateStarted = dateStarted;
@@ -50,6 +51,7 @@ public class Trial {
         this.candidateQuota = candidateQuota;
         this.trialState = trialState;
         this.researcherId = researcherId;
+        this.isClickable = true;
     }
 
     public boolean isClickable() {
@@ -68,7 +70,7 @@ public class Trial {
         return detailedDescription;
     }
 
-    public Attributes.Type getTrialType() {
+    public String getTrialType() {
         return trialType;
     }
 
@@ -112,12 +114,12 @@ public class Trial {
         return duration;
     }
 
-    public long getFrequency() {
+    public String getFrequency() {
         return frequency;
     }
 
-    public String getScreeningForm() {
-        return screeningForm;
+    public String getWaiver() {
+        return waiver;
     }
 
     public String getEligibilityForm() {
