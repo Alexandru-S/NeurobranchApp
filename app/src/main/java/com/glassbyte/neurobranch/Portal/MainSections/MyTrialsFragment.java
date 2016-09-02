@@ -37,7 +37,9 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ArrayList<Trial> trials = new ArrayList<>();
-        trials.add(new Trial("Retrieving Trials", "Please wait while trials are being retrieved from Neurobranch services.", "You", true));
+        trials.add(new Trial("Retrieving Trials",
+                "Please wait while trials are being retrieved from Neurobranch services.",
+                "You", true));
         adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
         loadTrials();
@@ -51,7 +53,8 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_portal_layout);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)
+                view.findViewById(R.id.swipe_portal_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -73,7 +76,8 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
         if(Connectivity.isNetworkConnected(getActivity())) {
             try {
                 ArrayList<Trial> trials = new ArrayList<>();
-                trials.add(new Trial("Trial Loading...", "Please wait while trials are loaded", "You", false));
+                trials.add(new Trial("Trial Loading...", "Please wait while trials are loaded",
+                        "You", false));
                 new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS),
                         MyTrialsFragment.this).execute();
                 adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
@@ -84,7 +88,7 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
             ArrayList<Trial> trials = new ArrayList<>();
             trials.add(new Trial("Internet unavailable",
                     "Please enable an internet connection in order to use Neurobranch services.",
-                    "You", true));
+                    "You", false));
             adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
         }
 
@@ -93,7 +97,13 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void onLoadCompleted(JSONArray object) {
-        adapter = new CardAdapter(JSON.parseTrialJSON(object), getActivity().getSupportFragmentManager());
+        ArrayList<Trial> trials = JSON.parseTrialJSON(object);
+        if (trials.size() == 0) {
+            trials.add(new Trial("No Trials Currently Available",
+                    "There are no trials available to you at this time", "You", false));
+        }
+
+        adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
     }
 }

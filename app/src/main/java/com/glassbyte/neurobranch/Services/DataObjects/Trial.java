@@ -17,35 +17,43 @@ public class Trial {
     Attributes.TrialState trialState;
     String researcherId;
     String trialId;
-    boolean isOffline;
+    boolean isClickable;
+    long duration, frequency;
+    String screeningForm, eligibilityForm;
 
-    public Trial(String title, String briefDescription, String institute, boolean isOffline) {
+    public Trial(String title, String briefDescription, String institute, boolean isClickable) {
         this.title = title;
         this.briefDescription = briefDescription;
         this.institute = institute;
-        this.isOffline = isOffline;
+        this.isClickable = isClickable;
     }
 
-    public Trial(String title, String briefDescription, String detailedDescription, Attributes.Type trialType,
-                 String institute, String condition, long dateCreated, long dateStarted, long dateEnded,
-                 int candidateQuota, Attributes.TrialState trialState, String researcherId, String trialId) {
+    public Trial(String trialId, String title, String briefDescription, String detailedDescription,
+                 Attributes.Type trialType, String institute, String condition, long duration,
+                 long frequency, String screeningForm, String eligibilityForm, long dateCreated,
+                 long dateStarted, long dateEnded, int candidateQuota,
+                 Attributes.TrialState trialState, String researcherId) {
+        this.trialId = trialId;
         this.title = title;
         this.briefDescription = briefDescription;
         this.detailedDescription = detailedDescription;
         this.trialType = trialType;
         this.institute = institute;
         this.condition = condition;
+        this.duration = duration;
+        this.frequency = frequency;
+        this.screeningForm = screeningForm;
+        this.eligibilityForm = eligibilityForm;
         this.dateCreated = dateCreated;
         this.dateStarted = dateStarted;
         this.dateEnded = dateEnded;
         this.candidateQuota = candidateQuota;
         this.trialState = trialState;
         this.researcherId = researcherId;
-        this.trialId = trialId;
     }
 
-    public boolean isOffline() {
-        return isOffline;
+    public boolean isClickable() {
+        return isClickable;
     }
 
     public String getTitle() {
@@ -98,5 +106,21 @@ public class Trial {
 
     public String getTrialId() {
         return trialId;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public long getFrequency() {
+        return frequency;
+    }
+
+    public String getScreeningForm() {
+        return screeningForm;
+    }
+
+    public String getEligibilityForm() {
+        return eligibilityForm;
     }
 }

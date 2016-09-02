@@ -10,15 +10,11 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.R;
-import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
-import com.glassbyte.neurobranch.Services.Enums.Preferences;
-import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
-import com.glassbyte.neurobranch.Services.Sync.WebServer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +47,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
+        this.trial = trials.get(position);
         final Trial trial = trials.get(position);
 
         holder.title.setText(trial.getTitle());
@@ -60,7 +57,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
         this.context = holder.title.getContext();
 
-        if (!trial.isOffline()) {
+        if (trial.isClickable()) {
             holder.description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -95,15 +92,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
             @Override
             public void onJoinClick(TrialInfo dialogFragment) {
+                System.out.println(trial.getTrialType());
 
-                /*if (getTrial().getTrialType().equals(Attributes.Type.behavioural)) {
-                    Toast.makeText(getContext(), "Delegate eligibility form", Toast.LENGTH_LONG).show();
-                } else {
+                //if (getTrial().getTrialType().equals(Attributes.Type.behavioural)) {
+                //    Toast.makeText(getContext(), "Delegate eligibility form", Toast.LENGTH_LONG).show();
+                //} else {
 
-                }*/
-                System.out.println("Joining a trial");
-                new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                        Preferences.id, getContext()), trial.getTrialId()).execute();
+                //}
+
+
+                //new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                 //       Preferences.id, getContext()), trial.getTrialId()).execute();
 
                 //Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
 

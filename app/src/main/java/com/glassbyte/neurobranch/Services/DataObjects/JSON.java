@@ -23,6 +23,10 @@ public class JSON {
         public static final String TRIAL_TYPE = "trialtype";
         public static final String TRIAL_INSTITUTE = "institute";
         public static final String TRIAL_CONDITION = "condition";
+        public static final String TRIAL_DURATION = "duration";
+        public static final String TRIAL_FREQUENCY = "frequency";
+        public static final String TRIAL_SCREENING_FORM = "screening";
+        public static final String TRIAL_ELIGIBILITY_FORM = "eligibility";
         public static final String TRIAL_DATE_CREATED = "datecreated";
         public static final String TRIAL_DATE_STARTED = "datestarted";
         public static final String TRIAL_DATE_ENDED = "dateended";
@@ -89,24 +93,31 @@ public class JSON {
             for (int i = 0; i < retrievedTrials.length(); i++) {
                 JSONObject trial = retrievedTrials.getJSONObject(i);
 
+                String id = trial.getString(JSON.DataFormatting.TRIAL_ID);
                 String title = trial.getString(JSON.DataFormatting.TRIAL_NAME);
                 String briefDesc = trial.getString(DataFormatting.TRIAL_BRIEF_DESCRIPTION);
                 String detailedDesc = trial.getString(DataFormatting.TRIAL_DETAILED_DESCRIPTION);
                 String type = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
                 String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
                 String condition = trial.getString(DataFormatting.TRIAL_CONDITION);
-                String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED);
-                String dateStarted = "0"; //trial.getString(DataFormatting.TRIAL_DATE_STARTED);
-                String dateEnded = "0"; //trial.getString(DataFormatting.TRIAL_DATE_ENDED);
+
+                String duration = trial.getString(DataFormatting.TRIAL_DURATION);
+                String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
+                String eligibilityForm = trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
+                String screeningForm = trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
+
+                String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_CREATED);
+                String dateStarted = trial.getString(DataFormatting.TRIAL_DATE_STARTED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_STARTED);
+                String dateEnded = trial.getString(DataFormatting.TRIAL_DATE_ENDED)== null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_ENDED);
                 String candidateQuota = trial.getString(DataFormatting.TRIAL_CANDIDATE_QUOTA);
                 String state = trial.getString(DataFormatting.TRIAL_STATE);
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                String id = trial.getString(JSON.DataFormatting.TRIAL_ID);
 
-                trials.add(new Trial(title, briefDesc, detailedDesc, Attributes.getType(type),
-                        institute, condition, Long.parseLong(dateCreated), Long.parseLong(dateStarted),
-                        Long.parseLong(dateEnded), Integer.parseInt(candidateQuota),
-                        Attributes.getTrialState(state), researcherId, id));
+                trials.add(new Trial(id, title, briefDesc, detailedDesc, Attributes.getType(type),
+                        institute, condition, Long.parseLong(duration), Long.parseLong(frequency),
+                        screeningForm, eligibilityForm, Long.parseLong(dateCreated),
+                        Long.parseLong(dateStarted), Long.parseLong(dateEnded),
+                        Integer.parseInt(candidateQuota), Attributes.getTrialState(state), researcherId));
             }
         } catch (JSONException e) {
             e.printStackTrace();
