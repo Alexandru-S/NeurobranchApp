@@ -72,13 +72,13 @@ public class EpochHolder extends AppCompatActivity {
 
             for(Question question : questions) {
                 if(question.getType() == Attributes.QuestionType.checkbox) {
-                    fragments.add(new Checkbox(properties, 0, 0 ));
+                    fragments.add(new Checkbox(properties, questions.size(), questions.indexOf(question)));
                 } else if(question.getType() == Attributes.QuestionType.choice) {
-                    fragments.add(new Choice(properties, 0, 0));
+                    fragments.add(new Choice(properties, questions.size(), questions.indexOf(question)));
                 } else if(question.getType() == Attributes.QuestionType.scale) {
-                    fragments.add(new Scale(properties, 0, 0));
+                    fragments.add(new Scale(properties, questions.size(), questions.indexOf(question)));
                 } else if(question.getType() == Attributes.QuestionType.section) {
-                    fragments.add(new Section(properties, 0, 0));
+                    fragments.add(new Section(properties, questions.size(), questions.indexOf(question)));
                 }
             }
 
