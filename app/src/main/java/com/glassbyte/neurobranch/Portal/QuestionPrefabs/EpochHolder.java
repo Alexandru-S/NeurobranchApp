@@ -47,6 +47,13 @@ public class EpochHolder extends AppCompatActivity {
         setTrialId(details.getString("TRIAL_ID"));
         Toast.makeText(getApplicationContext(), getTrialId(), Toast.LENGTH_SHORT).show();
 
+        //check the trialid to see if an eligibility form is requirgted
+        //make a call to see if the user exists in the requested list
+        //if so, the eligibility form must be shown to the user and completed
+        //this also means that a field for enabling usage of the score is needed
+        //on completion, if the form has a high enough score, the user is switched from the requested list to the verified list
+        //else they are removed from the requested list
+
         try {
             properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this, new URL(
                     Globals.retrieveTrialQuestions(getTrialId())), getTrialId(), getQuestionId(), getCandidateId()).execute().get());
