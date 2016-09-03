@@ -3,7 +3,6 @@ package com.glassbyte.neurobranch.Portal.QuestionPrefabs;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,9 +14,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.MainActivity;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Unimplemented.Drawing;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Unimplemented.Multimedia;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
-import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
 import com.glassbyte.neurobranch.Services.DataObjects.Question;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
@@ -26,11 +26,6 @@ import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,7 +36,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class EpochHolder extends AppCompatActivity {
     ArrayList<Object> properties = new ArrayList<>();
-    ArrayList<Fragment> fragments = new ArrayList<>();
+    ArrayList<QuestionFragment> fragments = new ArrayList<>();
 
     ViewPager viewPager;
     String trialId, questionId, candidateId;
@@ -77,38 +72,13 @@ public class EpochHolder extends AppCompatActivity {
 
             for(Question question : questions) {
                 if(question.getType() == Attributes.QuestionType.checkbox) {
-                    Checkbox checkbox = new Checkbox();
-                    checkbox.setProperties(properties);
-                    checkbox.setQuestionNumber(questions.indexOf(question));
-                    checkbox.setTotalQuestionAmount(questions.size());
-                    fragments.add(checkbox);
+                    fragments.add(new Checkbox(properties, 0, 0 ));
                 } else if(question.getType() == Attributes.QuestionType.choice) {
-                    TextChoice choice = new TextChoice();
-                    choice.setProperties(properties);
-                    choice.setQuestionNumber(questions.indexOf(question));
-                    choice.setTotalQuestions(questions.size());
-                    fragments.add(choice);
-                } else if(question.getType() == Attributes.QuestionType.drawing) {
-                    Drawing drawing = new Drawing();
-                    //drawing.setProperties(properties);
-                    fragments.add(drawing);
-                } else if(question.getType() == Attributes.QuestionType.multimedia) {
-                    Multimedia multimedia = new Multimedia();
-                    //multimedia.setQuestionNumber(questions.indexOf(question));
-                    //multimedia.setProperties(properties);
-                    fragments.add(multimedia);
+                    fragments.add(new Choice(properties, 0, 0));
                 } else if(question.getType() == Attributes.QuestionType.scale) {
-                    Scale scale = new Scale();
-                    scale.setProperties(properties);
-                    scale.setQuestionNumber(questions.indexOf(question));
-                    scale.setTotalQuestions(questions.size());
-                    fragments.add(scale);
+                    fragments.add(new Scale(properties, 0, 0));
                 } else if(question.getType() == Attributes.QuestionType.section) {
-                    TextSection section = new TextSection();
-                    section.setProperties(properties);
-                    section.setQuestionNumber(questions.indexOf(question));
-                    section.setTotalQuestionAmount(questions.size());
-                    fragments.add(section);
+                    fragments.add(new Section(properties, 0, 0));
                 }
             }
 
@@ -126,7 +96,7 @@ public class EpochHolder extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    for(Fragment fragment : fragments) {
+                                    for(QuestionFragment fragment : fragments) {
                                         Response response = new Response(Response.generateResponse(
                                                 getTrialId(),
                                                 getQuestionId(),

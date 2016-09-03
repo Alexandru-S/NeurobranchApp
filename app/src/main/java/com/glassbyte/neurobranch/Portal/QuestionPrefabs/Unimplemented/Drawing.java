@@ -1,4 +1,4 @@
-package com.glassbyte.neurobranch.Portal.QuestionPrefabs;
+package com.glassbyte.neurobranch.Portal.QuestionPrefabs.Unimplemented;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import com.glassbyte.neurobranch.R;
 /**
  * Created by ed on 10/06/16.
  */
-public class Multimedia extends android.support.v4.app.Fragment {
+public class Drawing extends android.support.v4.app.Fragment {
     View view;
 
     @Override

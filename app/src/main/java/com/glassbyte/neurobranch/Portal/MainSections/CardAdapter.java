@@ -2,6 +2,7 @@ package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -103,14 +104,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(context, "I agreed to the waiver", Toast.LENGTH_LONG).show();
-                                if (trial.getTrialType().equals("behavioural")) {
-                                    Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
-                                    //create new request for filling in eligibility form
-                                } else {
-                                    //else launch a request to join the trial as a candidate
-                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                                            Preferences.id, getContext()), trial.getTrialId()).execute();
-                                }
+                                new AlertDialog.Builder(context)
+                                        .setTitle("Debug Delegate Eligibility")
+                                        .setPositiveButton("Open Qs", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
+                                                //Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
+                                            }
+                                        })
+                                        .setNegativeButton("Join", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                                        Preferences.id, getContext()), trial.getTrialId()).execute();
+                                            }
+                                        })
+                                        .show();
                             }
                         })
                         .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {

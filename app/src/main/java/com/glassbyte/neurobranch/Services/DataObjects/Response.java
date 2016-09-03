@@ -1,13 +1,9 @@
 package com.glassbyte.neurobranch.Services.DataObjects;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Checkbox;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Scale;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.TextChoice;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.TextSection;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.*;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +33,7 @@ public class Response {
         return questionResponse;
     }
 
-    public static JSONObject generateResponse(String trialid, String questionId, String candidateId, Fragment fragment) {
+    public static JSONObject generateResponse(String trialid, String questionId, String candidateId, QuestionFragment fragment) {
         JSONObject response = new JSONObject();
         try {
             response.put(ResponseFields.trialid.name(), trialid);
@@ -49,26 +45,21 @@ public class Response {
 
         ArrayList<Object> questionResponse = new ArrayList<>();
 
-        if (fragment.getClass() == Checkbox.class) {
+        if (fragment.getClass().equals(Checkbox.class)) {
             questionResponse.add(Attributes.QuestionType.checkbox.name());
-            questionResponse.add(((Checkbox) fragment).getQuestionNumber());
-            questionResponse.add(((Checkbox) fragment).getAnswers());
-        } else if (fragment.getClass() == Scale.class) {
+        } else if (fragment.getClass().equals(Scale.class)) {
             questionResponse.add(Attributes.QuestionType.scale.name());
-            questionResponse.add(((Scale) fragment).getQuestionNumber());
-            questionResponse.add(((Scale) fragment).getResponse());
-        } else if (fragment.getClass() == TextChoice.class) {
+        } else if (fragment.getClass().equals(Choice.class)) {
             questionResponse.add(Attributes.QuestionType.choice.name());
-            questionResponse.add(((TextChoice) fragment).getQuestionNumber());
-            questionResponse.add(((TextChoice) fragment).getAnswers());
-        } else if (fragment.getClass() == TextSection.class) {
+        } else if (fragment.getClass().equals(Section.class)) {
             questionResponse.add(Attributes.QuestionType.section.name());
-            questionResponse.add(((TextSection) fragment).getQuestionNumber());
-            questionResponse.add(((TextSection) fragment).getResponse());
         }
+
+        questionResponse.add(fragment.getQuestionIndex());
+        questionResponse.add(fragment.getAnswersChosen());
+
         try {
             response.put(ResponseFields.response.name(), JSON.parseList(questionResponse));
-            System.out.println("RESPONSE GENERATED " + JSON.parseList(questionResponse));
         } catch (JSONException e) {
             e.printStackTrace();
         }
