@@ -86,7 +86,9 @@ public class EpochHolder extends AppCompatActivity {
             setContentView(R.layout.question_holder);
 
             final FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-            floatingActionButton.hide();
+            if(fragments.size() > 1) floatingActionButton.hide();
+            else floatingActionButton.show();
+
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -103,7 +105,8 @@ public class EpochHolder extends AppCompatActivity {
                                                 Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
                                                 fragment),
                                                 Attributes.ResponseType.trial_response);
-                                        new HTTPRequest.PostTrialResponse(response).execute();
+                                        System.out.println(response.getQuestionResponse().toString());
+                                        //new HTTPRequest.PostTrialResponse(response).execute();
                                     }
 
                                     String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";

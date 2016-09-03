@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressLint("ValidFragment")
 public class Choice extends QuestionFragment {
     private RadioGroup radioGroup;
-    private ArrayList<RadioButton> radioButtons = new ArrayList<>();
+    private ArrayList<Integer> radioButtons = new ArrayList<>();
     private ArrayList<String> answerChosen = new ArrayList<>();
     private ArrayList<Integer> scoreChosen = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class Choice extends QuestionFragment {
             radioButton.setId(View.generateViewId());
             radioButton.setText(getAnswers().get(i));
             radioGroup.addView(radioButton);
-            radioButtons.add(radioButton);
+            radioButtons.add(radioButton.getId());
         }
         getContentLayout().addView(radioGroup);
     }
@@ -58,16 +58,16 @@ public class Choice extends QuestionFragment {
             int index = radioButtons.indexOf(radioGroup.getCheckedRadioButtonId());
             String checkedItem = getAnswers().get(radioButtons.indexOf(radioGroup.getCheckedRadioButtonId()));
             for (int i = 0; i < radioButtons.size(); i++) {
-                answerChosen.add(i, null);
+                answerChosen.add(i, "");
             }
             answerChosen.set(index, checkedItem);
         }
-        return getAnswers();
+        return getAnswerChosen();
     }
 
     @Override
     public ArrayList<Integer> getScoresChosen() {
-        for (RadioButton radioButton : radioButtons) {
+        for (Integer radioButton : radioButtons) {
             //if (radioButton.isChecked())
                 //scoreChosen.add(getScores().get(radioGroup.));
         }
@@ -79,7 +79,7 @@ public class Choice extends QuestionFragment {
         return radioGroup;
     }
 
-    public ArrayList<RadioButton> getRadioButtons() {
+    public ArrayList<Integer> getRadioButtons() {
         return radioButtons;
     }
 

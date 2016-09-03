@@ -44,9 +44,13 @@ public class Checkbox extends QuestionFragment {
     @Override
     public ArrayList<String> getAnswersChosen() {
         answersChosen.clear();
+        for (int i=0; i< checkboxes.size(); i++) {
+            answersChosen.add(i, "");
+        }
+
         for(CheckBox checkBox : getCheckboxes()) {
-                if (checkBox.isChecked())
-                answersChosen.add(checkBox.getText().toString());
+            if (checkBox.isChecked())
+                answersChosen.set(getCheckboxes().indexOf(checkBox), checkBox.getText().toString());
 
         }
         return answersChosen;

@@ -103,8 +103,8 @@ public class JSON {
 
                 String duration = trial.getString(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
-                String eligibilityForm = "eiligibilityForm"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
-                String waiver = "waiver"; //trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
+                String eligibilityForm = "eligibilityForm"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
+                String waiver = "Waiver Ayyyyyyyyy lmao lol"; //trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
 
                 String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_CREATED);
                 String dateStarted = "0"; //trial.getString(DataFormatting.TRIAL_DATE_STARTED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_STARTED);
