@@ -3,6 +3,7 @@ package com.glassbyte.neurobranch.Portal.MainSections;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.glassbyte.neurobranch.Dialogs.QuestionsDialog;
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
@@ -34,10 +37,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     android.support.v4.app.FragmentManager fragmentManager;
     private Context context;
     private Trial trial;
+    private Fragment fragment;
 
-    public CardAdapter(ArrayList<Trial> trials, android.support.v4.app.FragmentManager fragmentManager) {
+    public CardAdapter(ArrayList<Trial> trials, Fragment fragment, android.support.v4.app.FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
         this.trials = trials;
+        this.fragment = fragment;
     }
 
     @Override
@@ -91,50 +96,65 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     private void alertDescription(final Trial trial, final Context context) {
-        TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(),
-                trial.getResearcherId(), trial.getInstitute(), trial.getDateCreated());
-        trialInfo.show(fragmentManager, "info");
-        trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
-            @Override
-            public void onJoinClick(TrialInfo dialogFragment) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Trial Waiver Form")
-                        .setMessage(trial.getWaiver())
-                        .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(context, "I agreed to the waiver", Toast.LENGTH_LONG).show();
-                                new AlertDialog.Builder(context)
-                                        .setTitle("Debug Delegate Eligibility")
-                                        .setPositiveButton("Open Qs", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
-                                                //Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
-                                            }
-                                        })
-                                        .setNegativeButton("Join", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                                                        Preferences.id, getContext()), trial.getTrialId()).execute();
-                                            }
-                                        })
-                                        .show();
-                            }
-                        })
-                        .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(context, "I disagreed to the waiver", Toast.LENGTH_LONG).show();
-                            }
-                        }).show();
-                /*
-                Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
-                new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(context),
-                        CardAdapter.this).execute();*/
+        //if the current trial accessed is already in the user's subscribed list of trials
+        if (fragment.getClass().equals(MyTrialsFragment.class)) {
+            //TODO retrieve the last answered day, if any, from db and compare via callback
+            String lastAnsweredDay = "-1";
+            if ((Integer.parseInt(lastAnsweredDay) < trial.getCurrentDay()) || lastAnsweredDay.equals("")) {
+                final QuestionsDialog questionsDialog = new QuestionsDialog(trial, 0);
+                questionsDialog.show(fragmentManager, "answerQs");
+                questionsDialog.setTrialAnswerDialogListener(new QuestionsDialog.SetTrialAnswerListener() {
+                    @Override
+                    public void onAnswerClick(QuestionsDialog dialogFragment) {
+                        Toast.makeText(getContext(), "User allowed to answer questions", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                Toast.makeText(getContext(), "Answer not allowed", Toast.LENGTH_LONG).show();
             }
-        });
+
+        } else {
+            TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(),
+                    trial.getResearcherId(), trial.getInstitute(), trial.getDateCreated());
+            trialInfo.show(fragmentManager, "info");
+            trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
+                @Override
+                public void onJoinClick(TrialInfo dialogFragment) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Trial Waiver Form")
+                            .setMessage(trial.getWaiver())
+                            .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(context, "I agreed to the waiver", Toast.LENGTH_LONG).show();
+                                    new AlertDialog.Builder(context)
+                                            .setTitle("Debug Delegate Eligibility")
+                                            .setPositiveButton("Open Qs", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
+                                                    //Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
+                                                }
+                                            })
+                                            .setNegativeButton("Join", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                                            Preferences.id, getContext()), trial.getTrialId()).execute();
+                                                }
+                                            })
+                                            .show();
+                                }
+                            })
+                            .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(context, "I disagreed to the waiver", Toast.LENGTH_LONG).show();
+                                }
+                            }).show();
+                }
+            });
+        }
     }
 
     @Override

@@ -18,9 +18,10 @@ public class Trial {
     String researcherId;
     String trialId;
     boolean isClickable;
-    long duration;
+    int duration;
     String frequency;
     String waiver, eligibilityForm;
+    int currentDay;
 
     public Trial(String title, String briefDescription, String institute, boolean isClickable) {
         this.title = title;
@@ -30,7 +31,7 @@ public class Trial {
     }
 
     public Trial(String trialId, String title, String briefDescription, String detailedDescription,
-                 String trialType, String institute, String condition, long duration,
+                 String trialType, String institute, String condition, int duration,
                  String frequency, String waiver, String eligibilityForm, long dateCreated,
                  long dateStarted, long dateEnded, int candidateQuota,
                  Attributes.TrialState trialState, String researcherId) {
@@ -110,7 +111,7 @@ public class Trial {
         return trialId;
     }
 
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
@@ -124,5 +125,9 @@ public class Trial {
 
     public String getEligibilityForm() {
         return eligibilityForm;
+    }
+
+    public int getCurrentDay() {
+        return currentDay;
     }
 }

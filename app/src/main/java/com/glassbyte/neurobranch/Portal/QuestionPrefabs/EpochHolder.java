@@ -55,8 +55,9 @@ public class EpochHolder extends AppCompatActivity {
         //else they are removed from the requested list
 
         try {
-            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(this, new URL(
-                    Globals.retrieveTrialQuestions(getTrialId())), getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
+                    this, new URL(Globals.retrieveTrialQuestions(getTrialId())),
+                    null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
         } finally {

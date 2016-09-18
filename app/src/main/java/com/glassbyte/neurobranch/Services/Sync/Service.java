@@ -10,6 +10,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Trial;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.Globals;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
+import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -24,11 +37,7 @@ public class Service {
 
         @Override
         protected void onHandleIntent(Intent intent) {
-
-            ArrayList<String> trialsSubscribed = new ArrayList<>();
-
-            //poll user account on hour elapse
-            WebServer.synchronise(getApplicationContext(), "");
+            WebServer.PollAccount.pollTrialStates(getApplicationContext());
         }
     }
 
@@ -43,7 +52,6 @@ public class Service {
             startWakefulService(context, new Intent(context, SyncService.class));
         }
 
-        //if user has joined at least 1 trial
         public void setAlarm(Context context) {
             alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             pendingIntent = PendingIntent.getBroadcast(context, 0,
@@ -65,7 +73,7 @@ public class Service {
 
         //if user isn't part of any trials
         public void cancelAlarm(Context context) {
-            if(alarmManager != null)
+            if (alarmManager != null)
                 alarmManager.cancel(pendingIntent);
 
             ComponentName receiver = new ComponentName(context, SyncService.class);
@@ -82,7 +90,7 @@ public class Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
+            if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
                 alarmReceiver.setAlarm(context);
         }
     }

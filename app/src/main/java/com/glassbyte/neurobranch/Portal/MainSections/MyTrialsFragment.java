@@ -44,7 +44,7 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
         trials.add(new Trial("Retrieving Trials",
                 "Please wait while trials are being retrieved from Neurobranch services.",
                 "You", true));
-        adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+        adapter = new CardAdapter(trials, MyTrialsFragment.this, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
         loadTrials();
     }
@@ -85,7 +85,7 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
                 new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.getPartitiveMyTrials(
                         Manager.getInstance().getPreference(Preferences.id, getContext())
                 )), MyTrialsFragment.this).execute();
-                adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+                adapter = new CardAdapter(trials, MyTrialsFragment.this, getActivity().getSupportFragmentManager());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -94,7 +94,7 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
             trials.add(new Trial("Internet unavailable",
                     "Please enable an internet connection in order to use Neurobranch services.",
                     "You", false));
-            adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+            adapter = new CardAdapter(trials, MyTrialsFragment.this, getActivity().getSupportFragmentManager());
         }
 
         recyclerView.setAdapter(adapter);
@@ -103,15 +103,12 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
     @Override
     public void onLoadCompleted(JSONArray object) {
         ArrayList<Trial> trials = JSON.parseTrialJSON(object);
-        for (Trial trial : trials)
-            System.out.println(trial.getTitle());
-
         if (trials.size() == 0) {
             trials.add(new Trial("No Trials Currently Available",
                     "There are no trials available to you at this time", "You", false));
         }
 
-        adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
+        adapter = new CardAdapter(trials, MyTrialsFragment.this, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
     }
 }

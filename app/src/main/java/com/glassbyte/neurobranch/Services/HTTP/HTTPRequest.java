@@ -106,15 +106,19 @@ public class HTTPRequest {
         JSONCallback jsonCallback;
         String trialId, candidateId, questionId;
 
+        public ReceiveJSON(Context context, URL url) {
+            this(context, url, null, null, null, null);
+        }
+
         public ReceiveJSON(Context context, URL url, JSONCallback jsonCallback) {
+            this(context, url, jsonCallback, null, null, null);
+        }
+
+        public ReceiveJSON(Context context, URL url, JSONCallback jsonCallback,
+                           String trialId, String questionId, String candidateId) {
             this.context = context;
             this.url = url;
             this.jsonCallback = jsonCallback;
-        }
-
-        public ReceiveJSON(Context context, URL url, String trialId, String questionId, String candidateId) {
-            this.context = context;
-            this.url = url;
             this.trialId = trialId;
             this.questionId = questionId;
             this.candidateId = candidateId;

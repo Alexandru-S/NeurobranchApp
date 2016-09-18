@@ -104,7 +104,7 @@ public class JSON {
                 String duration = trial.getString(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
                 String eligibilityForm = "eligibilityForm"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
-                String waiver = "Waiver Ayyyyyyyyy lmao lol"; //trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
+                String waiver = "Waiver ayyyyyyyyy lmao lol"; //trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
 
                 String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_CREATED);
                 String dateStarted = "0"; //trial.getString(DataFormatting.TRIAL_DATE_STARTED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_STARTED);
@@ -114,7 +114,7 @@ public class JSON {
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc, type,
-                        institute, condition, Long.parseLong(duration), frequency,
+                        institute, condition, Integer.parseInt(duration), frequency,
                         waiver, eligibilityForm, Long.parseLong(dateCreated),
                         Long.parseLong(dateStarted), Long.parseLong(dateEnded),
                         Integer.parseInt(candidateQuota), Attributes.getTrialState(state), researcherId));

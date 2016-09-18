@@ -19,11 +19,23 @@ import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
 import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
+import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.Globals;
+import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
+import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 import com.glassbyte.neurobranch.Services.Sync.Service;
+import com.glassbyte.neurobranch.Services.Sync.WebServer;
 import com.glassbyte.neurobranch.Settings.Settings;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
