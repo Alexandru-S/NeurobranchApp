@@ -25,6 +25,7 @@ public class Trial {
     String frequency;
     String waiver, eligibilityForm;
     int currentDay;
+    int passmark;
 
     public Trial(JSONObject trialDetails) throws JSONException {
         this(trialDetails.getString(JSON.DataFormatting.TRIAL_ID),
@@ -42,8 +43,10 @@ public class Trial {
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_STARTED),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_ENDED),
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_CANDIDATE_QUOTA),
-                (Attributes.TrialState) trialDetails.get(JSON.DataFormatting.TRIAL_STATE),
-                trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID));
+                Attributes.getTrialState(trialDetails.getString(JSON.DataFormatting.TRIAL_STATE)),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_PASSMARK),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_CURRENT_DURATION));
     }
 
     public Trial(String title, String briefDescription, String institute, boolean isClickable) {
@@ -57,7 +60,7 @@ public class Trial {
                  String trialType, String institute, String condition, int duration,
                  String frequency, String waiver, String eligibilityForm, long dateCreated,
                  long dateStarted, long dateEnded, int candidateQuota,
-                 Attributes.TrialState trialState, String researcherId) {
+                 Attributes.TrialState trialState, String researcherId, int passmark, int currentDay) {
         this.trialId = trialId;
         this.title = title;
         this.briefDescription = briefDescription;
@@ -76,6 +79,8 @@ public class Trial {
         this.trialState = trialState;
         this.researcherId = researcherId;
         this.isClickable = true;
+        this.passmark = passmark;
+        this.currentDay = currentDay;
     }
 
     public boolean isClickable() {

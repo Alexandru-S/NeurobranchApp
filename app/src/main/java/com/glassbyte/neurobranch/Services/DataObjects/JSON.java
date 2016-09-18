@@ -33,6 +33,8 @@ public class JSON {
         public static final String TRIAL_CANDIDATE_QUOTA = "candidatequota";
         public static final String TRIAL_STATE = "state";
         public static final String TRIAL_RESEARCHER_ID = "researcherid";
+        public static final String TRIAL_PASSMARK = "passmark";
+        public static final String TRIAL_CURRENT_DURATION = "currentduration";
     }
 
     public static JSONObject generatePost(ArrayList<String> metaKeys, ArrayList<String> metaValues,
@@ -101,23 +103,24 @@ public class JSON {
                 String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
                 String condition = trial.getString(DataFormatting.TRIAL_CONDITION);
 
-                String duration = trial.getString(DataFormatting.TRIAL_DURATION);
+                int duration = trial.getInt(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
-                String eligibilityForm = "eligibilityForm"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
-                String waiver = "Waiver ayyyyyyyyy lmao lol"; //trial.getString(DataFormatting.TRIAL_SCREENING_FORM);
+                String eligibilityForm = trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
+                String waiver = trial.getString(DataFormatting.TRIAL_WAIVER);
 
-                String dateCreated = trial.getString(DataFormatting.TRIAL_DATE_CREATED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_CREATED);
-                String dateStarted = "0"; //trial.getString(DataFormatting.TRIAL_DATE_STARTED) == null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_STARTED);
-                String dateEnded = "0"; //trial.getString(DataFormatting.TRIAL_DATE_ENDED)== null ? "0" : trial.getString(DataFormatting.TRIAL_DATE_ENDED);
-                String candidateQuota = trial.getString(DataFormatting.TRIAL_CANDIDATE_QUOTA);
-                String state = trial.getString(DataFormatting.TRIAL_STATE);
+                Long dateCreated = trial.getLong(DataFormatting.TRIAL_DATE_CREATED);
+                Long dateStarted = trial.getLong(DataFormatting.TRIAL_DATE_STARTED);
+                Long dateEnded = trial.getLong(DataFormatting.TRIAL_DATE_ENDED);
+                int candidateQuota = trial.getInt(DataFormatting.TRIAL_CANDIDATE_QUOTA);
+                Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
+                int passmark = trial.getInt(DataFormatting.TRIAL_PASSMARK);
+                int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc, type,
-                        institute, condition, Integer.parseInt(duration), frequency,
-                        waiver, eligibilityForm, Long.parseLong(dateCreated),
-                        Long.parseLong(dateStarted), Long.parseLong(dateEnded),
-                        Integer.parseInt(candidateQuota), Attributes.getTrialState(state), researcherId));
+                        institute, condition, duration, frequency, waiver, eligibilityForm,
+                        dateCreated, dateStarted, dateEnded, candidateQuota, state,
+                        researcherId, passmark, currentDuration));
             }
         } catch (JSONException e) {
             e.printStackTrace();
