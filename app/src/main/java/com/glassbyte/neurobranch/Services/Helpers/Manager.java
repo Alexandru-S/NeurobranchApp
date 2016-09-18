@@ -41,6 +41,7 @@ public class Manager {
                 .putString(preference.name(), value).apply();
     }
 
+
     public void setFragment(FragmentManager fragmentManager, Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.auth_frame, fragment).commit();
     }

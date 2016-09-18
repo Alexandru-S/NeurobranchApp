@@ -27,6 +27,18 @@ public class Globals {
         return HOST_ADDRESS + "/api/get-questions/trialid/" + trialid;
     }
 
+    public static String getRequestedCandidates(String candidateid) {
+        return HOST_ADDRESS + "/api/get-requested-candidates/candidate/" + candidateid;
+    }
+
+    public static String getPartitiveMyTrials(String candidateid) {
+        return HOST_ADDRESS + "/api/get-candidate-trials/" + candidateid;
+    }
+
+    public static String getExcludedTrials(String candidateid) {
+        return HOST_ADDRESS + "/api/get-candidate-excluded-trials/" + candidateid;
+    }
+
     public static final String CANDIDATE_SIGNUP_ADDRESS = HOST_ADDRESS + "/api/create-candidate";
     public static final String CANDIDATE_LOGIN_ADDRESS = HOST_ADDRESS + "/api/candidate-login";
 

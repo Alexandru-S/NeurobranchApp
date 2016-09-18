@@ -12,12 +12,16 @@ import android.view.ViewGroup;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -78,8 +82,9 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
                 ArrayList<Trial> trials = new ArrayList<>();
                 trials.add(new Trial("Trial Loading...", "Please wait while trials are loaded",
                         "You", false));
-                new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.RETRIEVE_TRIALS_ADDRESS),
-                        MyTrialsFragment.this).execute();
+                new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.getPartitiveMyTrials(
+                        Manager.getInstance().getPreference(Preferences.id, getContext())
+                )), MyTrialsFragment.this).execute();
                 adapter = new CardAdapter(trials, getActivity().getSupportFragmentManager());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -98,7 +103,7 @@ public class MyTrialsFragment extends android.support.v4.app.Fragment implements
     @Override
     public void onLoadCompleted(JSONArray object) {
         ArrayList<Trial> trials = JSON.parseTrialJSON(object);
-        for(Trial trial : trials)
+        for (Trial trial : trials)
             System.out.println(trial.getTitle());
 
         if (trials.size() == 0) {

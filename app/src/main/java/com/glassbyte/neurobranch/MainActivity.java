@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        new Fragments.AsyncSetFrag(getSupportFragmentManager(), new DefaultPortalFragment()).execute();
+        new Fragments.AsyncSetFrag(getSupportFragmentManager(), new TrialsAvailableFragment()).execute();
     }
 
     @Override

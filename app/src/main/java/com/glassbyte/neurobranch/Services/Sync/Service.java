@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -23,6 +24,9 @@ public class Service {
 
         @Override
         protected void onHandleIntent(Intent intent) {
+
+            ArrayList<String> trialsSubscribed = new ArrayList<>();
+
             //poll user account on hour elapse
             WebServer.synchronise(getApplicationContext(), "");
         }
