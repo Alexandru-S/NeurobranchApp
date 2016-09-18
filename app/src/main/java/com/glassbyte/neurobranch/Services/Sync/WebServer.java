@@ -32,19 +32,20 @@ public class WebServer {
         }
 
         public static void pollTrialStates(final Context context) {
-            final ArrayList<String> trialIds = new ArrayList<>();
+            final ArrayList<Trial> trials = new ArrayList<>();
 
             JSONCallback jsonCallback = new JSONCallback() {
                 @Override
                 public void onLoadCompleted(JSONArray object) {
+                    System.out.println("partitive trials " + object);
                     for (int i = 0; i < object.length(); i++) {
                         try {
-                            trialIds.add(object.getJSONObject(i).getString("trialid"));
+                            trials.add(new Trial(object.getJSONObject(i)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                    for (String trialid : trialIds) WebServer.synchronise(context, trialid);
+                    for (Trial trial : trials) WebServer.synchronise(context, trial.getTrialId());
                 }
             };
             try {

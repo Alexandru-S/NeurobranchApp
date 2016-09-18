@@ -1,5 +1,8 @@
 package com.glassbyte.neurobranch.Services.DataObjects;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by ed on 14/06/16.
  */
@@ -22,6 +25,26 @@ public class Trial {
     String frequency;
     String waiver, eligibilityForm;
     int currentDay;
+
+    public Trial(JSONObject trialDetails) throws JSONException {
+        this(trialDetails.getString(JSON.DataFormatting.TRIAL_ID),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_NAME),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_BRIEF_DESCRIPTION),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_DETAILED_DESCRIPTION),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_TYPE),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_INSTITUTE),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_CONDITION),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_DURATION),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_FREQUENCY),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_WAIVER),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM),
+                trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_CREATED),
+                trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_STARTED),
+                trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_ENDED),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_CANDIDATE_QUOTA),
+                (Attributes.TrialState) trialDetails.get(JSON.DataFormatting.TRIAL_STATE),
+                trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID));
+    }
 
     public Trial(String title, String briefDescription, String institute, boolean isClickable) {
         this.title = title;

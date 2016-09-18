@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         new Fragments.AsyncSetFrag(getSupportFragmentManager(), new TrialsAvailableFragment()).execute();
+        WebServer.PollAccount.pollTrialStates(getApplicationContext());
     }
 
     @Override

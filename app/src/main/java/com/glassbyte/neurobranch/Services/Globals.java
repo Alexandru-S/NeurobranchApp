@@ -39,6 +39,10 @@ public class Globals {
         return HOST_ADDRESS + "/api/get-candidate-excluded-trials/" + candidateid;
     }
 
+    public static String getTrialById(String trialid) {
+        return HOST_ADDRESS + "/api/get-trial/trialid/" + trialid;
+    }
+
     public static final String CANDIDATE_SIGNUP_ADDRESS = HOST_ADDRESS + "/api/create-candidate";
     public static final String CANDIDATE_LOGIN_ADDRESS = HOST_ADDRESS + "/api/candidate-login";
 

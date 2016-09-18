@@ -25,7 +25,7 @@ public class JSON {
         public static final String TRIAL_CONDITION = "condition";
         public static final String TRIAL_DURATION = "duration";
         public static final String TRIAL_FREQUENCY = "frequency";
-        public static final String TRIAL_SCREENING_FORM = "screening";
+        public static final String TRIAL_WAIVER = "waiver";
         public static final String TRIAL_ELIGIBILITY_FORM = "eligibility";
         public static final String TRIAL_DATE_CREATED = "datecreated";
         public static final String TRIAL_DATE_STARTED = "datestarted";
