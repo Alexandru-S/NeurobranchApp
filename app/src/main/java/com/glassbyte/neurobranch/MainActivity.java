@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity
                 new Intent(this, Service.SyncService.class),
                 PendingIntent.FLAG_NO_CREATE) != null);
 
+        //debug remove alarm at restart
+        alarmReceiver.cancelAlarm(this);
+
         if (alarmUp) System.out.println("Synchronisation alarm is already active");
         else alarmReceiver.setAlarm(this);
 
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         new Fragments.AsyncSetFrag(getSupportFragmentManager(), new TrialsAvailableFragment()).execute();
-        WebServer.PollAccount.pollTrialStates(getApplicationContext());
+        WebServer.pollTrialStates(getApplicationContext());
     }
 
     @Override

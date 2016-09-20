@@ -1,12 +1,9 @@
 package com.glassbyte.neurobranch.Services.DataObjects;
 
-import android.graphics.drawable.Drawable;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,11 +19,11 @@ public class JSON {
         public static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
         public static final String TRIAL_TYPE = "trialtype";
         public static final String TRIAL_INSTITUTE = "institute";
-        public static final String TRIAL_CONDITION = "condition";
+        public static final String TRIAL_CONDITION = "tags";
         public static final String TRIAL_DURATION = "duration";
         public static final String TRIAL_FREQUENCY = "frequency";
-        public static final String TRIAL_WAIVER = "waiver";
-        public static final String TRIAL_ELIGIBILITY_FORM = "eligibility";
+        public static final String TRIAL_WAIVER = "waiverform";
+        public static final String TRIAL_ELIGIBILITY_FORM = "eligibilityform";
         public static final String TRIAL_DATE_CREATED = "datecreated";
         public static final String TRIAL_DATE_STARTED = "datestarted";
         public static final String TRIAL_DATE_ENDED = "dateended";
@@ -35,25 +32,6 @@ public class JSON {
         public static final String TRIAL_RESEARCHER_ID = "researcherid";
         public static final String TRIAL_PASSMARK = "passmark";
         public static final String TRIAL_CURRENT_DURATION = "currentduration";
-    }
-
-    public static JSONObject generatePost(ArrayList<String> metaKeys, ArrayList<String> metaValues,
-                                          ArrayList<String> questions, ArrayList<String> answers) throws JSONException {
-        JSONObject trialResponses = new JSONObject();
-        for (int i = 0; i < questions.size(); i++) {
-            trialResponses.put(questions.get(i), answers.get(i));
-        }
-
-        JSONArray data = new JSONArray();
-        data.put(trialResponses);
-
-        JSONObject metaData = new JSONObject();
-        for (int i = 0; i < metaKeys.size(); i++) {
-            metaData.put(metaKeys.get(i), metaValues.get(i));
-        }
-        metaData.put("Post", data);
-
-        return metaData;
     }
 
     public static ArrayList<Object> parseQuestions(JSONArray receivedQuestions) {
@@ -105,7 +83,7 @@ public class JSON {
 
                 int duration = trial.getInt(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
-                String eligibilityForm = trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
+                String eligibilityForm = "0"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
                 String waiver = trial.getString(DataFormatting.TRIAL_WAIVER);
 
                 Long dateCreated = trial.getLong(DataFormatting.TRIAL_DATE_CREATED);
@@ -114,7 +92,7 @@ public class JSON {
                 int candidateQuota = trial.getInt(DataFormatting.TRIAL_CANDIDATE_QUOTA);
                 Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                int passmark = trial.getInt(DataFormatting.TRIAL_PASSMARK);
+                int passmark = 0; //trial.getInt(DataFormatting.TRIAL_PASSMARK);
                 int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc, type,

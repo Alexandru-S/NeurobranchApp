@@ -22,22 +22,19 @@ import java.util.ArrayList;
  * Created by ed on 14/08/16.
  */
 public class WebServer {
-    public static void synchronise(Context context, String trialid) {
-        Manager.getInstance().notifyUserWeb(context, trialid);
+    public static String getCandidateId(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("id", "");
     }
 
-    public static class PollAccount {
-        public static String getCandidateId(Context context) {
-            return PreferenceManager.getDefaultSharedPreferences(context).getString("id", "");
-        }
+    public static void pollTrialStates(final Context context) {
+        final ArrayList<Trial> trials = new ArrayList<>();
 
-        public static void pollTrialStates(final Context context) {
-            final ArrayList<Trial> trials = new ArrayList<>();
-
-            JSONCallback jsonCallback = new JSONCallback() {
-                @Override
-                public void onLoadCompleted(JSONArray object) {
+        JSONCallback jsonCallback = new JSONCallback() {
+            @Override
+            public void onLoadCompleted(JSONArray object) {
+                if (object != null) {
                     System.out.println("partitive trials " + object);
+                    System.out.println(object.length() + " trial(s) currently partitive + active");
                     for (int i = 0; i < object.length(); i++) {
                         try {
                             trials.add(new Trial(object.getJSONObject(i)));
@@ -45,15 +42,19 @@ public class WebServer {
                             e.printStackTrace();
                         }
                     }
-                    for (Trial trial : trials) WebServer.synchronise(context, trial.getTrialId());
+                    for (Trial trial : trials)
+                        Manager.getInstance().notifyUserWeb(context, trial.getTrialId());
+                } else {
+                    System.out.println("No trials currently partitive + active for user");
                 }
-            };
-            try {
-                new HTTPRequest.ReceiveJSON(context, new URL(Globals.getPartitiveMyTrials(
-                        Manager.getInstance().getPreference(Preferences.id, context))), jsonCallback).execute();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             }
+        };
+        try {
+            new HTTPRequest.ReceiveJSON(context, new URL(Globals.getActivePartitiveMyTrials(
+                    Manager.getInstance().getPreference(Preferences.id, context), "active")),
+                    jsonCallback).execute();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
     }
 }

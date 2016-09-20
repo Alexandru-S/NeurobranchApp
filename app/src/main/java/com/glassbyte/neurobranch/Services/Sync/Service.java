@@ -37,12 +37,12 @@ public class Service {
 
         @Override
         protected void onHandleIntent(Intent intent) {
-            WebServer.PollAccount.pollTrialStates(getApplicationContext());
+            WebServer.pollTrialStates(getApplicationContext());
         }
     }
 
     public class AlarmReceiver extends WakefulBroadcastReceiver {
-        public static final int INTERVAL = 1000 * 60 * 60; // 1 hour
+        public static final int INTERVAL = 1000; //1 min
 
         private AlarmManager alarmManager;
         private PendingIntent pendingIntent;
@@ -61,7 +61,7 @@ public class Service {
             calendar.setTimeInMillis(System.currentTimeMillis() + INTERVAL);
 
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_HOUR, pendingIntent);
+                    INTERVAL, pendingIntent);
 
             //reset alarm on reboot
             ComponentName receiver = new ComponentName(context, SyncService.class);
@@ -71,7 +71,7 @@ public class Service {
                     PackageManager.DONT_KILL_APP);
         }
 
-        //if user isn't part of any trials
+        //if user isn't part of any trials? -- unused currently
         public void cancelAlarm(Context context) {
             if (alarmManager != null)
                 alarmManager.cancel(pendingIntent);

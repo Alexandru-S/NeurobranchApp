@@ -126,21 +126,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                             .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(context, "I agreed to the waiver", Toast.LENGTH_LONG).show();
                                     new AlertDialog.Builder(context)
-                                            .setTitle("Debug Delegate Eligibility")
-                                            .setPositiveButton("Open Qs", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId());
-                                                    //Toast.makeText(context, "Delegate eligibility form", Toast.LENGTH_LONG).show();
-                                                }
-                                            })
-                                            .setNegativeButton("Join", new DialogInterface.OnClickListener() {
+                                            .setTitle(trial.getTitle())
+                                            .setMessage("To join a trial, choose an option below")
+                                            .setPositiveButton("Join", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
                                                             Preferences.id, getContext()), trial.getTrialId()).execute();
+                                                }
+                                            })
+                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
                                                 }
                                             })
                                             .show();
@@ -149,7 +147,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                             .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(context, "I disagreed to the waiver", Toast.LENGTH_LONG).show();
+
                                 }
                             }).show();
                 }

@@ -41,9 +41,7 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
                 super.onCreate(savedInstanceState);
                 setTheme(R.style.AppTheme);
 
-                System.out.println(WebServer.PollAccount.getCandidateId(Settings.this));
-
-                new HTTPRequest.GetCandidateDetails(WebServer.PollAccount.getCandidateId(Settings.this),
+                new HTTPRequest.GetCandidateDetails(WebServer.getCandidateId(Settings.this),
                             Settings.this).execute();
             }
 

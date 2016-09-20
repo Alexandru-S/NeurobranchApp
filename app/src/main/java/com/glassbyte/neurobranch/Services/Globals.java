@@ -32,7 +32,11 @@ public class Globals {
     }
 
     public static String getPartitiveMyTrials(String candidateid) {
-        return HOST_ADDRESS + "/api/get-candidate-trials/" + candidateid;
+        return HOST_ADDRESS + "/api/get-candidate-my-trials/" + candidateid;
+    }
+
+    public static String getActivePartitiveMyTrials(String candidateid, String state) {
+        return HOST_ADDRESS + "/api/get-candidate-trials/" + candidateid + "/state/" + state;
     }
 
     public static String getExcludedTrials(String candidateid) {
@@ -50,10 +54,6 @@ public class Globals {
     public static final String POST_RESPONSE_ADDRESS = HOST_ADDRESS + "/api/create-response/";
 
     public static final String ADD_TO_REQUESTED_LIST = HOST_ADDRESS + "/api/create-requested-candidate";
-
-
-    //deprecated static hosting
-    public static final String GET_QUESTIONS_ADDRESS = "http://www.glassbyte.com/neurobranch_mock_data/questions.json";
 
     //programmatic layout helpers
     public static int getDp(Context context, float pixels) {

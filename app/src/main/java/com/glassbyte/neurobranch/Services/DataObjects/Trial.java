@@ -38,14 +38,14 @@ public class Trial {
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_DURATION),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_FREQUENCY),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_WAIVER),
-                trialDetails.getString(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM),
+                "0", //trialDetails.getString(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_CREATED),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_STARTED),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_ENDED),
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_CANDIDATE_QUOTA),
                 Attributes.getTrialState(trialDetails.getString(JSON.DataFormatting.TRIAL_STATE)),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID),
-                trialDetails.getInt(JSON.DataFormatting.TRIAL_PASSMARK),
+                0, //trialDetails.getInt(JSON.DataFormatting.TRIAL_PASSMARK),
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_CURRENT_DURATION));
     }
 
