@@ -19,7 +19,7 @@ public class JSON {
         public static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
         public static final String TRIAL_TYPE = "trialtype";
         public static final String TRIAL_INSTITUTE = "institute";
-        public static final String TRIAL_CONDITION = "tags";
+        public static final String TRIAL_TAGS = "tags";
         public static final String TRIAL_DURATION = "duration";
         public static final String TRIAL_FREQUENCY = "frequency";
         public static final String TRIAL_WAIVER = "waiverform";
@@ -79,7 +79,7 @@ public class JSON {
                 String detailedDesc = trial.getString(DataFormatting.TRIAL_DETAILED_DESCRIPTION);
                 String type = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
                 String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
-                String condition = trial.getString(DataFormatting.TRIAL_CONDITION);
+                ArrayList<String> tags = parseJSONArray((JSONArray) trial.get(DataFormatting.TRIAL_TAGS));
 
                 int duration = trial.getInt(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
@@ -96,7 +96,7 @@ public class JSON {
                 int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc, type,
-                        institute, condition, duration, frequency, waiver, eligibilityForm,
+                        institute, tags, duration, frequency, waiver, eligibilityForm,
                         dateCreated, dateStarted, dateEnded, candidateQuota, state,
                         researcherId, passmark, currentDuration));
             }
@@ -104,6 +104,20 @@ public class JSON {
             e.printStackTrace();
         }
         return trials;
+    }
+
+    public static ArrayList<String> parseJSONArray(JSONArray array) {
+        ArrayList<String> objects = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject object = array.getJSONObject(i);
+                objects.add(object.getString("tag"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return objects;
     }
 
     public static JSONObject parseList(ArrayList<Object> list) {

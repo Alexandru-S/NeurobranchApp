@@ -1,7 +1,7 @@
 package com.glassbyte.neurobranch.Services.Sync;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
+import android.app.IntentService;
+import android.content.Intent;
 
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
@@ -12,7 +12,6 @@ import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,15 +19,18 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by ed on 14/08/16.
+ * Created by ed on 14/08/16
  */
-public class WebServer {
-    public static String getCandidateId(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString("id", "");
+public class SyncService extends IntentService {
+    ArrayList<Trial> trials = new ArrayList<>();
+
+    public SyncService() {
+        super("SyncService");
     }
 
-    public static void pollTrialStates(final Context context) {
-        final ArrayList<Trial> trials = new ArrayList<>();
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        System.out.println("Invoking web service");
 
         JSONCallback jsonCallback = new JSONCallback() {
             @Override
@@ -44,18 +46,19 @@ public class WebServer {
                         }
                     }
                     for (Trial trial : trials)
-                        Manager.getInstance().notifyUserWeb(context, trial.getTrialId());
+                        Manager.getInstance().notifyUserWeb(getApplicationContext(), trial.getTrialId());
                 } else {
                     System.out.println("No trials currently partitive + active for user");
                 }
             }
         };
         try {
-            new HTTPRequest.ReceiveJSON(context, new URL(Globals.getActivePartitiveMyTrials(
-                    Manager.getInstance().getPreference(Preferences.id, context), "active")),
-                    jsonCallback).get();
-        } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+            URL url = new URL(Globals.getActivePartitiveMyTrials(Manager.getInstance()
+                    .getPreference(Preferences.id, getApplicationContext()), "active"));
+            new HTTPRequest.ReceiveJSON(getApplicationContext(), url, jsonCallback).get();
+        } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
         }
     }
 }
+

@@ -63,7 +63,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         holder.title.setText(trial.getTitle());
         holder.description.setText(Formatting.truncateText(trial.getBriefDescription(), Formatting.MAX_DESC_SIZE));
         holder.institute.setText(trial.getInstitute());
-        holder.condition.setText(trial.getCondition() != null ? capitalise(trial.getCondition()) : null);
+
+        String tags = "";
+
+        for (int i = 0; i < trial.getTags().size(); i++) {
+            String tag = trial.getTags().get(i);
+            if (i == 0 || i == trial.getTags().size()) tags += tag;
+            else tags += ", " + tag;
+        }
+
+        holder.tags.setText(tags);
 
         this.context = holder.title.getContext();
 
@@ -86,7 +95,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                     alertDescription(trial, context);
                 }
             });
-            holder.condition.setOnClickListener(new View.OnClickListener() {
+            holder.tags.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     alertDescription(trial, context);
@@ -112,7 +121,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             } else {
                 Toast.makeText(getContext(), "Answer not allowed", Toast.LENGTH_LONG).show();
             }
-
         } else {
             TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(),
                     trial.getResearcherId(), trial.getInstitute(), trial.getDateCreated());
@@ -164,7 +172,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     public void onRetrieved(JSONObject jsonObject) {
         try {
             Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
-            if(jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
+            if (jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
                 Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
             } else {
                 Toast.makeText(getContext(), "Please verify your account in order to join trials", Toast.LENGTH_LONG).show();
@@ -178,10 +186,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         return context;
     }
 
-    public Trial getTrial() { return trial; }
+    public Trial getTrial() {
+        return trial;
+    }
 
     public class DataObjectHolder extends RecyclerView.ViewHolder {
-        TextView title, description, institute, condition;
+        TextView title, description, institute, tags;
         Context context;
 
         public DataObjectHolder(final View itemView, Context context) {
@@ -190,7 +200,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             title = (TextView) itemView.findViewById(R.id.trial_title);
             description = (TextView) itemView.findViewById(R.id.trial_desc);
             institute = (TextView) itemView.findViewById(R.id.trial_institute);
-            condition = (TextView) itemView.findViewById(R.id.trial_condition);
+            tags = (TextView) itemView.findViewById(R.id.trial_tags);
         }
 
         public Context getContext() {

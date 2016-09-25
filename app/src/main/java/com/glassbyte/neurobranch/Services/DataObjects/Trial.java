@@ -1,7 +1,10 @@
 package com.glassbyte.neurobranch.Services.DataObjects;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by ed on 14/06/16.
@@ -12,7 +15,7 @@ public class Trial {
     String detailedDescription;
     String trialType;
     String institute;
-    String condition;
+    ArrayList<String> tags;
     long dateCreated;
     long dateStarted;
     long dateEnded;
@@ -34,7 +37,7 @@ public class Trial {
                 trialDetails.getString(JSON.DataFormatting.TRIAL_DETAILED_DESCRIPTION),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_TYPE),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_INSTITUTE),
-                trialDetails.getString(JSON.DataFormatting.TRIAL_CONDITION),
+                JSON.parseJSONArray((JSONArray) trialDetails.get(JSON.DataFormatting.TRIAL_TAGS)),
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_DURATION),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_FREQUENCY),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_WAIVER),
@@ -57,7 +60,7 @@ public class Trial {
     }
 
     public Trial(String trialId, String title, String briefDescription, String detailedDescription,
-                 String trialType, String institute, String condition, int duration,
+                 String trialType, String institute, ArrayList<String> tags, int duration,
                  String frequency, String waiver, String eligibilityForm, long dateCreated,
                  long dateStarted, long dateEnded, int candidateQuota,
                  Attributes.TrialState trialState, String researcherId, int passmark, int currentDay) {
@@ -67,7 +70,7 @@ public class Trial {
         this.detailedDescription = detailedDescription;
         this.trialType = trialType;
         this.institute = institute;
-        this.condition = condition;
+        this.tags = tags;
         this.duration = duration;
         this.frequency = frequency;
         this.waiver = waiver;
@@ -107,8 +110,8 @@ public class Trial {
         return institute;
     }
 
-    public String getCondition() {
-        return condition;
+    public ArrayList<String> getTags() {
+        return tags;
     }
 
     public long getDateCreated() {

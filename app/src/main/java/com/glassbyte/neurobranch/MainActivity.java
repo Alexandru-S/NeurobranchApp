@@ -2,9 +2,7 @@ package com.glassbyte.neurobranch;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,23 +17,12 @@ import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
 import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
-import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
-import com.glassbyte.neurobranch.Services.Globals;
-import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
-import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
-import com.glassbyte.neurobranch.Services.Sync.Service;
-import com.glassbyte.neurobranch.Services.Sync.WebServer;
+import com.glassbyte.neurobranch.Services.Sync.AlarmReceiver;
+import com.glassbyte.neurobranch.Services.Sync.SyncService;
 import com.glassbyte.neurobranch.Settings.Settings;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,19 +31,22 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     DrawerLayout drawer;
 
-    Service.AlarmReceiver alarmReceiver = new Service().new AlarmReceiver();
+    AlarmReceiver alarmReceiver = new AlarmReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean alarmUp = (PendingIntent.getBroadcast(this, 0,
-                new Intent(this, Service.SyncService.class),
-                PendingIntent.FLAG_NO_CREATE) != null);
-
         //debug remove alarm at restart
         alarmReceiver.cancelAlarm(this);
 
-        if (alarmUp) System.out.println("Synchronisation alarm is already active");
-        else alarmReceiver.setAlarm(this);
+        boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent(this, SyncService.class),
+                PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (alarmUp) {
+            System.out.println("Synchronisation alarm is already active");
+        } else {
+            alarmReceiver.setAlarm(this);
+            System.out.println("Synchronisation alarm invoked and set to enabled");
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -98,7 +88,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         new Fragments.AsyncSetFrag(getSupportFragmentManager(), new TrialsAvailableFragment()).execute();
-        WebServer.pollTrialStates(getApplicationContext());
     }
 
     @Override

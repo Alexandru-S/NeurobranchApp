@@ -26,7 +26,6 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
     String title, desc, researcher, institute;
     long startTime;
 
-    //listener that the corresponding button implements
     public interface SetTrialInfoListener {
         void onJoinClick(TrialInfo dialogFragment);
     }
