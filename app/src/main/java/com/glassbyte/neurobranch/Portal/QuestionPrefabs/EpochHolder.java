@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.MainActivity;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Unimplemented.Drawing;
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Unimplemented.Multimedia;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
@@ -40,14 +38,15 @@ public class EpochHolder extends AppCompatActivity {
 
     ViewPager viewPager;
     String trialId, questionId, candidateId;
+    boolean isEligibility;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle details = getIntent().getExtras();
         setTrialId(details.getString("TRIAL_ID"));
-        Toast.makeText(getApplicationContext(), getTrialId(), Toast.LENGTH_SHORT).show();
+        setEligibility(details.getBoolean("TRIAL_ELIGIBILITY"));
 
-        //check the trialid to see if an eligibility form is requirgted
+        //check the trialid to see if an eligibility form is required
         //make a call to see if the user exists in the requested list
         //if so, the eligibility form must be shown to the user and completed
         //this also means that a field for enabling usage of the score is needed
@@ -55,9 +54,16 @@ public class EpochHolder extends AppCompatActivity {
         //else they are removed from the requested list
 
         try {
-            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
-                    this, new URL(Globals.retrieveTrialQuestions(getTrialId())),
-                    null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+            if (isEligibility()) {
+                properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
+                        this, new URL(Globals.retrieveEligibilityQuestions(getTrialId())),
+                        null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+            } else {
+                properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
+                        this, new URL(Globals.retrieveTrialQuestions(getTrialId())),
+                        null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+            }
+
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
         } finally {
@@ -81,12 +87,12 @@ public class EpochHolder extends AppCompatActivity {
             for(Question question : questions) {
                 if(question.getType() == Attributes.QuestionType.checkbox) {
                     fragments.add(new Checkbox(properties, questions.size(), questions.indexOf(question)));
-                } else if(question.getType() == Attributes.QuestionType.choice) {
-                    fragments.add(new Choice(properties, questions.size(), questions.indexOf(question)));
+                } else if(question.getType() == Attributes.QuestionType.radio) {
+                    fragments.add(new Radio(properties, questions.size(), questions.indexOf(question)));
                 } else if(question.getType() == Attributes.QuestionType.scale) {
                     fragments.add(new Scale(properties, questions.size(), questions.indexOf(question)));
-                } else if(question.getType() == Attributes.QuestionType.section) {
-                    fragments.add(new Section(properties, questions.size(), questions.indexOf(question)));
+                } else if(question.getType() == Attributes.QuestionType.text) {
+                    fragments.add(new Text(properties, questions.size(), questions.indexOf(question)));
                 }
             }
 
@@ -184,6 +190,14 @@ public class EpochHolder extends AppCompatActivity {
 
     public String getTrialId() {
         return trialId;
+    }
+
+    public boolean isEligibility() {
+        return isEligibility;
+    }
+
+    public void setEligibility(boolean eligibility) {
+        isEligibility = eligibility;
     }
 
     public void setTrialId(String trialId) {

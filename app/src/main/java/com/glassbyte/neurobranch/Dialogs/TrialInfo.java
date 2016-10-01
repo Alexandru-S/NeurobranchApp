@@ -21,9 +21,9 @@ import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 @SuppressLint("ValidFragment")
 public class TrialInfo extends android.support.v4.app.DialogFragment {
 
-    TextView tvDescription, tvResearcher, tvStartTime, tvInstitute;
+    TextView tvDescription, tvStartTime, tvInstitute;
     SetTrialInfoListener setTrialInfoListener;
-    String title, desc, researcher, institute;
+    String title, desc, institute;
     long startTime;
 
     public interface SetTrialInfoListener {
@@ -35,10 +35,9 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public TrialInfo(String title, String desc, String researcher, String institute, long startTime) {
+    public TrialInfo(String title, String desc, String institute, long startTime) {
         this.title = title;
         this.desc = desc;
-        this.researcher = researcher;
         this.institute = institute;
         this.startTime = startTime;
     }
@@ -93,21 +92,10 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
         tvStartTime.setText(createdOn);
         tvStartTime.setId(View.generateViewId());
 
-        tvResearcher = new TextView(this.getActivity());
-        RelativeLayout.LayoutParams researcherParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        researcherParams.addRule(RelativeLayout.BELOW, tvStartTime.getId());
-        researcherParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 0),
-                Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 0));
-        tvResearcher.setLayoutParams(researcherParams);
-        String hostedBy = "Hosted by: " + getResearcher();
-        tvResearcher.setText(hostedBy);
-        tvResearcher.setId(View.generateViewId());
-
         tvDescription = new TextView(this.getActivity());
         RelativeLayout.LayoutParams descParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        descParams.addRule(RelativeLayout.BELOW, tvResearcher.getId());
+        descParams.addRule(RelativeLayout.BELOW, tvStartTime.getId());
         descParams.setMargins(Globals.getDp(getActivity(), 24), Globals.getDp(getActivity(), 16),
                 Globals.getDp(getActivity(), 16), Globals.getDp(getActivity(), 16));
         tvDescription.setLayoutParams(descParams);
@@ -115,7 +103,6 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
         tvDescription.setId(View.generateViewId());
 
         propertiesEntry.addView(tvInstitute);
-        propertiesEntry.addView(tvResearcher);
         propertiesEntry.addView(tvStartTime);
         propertiesEntry.addView(tvDescription);
 
@@ -132,10 +119,6 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
 
     public String getDesc() {
         return desc;
-    }
-
-    public String getResearcher() {
-        return researcher;
     }
 
     public String getInstitute() {

@@ -20,13 +20,13 @@ import java.util.ArrayList;
  * Created by ed on 10/06/16.
  */
 @SuppressLint("ValidFragment")
-public class Choice extends QuestionFragment {
+public class Radio extends QuestionFragment {
     private RadioGroup radioGroup;
     private ArrayList<Integer> radioButtons = new ArrayList<>();
     private ArrayList<String> answerChosen = new ArrayList<>();
     private ArrayList<Integer> scoreChosen = new ArrayList<>();
 
-    public Choice(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+    public Radio(ArrayList<Object> properties, int maxIndex, int questionIndex) {
         super(properties, maxIndex, questionIndex);
     }
 

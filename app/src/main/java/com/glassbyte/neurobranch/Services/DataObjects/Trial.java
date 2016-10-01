@@ -10,25 +10,26 @@ import java.util.ArrayList;
  * Created by ed on 14/06/16.
  */
 public class Trial {
-    String title;
-    String briefDescription;
-    String detailedDescription;
-    String trialType;
-    String institute;
-    ArrayList<String> tags;
-    long dateCreated;
-    long dateStarted;
-    long dateEnded;
-    int candidateQuota;
-    Attributes.TrialState trialState;
-    String researcherId;
-    String trialId;
-    boolean isClickable;
-    int duration;
-    String frequency;
-    String waiver, eligibilityForm;
-    int currentDay;
-    int passmark;
+    private String title;
+    private String briefDescription;
+    private String detailedDescription;
+    private String trialType;
+    private String institute;
+    private ArrayList<String> tags;
+    private long dateCreated;
+    private long dateStarted;
+    private long dateEnded;
+    private int candidateQuota;
+    private Attributes.TrialState trialState;
+    private String researcherId;
+    private String trialId;
+    private boolean isClickable;
+    private int duration;
+    private String frequency;
+    private String waiver;
+    private int currentDay;
+    private int passmark;
+    private boolean hasEligibility;
 
     public Trial(JSONObject trialDetails) throws JSONException {
         this(trialDetails.getString(JSON.DataFormatting.TRIAL_ID),
@@ -41,15 +42,15 @@ public class Trial {
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_DURATION),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_FREQUENCY),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_WAIVER),
-                "0", //trialDetails.getString(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_CREATED),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_STARTED),
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_ENDED),
                 trialDetails.getInt(JSON.DataFormatting.TRIAL_CANDIDATE_QUOTA),
                 Attributes.getTrialState(trialDetails.getString(JSON.DataFormatting.TRIAL_STATE)),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID),
-                0, //trialDetails.getInt(JSON.DataFormatting.TRIAL_PASSMARK),
-                trialDetails.getInt(JSON.DataFormatting.TRIAL_CURRENT_DURATION));
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_PASS_MARK),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_CURRENT_DURATION),
+                trialDetails.getBoolean(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM));
     }
 
     public Trial(String title, String briefDescription, String institute, boolean isClickable) {
@@ -61,9 +62,9 @@ public class Trial {
 
     public Trial(String trialId, String title, String briefDescription, String detailedDescription,
                  String trialType, String institute, ArrayList<String> tags, int duration,
-                 String frequency, String waiver, String eligibilityForm, long dateCreated,
+                 String frequency, String waiver, long dateCreated,
                  long dateStarted, long dateEnded, int candidateQuota,
-                 Attributes.TrialState trialState, String researcherId, int passmark, int currentDay) {
+                 Attributes.TrialState trialState, String researcherId, int passmark, int currentDay, boolean hasEligibility) {
         this.trialId = trialId;
         this.title = title;
         this.briefDescription = briefDescription;
@@ -74,7 +75,6 @@ public class Trial {
         this.duration = duration;
         this.frequency = frequency;
         this.waiver = waiver;
-        this.eligibilityForm = eligibilityForm;
         this.dateCreated = dateCreated;
         this.dateStarted = dateStarted;
         this.dateEnded = dateEnded;
@@ -84,6 +84,7 @@ public class Trial {
         this.isClickable = true;
         this.passmark = passmark;
         this.currentDay = currentDay;
+        this.hasEligibility = hasEligibility;
     }
 
     public boolean isClickable() {
@@ -154,8 +155,12 @@ public class Trial {
         return waiver;
     }
 
-    public String getEligibilityForm() {
-        return eligibilityForm;
+    public int getPassmark() {
+        return passmark;
+    }
+
+    public boolean isHasEligibility() {
+        return hasEligibility;
     }
 
     public int getCurrentDay() {

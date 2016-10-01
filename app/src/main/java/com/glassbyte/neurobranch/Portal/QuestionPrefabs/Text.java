@@ -22,11 +22,11 @@ import java.util.ArrayList;
  * Created by ed on 10/06/16.
  */
 @SuppressLint("ValidFragment")
-public class Section extends QuestionFragment {
+public class Text extends QuestionFragment {
     private EditText editText;
     private ArrayList<String> answerChosen = new ArrayList<>();
 
-    public Section(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+    public Text(ArrayList<Object> properties, int maxIndex, int questionIndex) {
         super(properties, maxIndex, questionIndex);
     }
 
@@ -38,7 +38,6 @@ public class Section extends QuestionFragment {
         editTextParams.addRule(RelativeLayout.BELOW, getQuestionTitle_tv().getId());
         editText.setId(View.generateViewId());
         editText.setLayoutParams(editTextParams);
-        editText.setHint("Enter text here...");
 
         editText.setSingleLine(false);
         editText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);

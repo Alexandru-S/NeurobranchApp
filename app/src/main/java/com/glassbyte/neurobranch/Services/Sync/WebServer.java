@@ -44,7 +44,7 @@ public class WebServer {
                         }
                     }
                     for (Trial trial : trials)
-                        Manager.getInstance().notifyUserWeb(context, trial.getTrialId());
+                        Manager.getInstance().notifyUserWeb(context, trial.getTrialId(), trial.isHasEligibility());
                 } else {
                     System.out.println("No trials currently partitive + active for user");
                 }

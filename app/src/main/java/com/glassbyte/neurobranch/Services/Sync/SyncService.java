@@ -46,7 +46,7 @@ public class SyncService extends IntentService {
                         }
                     }
                     for (Trial trial : trials)
-                        Manager.getInstance().notifyUserWeb(getApplicationContext(), trial.getTrialId());
+                        Manager.getInstance().notifyUserWeb(getApplicationContext(), trial.getTrialId(), trial.isHasEligibility());
                 } else {
                     System.out.println("No trials currently partitive + active for user");
                 }

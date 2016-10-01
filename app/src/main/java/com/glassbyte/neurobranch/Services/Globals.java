@@ -23,8 +23,13 @@ public class Globals {
     public static String getCandidateInfo(String candidateId) {
         return HOST_ADDRESS + "/api/get-candidates/" + candidateId;
     }
+
     public static String retrieveTrialQuestions(String trialid) {
         return HOST_ADDRESS + "/api/get-questions/trialid/" + trialid;
+    }
+
+    public static String retrieveEligibilityQuestions(String trialid) {
+        return HOST_ADDRESS + "/api/get-eligibility/trialid/" + trialid;
     }
 
     public static String getRequestedCandidates(String candidateid) {

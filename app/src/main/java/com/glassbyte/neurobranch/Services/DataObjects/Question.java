@@ -6,11 +6,11 @@ import java.util.ArrayList;
  * Created by ed on 30/06/2016.
  */
 public class Question {
-    String title;
-    ArrayList<String> answers;
-    Attributes.QuestionType type;
-    int id;
-    boolean isAnswered;
+    private String title;
+    private ArrayList<String> answers;
+    private Attributes.QuestionType type;
+    private int id;
+    private boolean isAnswered;
 
     public Question(String title, ArrayList<String> answers, Attributes.QuestionType type, int id, boolean isAnswered) {
         this.title = title;

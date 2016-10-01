@@ -1,8 +1,10 @@
 package com.glassbyte.neurobranch.Services.DataObjects;
 
-import android.app.Fragment;
-
-import com.glassbyte.neurobranch.Portal.QuestionPrefabs.*;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Checkbox;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Radio;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.QuestionFragment;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Scale;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.Text;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,10 +15,10 @@ import java.util.ArrayList;
  * Created by ed on 25/06/2016
  */
 public class Response {
-    Attributes.ResponseType responseType;
-    JSONObject questionResponse;
+    private Attributes.ResponseType responseType;
+    private JSONObject questionResponse;
 
-    enum ResponseFields {
+    private enum ResponseFields {
         id, trialid, questionid, candidateid, response
     }
 
@@ -49,10 +51,10 @@ public class Response {
             questionResponse.add(Attributes.QuestionType.checkbox.name());
         } else if (fragment.getClass().equals(Scale.class)) {
             questionResponse.add(Attributes.QuestionType.scale.name());
-        } else if (fragment.getClass().equals(Choice.class)) {
-            questionResponse.add(Attributes.QuestionType.choice.name());
-        } else if (fragment.getClass().equals(Section.class)) {
-            questionResponse.add(Attributes.QuestionType.section.name());
+        } else if (fragment.getClass().equals(Radio.class)) {
+            questionResponse.add(Attributes.QuestionType.radio.name());
+        } else if (fragment.getClass().equals(Text.class)) {
+            questionResponse.add(Attributes.QuestionType.text.name());
         }
 
         questionResponse.add(fragment.getQuestionIndex());

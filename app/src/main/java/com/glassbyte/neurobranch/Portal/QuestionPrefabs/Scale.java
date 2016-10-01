@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.glassbyte.neurobranch.R;
 

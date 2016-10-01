@@ -14,6 +14,8 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
+import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,17 +48,25 @@ public class Manager {
         fragmentManager.beginTransaction().replace(R.id.auth_frame, fragment).commit();
     }
 
-    public int getNotificationId() {
+    private int getNotificationId() {
         return integer.incrementAndGet();
     }
 
-    public void notifyUserWeb(Context context, String trialId) {
+    public void notifyUserWeb(Context context, String trialId, boolean isEligibility) {
         Bundle bundle = new Bundle();
         bundle.putString("TRIAL_ID", trialId);
+        bundle.putBoolean("TRIAL_ELIGIBILITY", isEligibility);
         notifyUser(context, bundle);
     }
 
-    public void notifyUser(Context context, Bundle dataBundle) {
+    public void launchQuestionHolder(Context context, Trial trial, boolean isEligibilityLaunch) {
+        Intent intent = new Intent(context, EpochHolder.class);
+        intent.putExtra("TRIAL_ID", trial.getTrialId());
+        intent.putExtra("TRIAL_ELIGIBILITY", isEligibilityLaunch);
+        context.startActivity(intent);
+    }
+
+    private void notifyUser(Context context, Bundle dataBundle) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                         R.drawable.web_hi_res_512))

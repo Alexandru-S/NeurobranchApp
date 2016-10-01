@@ -13,7 +13,7 @@ public class Attributes {
     }
 
     public enum QuestionType {
-        checkbox, drawing, multimedia, scale, choice, section, undef
+        checkbox, drawing, multimedia, scale, radio, text, undef
     }
 
     public enum ResponseType {
@@ -22,28 +22,19 @@ public class Attributes {
 
     public static QuestionType getQuestionType(String checkType) {
         for (QuestionType questionType : QuestionType.values()) {
-            if (questionType.name().equals(checkType)) {
+            if (questionType.name().equals(checkType.toLowerCase())) {
                 return questionType;
             }
         }
         return QuestionType.undef;
     }
 
-    public static TrialState getTrialState(String checkState) {
+    static TrialState getTrialState(String checkState) {
         for (TrialState trialState : TrialState.values()) {
-            if (trialState.name().equals(checkState)) {
+            if (trialState.name().equals(checkState.toLowerCase())) {
                 return trialState;
             }
         }
         return TrialState.undef;
-    }
-
-    public static Type getType(String checkType) {
-        for (Type type : Type.values()) {
-            if (type.name().equals(checkType)) {
-                return type;
-            }
-        }
-        return Type.undef;
     }
 }

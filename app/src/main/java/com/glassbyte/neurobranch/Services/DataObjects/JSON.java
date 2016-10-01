@@ -10,28 +10,27 @@ import java.util.ArrayList;
  * Created by ed on 25/06/16.
  */
 public class JSON {
-
-    public static class DataFormatting {
+    static class DataFormatting {
         //trial base attributes from trial object
-        public static final String TRIAL_ID = "_id";
-        public static final String TRIAL_NAME = "title";
-        public static final String TRIAL_BRIEF_DESCRIPTION = "briefdescription";
-        public static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
-        public static final String TRIAL_TYPE = "trialtype";
-        public static final String TRIAL_INSTITUTE = "institute";
-        public static final String TRIAL_TAGS = "tags";
-        public static final String TRIAL_DURATION = "duration";
-        public static final String TRIAL_FREQUENCY = "frequency";
-        public static final String TRIAL_WAIVER = "waiverform";
-        public static final String TRIAL_ELIGIBILITY_FORM = "eligibilityform";
-        public static final String TRIAL_DATE_CREATED = "datecreated";
-        public static final String TRIAL_DATE_STARTED = "datestarted";
-        public static final String TRIAL_DATE_ENDED = "dateended";
-        public static final String TRIAL_CANDIDATE_QUOTA = "candidatequota";
-        public static final String TRIAL_STATE = "state";
-        public static final String TRIAL_RESEARCHER_ID = "researcherid";
-        public static final String TRIAL_PASSMARK = "passmark";
-        public static final String TRIAL_CURRENT_DURATION = "currentduration";
+        static final String TRIAL_ID = "_id";
+        static final String TRIAL_NAME = "title";
+        static final String TRIAL_BRIEF_DESCRIPTION = "briefdescription";
+        static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
+        static final String TRIAL_TYPE = "trialtype";
+        static final String TRIAL_INSTITUTE = "institute";
+        static final String TRIAL_TAGS = "tags";
+        static final String TRIAL_DURATION = "duration";
+        static final String TRIAL_FREQUENCY = "frequency";
+        static final String TRIAL_WAIVER = "waiverform";
+        static final String TRIAL_ELIGIBILITY_FORM = "has_eligibility";
+        static final String TRIAL_DATE_CREATED = "datecreated";
+        static final String TRIAL_DATE_STARTED = "datestarted";
+        static final String TRIAL_DATE_ENDED = "dateended";
+        static final String TRIAL_CANDIDATE_QUOTA = "candidatequota";
+        static final String TRIAL_STATE = "state";
+        static final String TRIAL_RESEARCHER_ID = "researcherid";
+        static final String TRIAL_PASS_MARK = "min_pass_mark";
+        static final String TRIAL_CURRENT_DURATION = "currentduration";
     }
 
     public static ArrayList<Object> parseQuestions(JSONArray receivedQuestions) {
@@ -43,16 +42,16 @@ public class JSON {
 
                 JSONObject questionElement = receivedQuestions.getJSONObject(i);
                 String questionTitle = questionElement.getString("title");
-                String type = questionElement.getString("questiontype");
+                String type = Attributes.getQuestionType(questionElement.getString("question_type")).name();
 
                 questionSet.add(questionTitle);
                 questionSet.add(type);
 
                 if (questionElement.has("answers")) {
-                    JSONObject answerElements = questionElement.getJSONObject("answers");
+                    JSONArray answerElements = questionElement.getJSONArray("answers");
 
                     for (int j = 0; j < answerElements.length(); j++) {
-                        String answer = answerElements.get("answer" + j).toString();
+                        String answer = answerElements.getJSONObject(j).get("answer").toString();
                         System.out.println(answer);
                         questionSet.add(answer);
                     }
@@ -62,6 +61,7 @@ public class JSON {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(questionGroup);
         return questionGroup;
     }
 
@@ -83,7 +83,6 @@ public class JSON {
 
                 int duration = trial.getInt(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
-                String eligibilityForm = "0"; //trial.getString(DataFormatting.TRIAL_ELIGIBILITY_FORM);
                 String waiver = trial.getString(DataFormatting.TRIAL_WAIVER);
 
                 Long dateCreated = trial.getLong(DataFormatting.TRIAL_DATE_CREATED);
@@ -92,13 +91,14 @@ public class JSON {
                 int candidateQuota = trial.getInt(DataFormatting.TRIAL_CANDIDATE_QUOTA);
                 Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                int passmark = 0; //trial.getInt(DataFormatting.TRIAL_PASSMARK);
+                int passmark = trial.getInt(DataFormatting.TRIAL_PASS_MARK);
                 int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
+                boolean hasEligibility = trial.getBoolean(DataFormatting.TRIAL_ELIGIBILITY_FORM);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc, type,
-                        institute, tags, duration, frequency, waiver, eligibilityForm,
+                        institute, tags, duration, frequency, waiver,
                         dateCreated, dateStarted, dateEnded, candidateQuota, state,
-                        researcherId, passmark, currentDuration));
+                        researcherId, passmark, currentDuration, hasEligibility));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -106,7 +106,7 @@ public class JSON {
         return trials;
     }
 
-    public static ArrayList<String> parseJSONArray(JSONArray array) {
+    static ArrayList<String> parseJSONArray(JSONArray array) {
         ArrayList<String> objects = new ArrayList<>();
 
         for (int i = 0; i < array.length(); i++) {
@@ -120,7 +120,7 @@ public class JSON {
         return objects;
     }
 
-    public static JSONObject parseList(ArrayList<Object> list) {
+    static JSONObject parseList(ArrayList<Object> list) {
         JSONObject response = new JSONObject();
         try {
             response.put("questiontype", list.get(0));

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Dialogs.QuestionsDialog;
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
+import com.glassbyte.neurobranch.MainActivity;
+import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
@@ -66,12 +68,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
         String tags = "";
 
-        for (int i = 0; i < trial.getTags().size(); i++) {
-            String tag = trial.getTags().get(i);
-            if (i == 0 || i == trial.getTags().size()) tags += tag;
-            else tags += ", " + tag;
+        if (trial.getTags() != null) {
+            for (int i = 0; i < trial.getTags().size(); i++) {
+                String tag = trial.getTags().get(i);
+                if (i == 0 || i == trial.getTags().size()) tags += tag;
+                else tags += ", " + tag;
+            }
         }
-
         holder.tags.setText(tags);
 
         this.context = holder.title.getContext();
@@ -122,34 +125,45 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                 Toast.makeText(getContext(), "Answer not allowed", Toast.LENGTH_LONG).show();
             }
         } else {
-            TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(),
-                    trial.getResearcherId(), trial.getInstitute(), trial.getDateCreated());
+            TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(), trial.getInstitute(), trial.getDateCreated());
             trialInfo.show(fragmentManager, "info");
+            trialInfo.setCancelable(false);
             trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
                 @Override
                 public void onJoinClick(TrialInfo dialogFragment) {
+                    Manager.getInstance().launchQuestionHolder(getContext(), trial, true);
+                    /*
                     new AlertDialog.Builder(context)
                             .setTitle("Trial Waiver Form")
                             .setMessage(trial.getWaiver())
+                            .setCancelable(false)
                             .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new AlertDialog.Builder(context)
-                                            .setTitle(trial.getTitle())
-                                            .setMessage("To join a trial, choose an option below")
-                                            .setPositiveButton("Join", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                                                            Preferences.id, getContext()), trial.getTrialId()).execute();
-                                                }
-                                            })
-                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                }
-                                            })
-                                            .show();
+                                    if (trial.isHasEligibility()) {
+                                        new AlertDialog.Builder(context)
+                                                .setTitle("Trial Eligibility Form")
+                                                .setMessage("This trial requires candidates complete an eligibility form before partaking in it. " +
+                                                        "If you agree to answer these questions, another form will be shown to you by clicking \"I agree\" below.")
+                                                .setCancelable(false)
+                                                .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId(), trial.isHasEligibility());
+                                                    }
+                                                })
+                                                .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                    }
+                                                })
+                                                .show();
+                                    } else {
+                                        //disabled to prevent accidental joining
+                                        new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                                Preferences.id, getContext()), trial.getTrialId()).execute();
+                                        Toast.makeText(getContext(), "Trial request successful", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             })
                             .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
@@ -157,7 +171,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
-                            }).show();
+                            }).show();*/
                 }
             });
         }
@@ -171,9 +185,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     @Override
     public void onRetrieved(JSONObject jsonObject) {
         try {
-            Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
+            Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId(), getTrial().isHasEligibility());
             if (jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
-                Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId());
+                Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId(), getTrial().isHasEligibility());
             } else {
                 Toast.makeText(getContext(), "Please verify your account in order to join trials", Toast.LENGTH_LONG).show();
             }
