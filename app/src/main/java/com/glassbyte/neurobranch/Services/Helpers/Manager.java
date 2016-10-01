@@ -52,32 +52,29 @@ public class Manager {
         return integer.incrementAndGet();
     }
 
-    public void notifyUserWeb(Context context, String trialId, boolean isEligibility) {
-        Bundle bundle = new Bundle();
-        bundle.putString("TRIAL_ID", trialId);
-        bundle.putBoolean("TRIAL_ELIGIBILITY", isEligibility);
-        notifyUser(context, bundle);
+    public void notifyUserWeb(Context context, Trial trial) {
+        Intent intent = new Intent(context, EpochHolder.class);
+        intent.putExtra("TRIAL", trial);
+        notifyUser(context, intent, trial);
     }
 
-    public void launchQuestionHolder(Context context, Trial trial, boolean isEligibilityLaunch) {
+    public void launchQuestionHolder(Context context, Trial trial, boolean isEligibility) {
         Intent intent = new Intent(context, EpochHolder.class);
-        intent.putExtra("TRIAL_ID", trial.getTrialId());
-        intent.putExtra("TRIAL_ELIGIBILITY", isEligibilityLaunch);
+        intent.putExtra("TRIAL", trial);
+        intent.putExtra("IS_ELIGIBILITY", isEligibility);
         context.startActivity(intent);
     }
 
-    private void notifyUser(Context context, Bundle dataBundle) {
+    private void notifyUser(Context context, Intent intent, Trial trial) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                         R.drawable.web_hi_res_512))
                 .setSmallIcon(R.drawable.cloud)
                 .setContentTitle("New questions can be answered")
-                .setContentText(dataBundle.getString("TRIAL_ID"));
+                .setContentText(trial.getTitle());
 
-        Intent resultIntent = new Intent(context, EpochHolder.class);
-        resultIntent.putExtras(dataBundle);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
-        taskStackBuilder.addParentStack(EpochHolder.class).addNextIntent(resultIntent);
+        taskStackBuilder.addParentStack(EpochHolder.class).addNextIntent(intent);
 
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0,
                 PendingIntent.FLAG_UPDATE_CURRENT);

@@ -185,9 +185,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     @Override
     public void onRetrieved(JSONObject jsonObject) {
         try {
-            Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId(), getTrial().isHasEligibility());
+            Manager.getInstance().notifyUserWeb(getContext(), getTrial());
             if (jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
-                Manager.getInstance().notifyUserWeb(getContext(), getTrial().getTrialId(), getTrial().isHasEligibility());
+                Manager.getInstance().notifyUserWeb(getContext(), getTrial());
             } else {
                 Toast.makeText(getContext(), "Please verify your account in order to join trials", Toast.LENGTH_LONG).show();
             }

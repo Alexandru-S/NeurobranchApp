@@ -19,6 +19,7 @@ import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.JSON;
 import com.glassbyte.neurobranch.Services.DataObjects.Question;
 import com.glassbyte.neurobranch.Services.DataObjects.Response;
+import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
@@ -37,31 +38,26 @@ public class EpochHolder extends AppCompatActivity {
     ArrayList<QuestionFragment> fragments = new ArrayList<>();
 
     ViewPager viewPager;
-    String trialId, questionId, candidateId;
-    boolean isEligibility;
+    String questionId, candidateId;
+
+    Trial trial;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        this.trial = (Trial) intent.getSerializableExtra("TRIAL");
         Bundle details = getIntent().getExtras();
-        setTrialId(details.getString("TRIAL_ID"));
-        setEligibility(details.getBoolean("TRIAL_ELIGIBILITY"));
-
-        //check the trialid to see if an eligibility form is required
-        //make a call to see if the user exists in the requested list
-        //if so, the eligibility form must be shown to the user and completed
-        //this also means that a field for enabling usage of the score is needed
-        //on completion, if the form has a high enough score, the user is switched from the requested list to the verified list
-        //else they are removed from the requested list
+        final boolean isEligibility = details.getBoolean("IS_ELIGIBILITY");
 
         try {
-            if (isEligibility()) {
+            if (isEligibility) {
                 properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
-                        this, new URL(Globals.retrieveEligibilityQuestions(getTrialId())),
-                        null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+                        this, new URL(Globals.retrieveEligibilityQuestions(trial.getTrialId())),
+                        null, trial.getTrialId(), getQuestionId(), getCandidateId()).execute().get());
             } else {
                 properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
-                        this, new URL(Globals.retrieveTrialQuestions(getTrialId())),
-                        null, getTrialId(), getQuestionId(), getCandidateId()).execute().get());
+                        this, new URL(Globals.retrieveTrialQuestions(trial.getTrialId())),
+                        null, trial.getTrialId(), getQuestionId(), getCandidateId()).execute().get());
             }
 
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
@@ -74,13 +70,11 @@ public class EpochHolder extends AppCompatActivity {
                 String type = questionParams.get(1);
 
                 ArrayList<String> questionElements = new ArrayList<>();
-
                 for (int j = 2; j < questionParams.size(); j++) {
                     questionElements.add(questionParams.get(j));
                 }
 
-                Question question = new Question(title, questionElements,
-                        Attributes.getQuestionType(type), i, false);
+                Question question = new Question(title, questionElements, Attributes.getQuestionType(type), i, false);
                 questions.add(question);
             }
 
@@ -112,20 +106,36 @@ public class EpochHolder extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    for(QuestionFragment fragment : fragments) {
-                                        Response response = new Response(Response.generateResponse(
-                                                getTrialId(),
-                                                getQuestionId(),
-                                                Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
-                                                fragment),
-                                                Attributes.ResponseType.trial_response);
-                                        System.out.println(response.getQuestionResponse().toString());
-                                        //new HTTPRequest.PostTrialResponse(response).execute();
+                                    if (isEligibility) {
+                                        int sum = 0;
+
+                                        for(QuestionFragment fragment : fragments) {
+                                            sum += fragment.getScoreSum();
+                                        }
+
+                                        if (sum >= trial.getPassmark()) {
+                                            //new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()), trial.getTrialId()).execute();
+                                        }
+
+                                        String result = sum < trial.getPassmark() ? "Deny access to join trial" : "Allow access to request join";
+                                        Toast.makeText(getApplicationContext(), sum + "/" + trial.getPassmark() + ", " + result, Toast.LENGTH_LONG).show();
+                                        EpochHolder.this.finish();
+                                    } else {
+                                        for(QuestionFragment fragment : fragments) {
+                                            Response response = new Response(Response.generateResponse(
+                                                    trial.getTrialId(), getQuestionId(),
+                                                    Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
+                                                    fragment, trial.getCurrentDay()),
+                                                    Attributes.ResponseType.trial_response);
+
+                                            //new HTTPRequest.PostTrialResponse(response).execute();
+                                            System.out.println(response.getQuestionResponse());
+                                        }
+                                        String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";
+                                        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
+                                        EpochHolder.this.finish();
                                     }
 
-                                    String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";
-                                    Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
-                                    EpochHolder.this.finish();
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -188,22 +198,6 @@ public class EpochHolder extends AppCompatActivity {
         }
     }
 
-    public String getTrialId() {
-        return trialId;
-    }
-
-    public boolean isEligibility() {
-        return isEligibility;
-    }
-
-    public void setEligibility(boolean eligibility) {
-        isEligibility = eligibility;
-    }
-
-    public void setTrialId(String trialId) {
-        this.trialId = trialId;
-    }
-
     public String getQuestionId() { return questionId; }
 
     public void setQuestionId(String questionId) { this.questionId = questionId; }
@@ -218,7 +212,7 @@ public class EpochHolder extends AppCompatActivity {
 
     private class SlideAdapter extends FragmentStatePagerAdapter {
 
-        public SlideAdapter(FragmentManager fm) {
+        SlideAdapter(FragmentManager fm) {
             super(fm);
         }
 

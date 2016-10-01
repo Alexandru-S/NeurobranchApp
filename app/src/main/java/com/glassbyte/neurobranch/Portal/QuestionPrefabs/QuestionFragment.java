@@ -40,9 +40,9 @@ public abstract class QuestionFragment extends Fragment {
         this.questionTitle = questionParams.get(0);
         this.questionType = questionParams.get(1);
         if (questionParams.size() > 2) {
-            for (int i = 2; i < questionParams.size(); i++) {
+            for (int i = 2; i < questionParams.size(); i+=2) {
                 this.answers.add(questionParams.get(i));
-                //this.scores.add(Integer.valueOf(questionParams.get(i + 1)));
+                this.scores.add(Integer.valueOf(questionParams.get(i + 1)));
             }
         }
 
@@ -116,6 +116,15 @@ public abstract class QuestionFragment extends Fragment {
     public abstract ArrayList<String> getAnswersChosen();
 
     public abstract ArrayList<Integer> getScoresChosen();
+
+    public int getScoreSum() {
+        Integer sum = 0;
+        for(Integer integer : getScoresChosen()) {
+            sum += integer;
+        }
+
+        return sum;
+    }
 
     public boolean hasAnswers() {
         return questionParams.size() > 2;

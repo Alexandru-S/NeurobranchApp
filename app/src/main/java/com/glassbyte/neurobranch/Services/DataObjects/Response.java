@@ -19,7 +19,7 @@ public class Response {
     private JSONObject questionResponse;
 
     private enum ResponseFields {
-        id, trialid, questionid, candidateid, response
+        id, trialid, questionid, candidateid, response, window
     }
 
     public Response(JSONObject questionResponse, Attributes.ResponseType responseType) {
@@ -35,12 +35,13 @@ public class Response {
         return questionResponse;
     }
 
-    public static JSONObject generateResponse(String trialid, String questionId, String candidateId, QuestionFragment fragment) {
+    public static JSONObject generateResponse(String trialid, String questionId, String candidateId, QuestionFragment fragment, int window) {
         JSONObject response = new JSONObject();
         try {
             response.put(ResponseFields.trialid.name(), trialid);
             response.put(ResponseFields.questionid.name(), questionId);
             response.put(ResponseFields.candidateid.name(), candidateId);
+            response.put(ResponseFields.window.name(), window);
         } catch (JSONException e) {
             e.printStackTrace();
         }

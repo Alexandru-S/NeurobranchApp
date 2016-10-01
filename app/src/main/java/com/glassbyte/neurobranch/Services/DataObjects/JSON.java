@@ -51,9 +51,17 @@ public class JSON {
                     JSONArray answerElements = questionElement.getJSONArray("answers");
 
                     for (int j = 0; j < answerElements.length(); j++) {
-                        String answer = answerElements.getJSONObject(j).get("answer").toString();
-                        System.out.println(answer);
+                        String answer = answerElements.getJSONObject(j).getString("answer");
                         questionSet.add(answer);
+
+                        String score = null;
+
+                        if (answerElements.getJSONObject(j).getString("score") != null) {
+                            score = answerElements.getJSONObject(j).getString("score");
+                            questionSet.add(score);
+                        }
+                        System.out.println(answer + ", " + score);
+
                     }
                 }
                 questionGroup.add(questionSet);

@@ -4,12 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by ed on 14/06/16.
  */
-public class Trial {
+public class Trial implements Serializable {
     private String title;
     private String briefDescription;
     private String detailedDescription;
