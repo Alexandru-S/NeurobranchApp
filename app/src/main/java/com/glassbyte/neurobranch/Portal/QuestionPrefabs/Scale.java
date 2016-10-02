@@ -23,8 +23,8 @@ public class Scale extends QuestionFragment {
     private ArrayList seekValue = new ArrayList();
     private int seekProgression;
 
-    public Scale(ArrayList<Object> properties, int maxIndex, int questionIndex) {
-        super(properties, maxIndex, questionIndex);
+    public Scale(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
+        super(properties, maxIndex, questionIndex, isEligibility);
     }
 
     @Override

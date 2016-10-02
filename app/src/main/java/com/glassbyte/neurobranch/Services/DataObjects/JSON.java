@@ -56,7 +56,7 @@ public class JSON {
 
                         String score = null;
 
-                        if (answerElements.getJSONObject(j).getString("score") != null) {
+                        if (answerElements.getJSONObject(j).has("score")) {
                             score = answerElements.getJSONObject(j).getString("score");
                             questionSet.add(score);
                         }

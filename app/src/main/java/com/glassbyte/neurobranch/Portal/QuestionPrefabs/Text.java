@@ -26,8 +26,8 @@ public class Text extends QuestionFragment {
     private EditText editText;
     private ArrayList<String> answerChosen = new ArrayList<>();
 
-    public Text(ArrayList<Object> properties, int maxIndex, int questionIndex) {
-        super(properties, maxIndex, questionIndex);
+    public Text(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
+        super(properties, maxIndex, questionIndex, isEligibility);
     }
 
     @Override

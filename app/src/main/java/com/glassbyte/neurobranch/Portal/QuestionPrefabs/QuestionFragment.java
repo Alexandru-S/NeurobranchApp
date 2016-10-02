@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.Globals;
 
 import java.lang.reflect.Array;
@@ -35,14 +36,14 @@ public abstract class QuestionFragment extends Fragment {
 
     private TextView questionTitle_tv, questionProgress_tv;
 
-    public QuestionFragment(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+    public QuestionFragment(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
         questionParams = (ArrayList<String>) properties.get(questionIndex);
         this.questionTitle = questionParams.get(0);
         this.questionType = questionParams.get(1);
         if (questionParams.size() > 2) {
-            for (int i = 2; i < questionParams.size(); i+=2) {
+            for (int i = 2; i < questionParams.size(); i += isEligibility ? 2 : 1) {
                 this.answers.add(questionParams.get(i));
-                this.scores.add(Integer.valueOf(questionParams.get(i + 1)));
+                if(isEligibility) this.scores.add(Integer.valueOf(questionParams.get(i + 1)));
             }
         }
 
@@ -127,7 +128,9 @@ public abstract class QuestionFragment extends Fragment {
     }
 
     public boolean hasAnswers() {
-        return questionParams.size() > 2;
+        return getQuestionType().equals(Attributes.QuestionType.scale.name()) ||
+                getQuestionType().equals(Attributes.QuestionType.text.name()) ||
+                getQuestionParams().size() > 2;
     }
 
     public ArrayList<String> getAnswers() {

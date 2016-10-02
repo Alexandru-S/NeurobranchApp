@@ -26,8 +26,8 @@ public class Radio extends QuestionFragment {
     private ArrayList<String> answerChosen = new ArrayList<>();
     private ArrayList<Integer> scoreChosen = new ArrayList<>();
 
-    public Radio(ArrayList<Object> properties, int maxIndex, int questionIndex) {
-        super(properties, maxIndex, questionIndex);
+    public Radio(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
+        super(properties, maxIndex, questionIndex, isEligibility);
     }
 
     @Override

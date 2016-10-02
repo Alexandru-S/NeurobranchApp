@@ -19,8 +19,8 @@ public class Checkbox extends QuestionFragment {
     private ArrayList<String> answersChosen = new ArrayList<>();
     private ArrayList<Integer> scoresChosen = new ArrayList<>();
 
-    public Checkbox(ArrayList<Object> properties, int maxIndex, int questionIndex) {
-        super(properties, maxIndex, questionIndex);
+    public Checkbox(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
+        super(properties, maxIndex, questionIndex, isEligibility);
     }
 
     @Override
