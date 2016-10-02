@@ -56,6 +56,10 @@ public class Globals {
         return HOST_ADDRESS + "/api/get-latest-window/trialid/" + trialid + "/candidateid/" + candidateid;
     }
 
+    public static String createTrialRelationship(String trialid, String candidateid) {
+        return HOST_ADDRESS + "/api/create-trial-relationship/candidateid/" + candidateid + "/trialid/" + trialid;
+    }
+
     public static final String CANDIDATE_SIGNUP_ADDRESS = HOST_ADDRESS + "/api/create-candidate";
     public static final String CANDIDATE_LOGIN_ADDRESS = HOST_ADDRESS + "/api/candidate-login";
 

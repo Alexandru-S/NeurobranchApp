@@ -108,17 +108,11 @@ public class EpochHolder extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if (isEligibility) {
                                         int sum = 0;
+                                        for(QuestionFragment fragment : fragments) sum += fragment.getScoreSum();
+                                        if (sum >= trial.getPassmark()) new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()), trial.getTrialId()).execute();
 
-                                        for(QuestionFragment fragment : fragments) {
-                                            sum += fragment.getScoreSum();
-                                        }
-
-                                        if (sum >= trial.getPassmark()) {
-                                            //new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()), trial.getTrialId()).execute();
-                                        }
-
-                                        String result = sum < trial.getPassmark() ? "Deny access to join trial" : "Allow access to request join";
-                                        Toast.makeText(getApplicationContext(), sum + "/" + trial.getPassmark() + ", " + result, Toast.LENGTH_LONG).show();
+                                        String result = sum < trial.getPassmark() ? "Unfortunately you are not eligible to join this trial" : "You are eligible for this trial, request to join being sent";
+                                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                                         EpochHolder.this.finish();
                                     } else {
                                         for(QuestionFragment fragment : fragments) {
@@ -133,7 +127,6 @@ public class EpochHolder extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                                         EpochHolder.this.finish();
                                     }
-
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

@@ -11,7 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="41b570bc-819d-48a2-8ef4-2f5b29b79e15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" />
     </list>
     <ignored path="NeurobranchApp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,8 +49,8 @@
       <file leaf-file-name="Manager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Helpers/Manager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+            <state relative-caret-position="472">
+              <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -57,15 +59,15 @@
       <file leaf-file-name="EpochHolder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="129" column="98" selection-start-line="129" selection-start-column="98" selection-end-line="129" selection-end-column="98" />
+            <state relative-caret-position="327">
+              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
-                <element signature="e#4655#7720#0" expanded="true" />
-                <element signature="e#5107#7369#0" expanded="true" />
-                <element signature="e#7368#7369#0" expanded="true" />
-                <element signature="e#7719#7720#0" expanded="true" />
-                <element signature="e#9014#9369#0" expanded="true" />
-                <element signature="e#9368#9369#0" expanded="true" />
+                <element signature="e#4655#7557#0" expanded="true" />
+                <element signature="e#5107#7206#0" expanded="true" />
+                <element signature="e#7205#7206#0" expanded="true" />
+                <element signature="e#7556#7557#0" expanded="true" />
+                <element signature="e#8851#9206#0" expanded="true" />
+                <element signature="e#9205#9206#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,26 +103,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Response.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Response.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="804">
+            <state relative-caret-position="1035">
               <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#790#791#0" expanded="true" />
                 <element signature="e#846#847#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Attributes.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Attributes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -135,14 +127,30 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CardAdapter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CardAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+            <state relative-caret-position="567">
+              <caret line="159" column="86" selection-start-line="159" selection-start-column="86" selection-end-line="159" selection-end-column="86" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#5209#8846#0" expanded="true" />
+                <element signature="e#5621#8507#0" expanded="true" />
+                <element signature="e#6478#6919#0" expanded="true" />
+                <element signature="e#6918#6919#0" expanded="true" />
+                <element signature="e#8506#8507#0" expanded="true" />
+                <element signature="e#8845#8846#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Globals.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="23" column="67" selection-start-line="23" selection-start-column="67" selection-end-line="23" selection-end-column="67" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1982,7 +1990,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Sync/WebServer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Trial.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Helpers/Manager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Dialogs/QuestionsDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/JSON.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Checkbox.java" />
@@ -1990,9 +1997,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Radio.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Text.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/QuestionFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java" />
       </list>
     </option>
   </component>
@@ -2662,11 +2670,11 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5609065" sideWeight="0.503231" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962853" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24962853" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32838038" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2704309" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2704309" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -2968,14 +2976,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="54" column="34" selection-start-line="54" selection-start-column="34" selection-end-line="54" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Interfaces/GetDetailsCallback.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -3065,14 +3065,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Radio.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Trial.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -3089,47 +3081,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Helpers/Manager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+        <state relative-caret-position="1035">
+          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#790#791#0" expanded="true" />
+            <element signature="e#846#847#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/Radio.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/QuestionPrefabs/EpochHolder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="129" column="98" selection-start-line="129" selection-start-column="98" selection-end-line="129" selection-end-column="98" />
+        <state relative-caret-position="327">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
-            <element signature="e#4655#7720#0" expanded="true" />
-            <element signature="e#5107#7369#0" expanded="true" />
-            <element signature="e#7368#7369#0" expanded="true" />
-            <element signature="e#7719#7720#0" expanded="true" />
-            <element signature="e#9014#9369#0" expanded="true" />
-            <element signature="e#9368#9369#0" expanded="true" />
+            <element signature="e#4655#7557#0" expanded="true" />
+            <element signature="e#5107#7206#0" expanded="true" />
+            <element signature="e#7205#7206#0" expanded="true" />
+            <element signature="e#7556#7557#0" expanded="true" />
+            <element signature="e#8851#9206#0" expanded="true" />
+            <element signature="e#9205#9206#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Helpers/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/Globals.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="23" column="67" selection-start-line="23" selection-start-column="67" selection-end-line="23" selection-end-column="67" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Portal/MainSections/CardAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+        <state relative-caret-position="567">
+          <caret line="159" column="86" selection-start-line="159" selection-start-column="86" selection-end-line="159" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/glassbyte/neurobranch/Services/DataObjects/Response.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="804">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#790#791#0" expanded="true" />
-            <element signature="e#846#847#0" expanded="true" />
+            <element signature="e#5209#8846#0" expanded="true" />
+            <element signature="e#5621#8507#0" expanded="true" />
+            <element signature="e#6478#6919#0" expanded="true" />
+            <element signature="e#6918#6919#0" expanded="true" />
+            <element signature="e#8506#8507#0" expanded="true" />
+            <element signature="e#8845#8846#0" expanded="true" />
           </folding>
         </state>
       </provider>

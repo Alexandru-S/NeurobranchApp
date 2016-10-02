@@ -1,8 +1,10 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,11 +112,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     private void alertDescription(final Trial trial, final Context context) {
-        //if the current trial accessed is already in the user's subscribed list of trials -- was mytrials
-        if (fragment.getClass().equals(TrialsAvailableFragment.class)) {
-            //TODO retrieve the last answered day, if any, from db and compare via callback
-            //TODO internet service here to check candidate's last window
-
+        //if the current trial accessed is already in the user's subscribed list of trials
+        if (fragment.getClass().equals(MyTrialsFragment.class)) {
             try {
                 this.currTrial = trial;
                 new HTTPRequest.ReceiveJSON(getContext(), new URL(Globals.getLatestWindow(trial.getTrialId(), Manager.getInstance().getPreference(Preferences.id, getContext()))), CardAdapter.this).execute();
@@ -128,8 +127,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
                 @Override
                 public void onJoinClick(TrialInfo dialogFragment) {
-                    Manager.getInstance().launchQuestionHolder(getContext(), trial, true);
-                    /*
                     new AlertDialog.Builder(context)
                             .setTitle("Trial Waiver Form")
                             .setMessage(trial.getWaiver())
@@ -146,7 +143,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                                                 .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        Manager.getInstance().notifyUserWeb(getContext(), trial.getTrialId(), trial.isHasEligibility());
+                                                        Manager.getInstance().launchQuestionHolder(getContext(), trial, true);
                                                     }
                                                 })
                                                 .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
@@ -159,6 +156,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                                         //disabled to prevent accidental joining
                                         new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
                                                 Preferences.id, getContext()), trial.getTrialId()).execute();
+                                        try {
+                                            new HTTPRequest.ReceiveJSON(getContext(),
+                                                    new URL(Globals.createTrialRelationship(trial.getTrialId(),
+                                                            Manager.getInstance().getPreference(Preferences.id, getContext())))).execute();
+                                        } catch (MalformedURLException e) {
+                                            e.printStackTrace();
+                                        }
                                         Toast.makeText(getContext(), "Trial request successful", Toast.LENGTH_LONG).show();
                                     }
                                 }
@@ -168,7 +172,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
-                            }).show();*/
+                            }).show();
                 }
             });
         }
