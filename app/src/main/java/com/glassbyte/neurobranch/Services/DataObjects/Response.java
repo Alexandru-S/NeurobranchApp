@@ -19,7 +19,7 @@ public class Response {
     private JSONObject questionResponse;
 
     private enum ResponseFields {
-        id, trialid, questionid, candidateid, answers, answer, window, question_type, index
+        id, trialid, questionid, candidateid, response, answer, window, question_type, index
     }
 
     public Response(JSONObject questionResponse) {
@@ -65,7 +65,7 @@ public class Response {
         }
 
         try {
-            response.put(ResponseFields.answers.name(), answers);
+            response.put(ResponseFields.response.name(), answers);
         } catch (JSONException e) {
             e.printStackTrace();
         }
