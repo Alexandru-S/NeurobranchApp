@@ -209,7 +209,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     public void onLoadCompleted(JSONArray object) {
         int currentWindow = -1;
 
-        //TODO works for no response as defaulting to -1 from server, must check with existing windows
         try {
             currentWindow = object.getJSONObject(0).getInt("window");
         } catch (JSONException e) {

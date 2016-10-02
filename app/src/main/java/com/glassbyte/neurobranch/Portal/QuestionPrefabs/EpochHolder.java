@@ -125,11 +125,9 @@ public class EpochHolder extends AppCompatActivity {
                                             Response response = new Response(Response.generateResponse(
                                                     trial.getTrialId(), getQuestionId(),
                                                     Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
-                                                    fragment, trial.getCurrentDay()),
-                                                    Attributes.ResponseType.trial_response);
+                                                    fragment, trial.getCurrentDay()));
 
-                                            //new HTTPRequest.PostTrialResponse(response).execute();
-                                            System.out.println(response.getQuestionResponse());
+                                            new HTTPRequest.PostTrialResponse(response).execute();
                                         }
                                         String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";
                                         Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();

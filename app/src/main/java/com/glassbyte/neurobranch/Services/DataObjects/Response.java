@@ -16,20 +16,14 @@ import java.util.ArrayList;
  * Created by ed on 25/06/2016
  */
 public class Response {
-    private Attributes.ResponseType responseType;
     private JSONObject questionResponse;
 
     private enum ResponseFields {
         id, trialid, questionid, candidateid, answers, answer, window, question_type, index
     }
 
-    public Response(JSONObject questionResponse, Attributes.ResponseType responseType) {
+    public Response(JSONObject questionResponse) {
         this.questionResponse = questionResponse;
-        this.responseType = responseType;
-    }
-
-    public Attributes.ResponseType getResponseType() {
-        return responseType;
     }
 
     public JSONObject getQuestionResponse() {
