@@ -17,7 +17,7 @@ import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 public class QuestionsDialog extends android.support.v4.app.DialogFragment {
 
     Trial trial;
-    int mostRecentResponse;
+    int lastWindow;
     SetTrialAnswerListener setTrialAnswerListener;
     boolean isAnswerable;
     String message;
@@ -32,31 +32,41 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public QuestionsDialog(Trial trial, int mostRecentResponse) {
+    public QuestionsDialog(Trial trial, int lastWindow) {
         this.trial = trial;
-        this.mostRecentResponse = mostRecentResponse;
-        isAnswerable = mostRecentResponse == trial.getCurrentDay();
+        this.lastWindow = lastWindow;
+        isAnswerable = lastWindow < trial.getCurrentDay();
     }
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if(isAnswerable) message = "New questions available to be answered";
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(trial.getTitle());
+        if (isAnswerable) {
+            builder.setMessage("New questions can be answered, click on respond in order to answer these now.")
+                    .setPositiveButton("Respond", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            setTrialAnswerListener.onAnswerClick(QuestionsDialog.this);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+        } else {
+            builder.setMessage("No new question for this trial, check again later or wait for a notification to come in.")
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+        }
+
+        if (isAnswerable) message = "New questions available to be answered";
         else message = "No new questions";
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(trial.getTitle())
-                .setMessage(message)
-                .setPositiveButton("Respond", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (isAnswerable) setTrialAnswerListener.onAnswerClick(QuestionsDialog.this);
-                        else Toast.makeText(getContext(), "Trial not answerable", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
         return builder.create();
     }
 
@@ -64,7 +74,7 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
         return trial;
     }
 
-    public int getMostRecentResponse() {
-        return mostRecentResponse;
+    public int getLastWindow() {
+        return lastWindow;
     }
 }

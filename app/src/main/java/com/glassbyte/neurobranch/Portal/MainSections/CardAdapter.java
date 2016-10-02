@@ -1,10 +1,8 @@
 package com.glassbyte.neurobranch.Portal.MainSections;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,31 +12,35 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Dialogs.QuestionsDialog;
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
-import com.glassbyte.neurobranch.MainActivity;
 import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
-import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
+import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
+import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
  * Created by ed on 25/06/16.
  */
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder> implements GetDetailsCallback {
-    ArrayList<Trial> trials;
-    android.support.v4.app.FragmentManager fragmentManager;
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder> implements GetDetailsCallback, JSONCallback {
+    private ArrayList<Trial> trials;
+    private android.support.v4.app.FragmentManager fragmentManager;
     private Context context;
-    private Trial trial;
+    private Trial trial, currTrial;
     private Fragment fragment;
 
     public CardAdapter(ArrayList<Trial> trials, Fragment fragment, android.support.v4.app.FragmentManager fragmentManager) {
@@ -108,21 +110,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     private void alertDescription(final Trial trial, final Context context) {
-        //if the current trial accessed is already in the user's subscribed list of trials
-        if (fragment.getClass().equals(MyTrialsFragment.class)) {
+        //if the current trial accessed is already in the user's subscribed list of trials -- was mytrials
+        if (fragment.getClass().equals(TrialsAvailableFragment.class)) {
             //TODO retrieve the last answered day, if any, from db and compare via callback
-            String lastAnsweredDay = "-1";
-            if ((Integer.parseInt(lastAnsweredDay) < trial.getCurrentDay()) || lastAnsweredDay.equals("")) {
-                final QuestionsDialog questionsDialog = new QuestionsDialog(trial, 0);
-                questionsDialog.show(fragmentManager, "answerQs");
-                questionsDialog.setTrialAnswerDialogListener(new QuestionsDialog.SetTrialAnswerListener() {
-                    @Override
-                    public void onAnswerClick(QuestionsDialog dialogFragment) {
-                        Toast.makeText(getContext(), "User allowed to answer questions", Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                Toast.makeText(getContext(), "Answer not allowed", Toast.LENGTH_LONG).show();
+            //TODO internet service here to check candidate's last window
+
+            try {
+                this.currTrial = trial;
+                new HTTPRequest.ReceiveJSON(getContext(), new URL(Globals.getLatestWindow(trial.getTrialId(), Manager.getInstance().getPreference(Preferences.id, getContext()))), CardAdapter.this).execute();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
         } else {
             TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(), trial.getInstitute(), trial.getDateCreated());
@@ -204,11 +201,39 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         return trial;
     }
 
-    public class DataObjectHolder extends RecyclerView.ViewHolder {
+    private Trial getCurrTrial() {
+        return currTrial;
+    }
+
+    @Override
+    public void onLoadCompleted(JSONArray object) {
+        int currentWindow = -1;
+
+        //TODO works for no response as defaulting to -1 from server, must check with existing windows
+        try {
+            currentWindow = object.getJSONObject(0).getInt("window");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final QuestionsDialog questionsDialog = new QuestionsDialog(getCurrTrial(), currentWindow);
+        questionsDialog.show(fragmentManager, "answerQs");
+        questionsDialog.setTrialAnswerDialogListener(new QuestionsDialog.SetTrialAnswerListener() {
+            @Override
+            public void onAnswerClick(QuestionsDialog dialogFragment) {
+                Intent intent = new Intent(getContext(), EpochHolder.class);
+                intent.putExtra("TRIAL", getCurrTrial());
+                intent.putExtra("IS_ELIGIBILITY", false);
+                getContext().startActivity(intent);
+            }
+        });
+    }
+
+    class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView title, description, institute, tags;
         Context context;
 
-        public DataObjectHolder(final View itemView, Context context) {
+        DataObjectHolder(final View itemView, Context context) {
             super(itemView);
             this.context = context;
             title = (TextView) itemView.findViewById(R.id.trial_title);
