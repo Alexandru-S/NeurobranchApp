@@ -61,7 +61,6 @@ public class JSON {
                             questionSet.add(score);
                         }
                         System.out.println(answer + ", " + score);
-
                     }
                 }
                 questionGroup.add(questionSet);

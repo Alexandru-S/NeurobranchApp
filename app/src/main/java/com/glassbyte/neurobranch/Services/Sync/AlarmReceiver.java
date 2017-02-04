@@ -19,7 +19,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    private static final int INTERVAL = 1000 * 60; // 1 min -- debug
+    private static final int INTERVAL = 1000;
 
     @Override
     public void onReceive(Context context, Intent intent) {

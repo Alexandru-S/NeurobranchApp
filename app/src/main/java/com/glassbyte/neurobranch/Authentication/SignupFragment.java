@@ -66,7 +66,7 @@ public class SignupFragment extends Fragment {
                 if(isEmailMatch() && isPasswordMatch()) {
                     new HTTPRequest.CreateCandidateAccount(getEmail(), getPassword()).execute();
                     Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
-                    Toast.makeText(getContext(), "Please verify your account for enabling all functionality.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Please verify your account for enabling all functionality.", Toast.LENGTH_LONG).show();
                 }
             }
         });

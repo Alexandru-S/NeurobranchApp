@@ -28,11 +28,10 @@ public class WebServer {
     }
 
     public static void pollTrialStates(final Context context) {
-        final ArrayList<Trial> trials = new ArrayList<>();
-
         JSONCallback jsonCallback = new JSONCallback() {
             @Override
             public void onLoadCompleted(JSONArray object) {
+                ArrayList<Trial> trials = new ArrayList<>();
                 if (object != null) {
                     System.out.println("partitive trials " + object);
                     System.out.println(object.length() + " trial(s) currently partitive + active");

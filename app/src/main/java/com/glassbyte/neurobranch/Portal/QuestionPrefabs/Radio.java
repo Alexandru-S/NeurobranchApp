@@ -62,16 +62,19 @@ public class Radio extends QuestionFragment {
             }
             answerChosen.set(index, checkedItem);
         }
-        return getAnswerChosen();
+        return answerChosen;
     }
 
     @Override
     public ArrayList<Integer> getScoresChosen() {
-        for (Integer radioButton : radioButtons) {
-            //if (radioButton.isChecked())
-                //scoreChosen.add(getScores().get(radioGroup.));
+        if(radioGroup.getCheckedRadioButtonId() > -1) {
+            int index = radioButtons.indexOf(radioGroup.getCheckedRadioButtonId());
+            Integer checkedItem = getScores().get(radioButtons.indexOf(radioGroup.getCheckedRadioButtonId()));
+            for (int i = 0; i < radioButtons.size(); i++) {
+                scoreChosen.add(i, 0);
+            }
+            scoreChosen.set(index, checkedItem);
         }
-
         return scoreChosen;
     }
 
