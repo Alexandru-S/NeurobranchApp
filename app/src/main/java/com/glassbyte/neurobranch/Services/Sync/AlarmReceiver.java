@@ -14,10 +14,12 @@ import java.util.Calendar;
  * Created by ed on 25/09/2016
  */
 public class AlarmReceiver extends WakefulBroadcastReceiver {
-    public static final int INTERVAL = 1000 * 60; //1 min
+
+    // TODO set to every 15 mins, debug with notifications when working on backend and then set to every hour before release?
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    private static final int INTERVAL = 1000 * 60; // 1 min -- debug
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,7 +30,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     public void setAlarm(Context context) {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         pendingIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(context, SyncService.class), 0);
+                new Intent(context, AlarmReceiver.class), 0);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis() + INTERVAL);
@@ -37,7 +39,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 INTERVAL, pendingIntent);
 
         //reset alarm on reboot
-        ComponentName receiver = new ComponentName(context, SyncService.class);
+        ComponentName receiver = new ComponentName(context, BootReceiver.class);
         PackageManager packageManager = context.getPackageManager();
         packageManager.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -49,7 +51,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         if (alarmManager != null)
             alarmManager.cancel(pendingIntent);
 
-        ComponentName receiver = new ComponentName(context, SyncService.class);
+        ComponentName receiver = new ComponentName(context, BootReceiver.class);
         PackageManager packageManager = context.getPackageManager();
 
         packageManager.setComponentEnabledSetting(receiver,

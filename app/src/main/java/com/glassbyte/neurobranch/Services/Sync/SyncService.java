@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  * Created by ed on 14/08/16
  */
 public class SyncService extends IntentService {
-    ArrayList<Trial> trials = new ArrayList<>();
+    private ArrayList<Trial> trials = new ArrayList<>();
 
     public SyncService() {
         super("SyncService");
@@ -32,6 +32,7 @@ public class SyncService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         System.out.println("Invoking web service");
 
+        /*
         JSONCallback jsonCallback = new JSONCallback() {
             @Override
             public void onLoadCompleted(JSONArray object) {
@@ -58,7 +59,7 @@ public class SyncService extends IntentService {
             new HTTPRequest.ReceiveJSON(getApplicationContext(), url, jsonCallback).get();
         } catch (InterruptedException | ExecutionException | MalformedURLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
 
