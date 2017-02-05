@@ -27,10 +27,9 @@ public class Manager {
 
     private final static AtomicInteger integer = new AtomicInteger(0);
 
-    private static Manager manager = null;
+    private static Manager manager = new Manager();
 
     public static Manager getInstance() {
-        manager = manager == null ? new Manager() : manager;
         return manager;
     }
 
@@ -42,7 +41,6 @@ public class Manager {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
                 .putString(preference.name(), value).apply();
     }
-
 
     public void setFragment(FragmentManager fragmentManager, Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.auth_frame, fragment).commit();
@@ -63,6 +61,12 @@ public class Manager {
         intent.putExtra("TRIAL", trial);
         intent.putExtra("IS_ELIGIBILITY", isEligibility);
         context.startActivity(intent);
+    }
+
+    public static void cancelNotification(Context context, int id) {
+        NotificationManager manager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(id);
     }
 
     private void notifyUser(Context context, Intent intent, Trial trial) {

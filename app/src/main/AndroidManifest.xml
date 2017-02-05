@@ -80,13 +80,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".Services.Sync.AlarmReceiver"
-            android:process=":remote" />
+        <receiver android:name=".Services.Sync.AlarmReceiver" />
 
-        <service
-            android:name=".Services.Sync.SyncService"
-            android:exported="false" />
+        <service android:name=".Services.Sync.SyncService" />
     </application>
 
 </manifest>

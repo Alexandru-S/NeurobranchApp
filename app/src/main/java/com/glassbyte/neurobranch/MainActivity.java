@@ -22,6 +22,7 @@ import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Sync.AlarmReceiver;
 import com.glassbyte.neurobranch.Services.Sync.SyncService;
+import com.glassbyte.neurobranch.Services.Sync.WebServer;
 import com.glassbyte.neurobranch.Settings.Settings;
 
 public class MainActivity extends AppCompatActivity

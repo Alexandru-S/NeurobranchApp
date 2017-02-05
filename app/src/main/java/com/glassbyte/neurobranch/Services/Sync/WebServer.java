@@ -28,6 +28,7 @@ public class WebServer {
     }
 
     public static void pollTrialStates(final Context context) {
+        System.out.println("Polling trial states via service");
         JSONCallback jsonCallback = new JSONCallback() {
             @Override
             public void onLoadCompleted(JSONArray object) {
@@ -42,17 +43,20 @@ public class WebServer {
                             e.printStackTrace();
                         }
                     }
-                    for (Trial trial : trials) Manager.getInstance().notifyUserWeb(context, trial);
+                    for (Trial trial : trials) {
+                        Manager.getInstance().notifyUserWeb(context, trial);
+                    }
                 } else {
                     System.out.println("No trials currently partitive + active for user");
                 }
             }
         };
         try {
-            new HTTPRequest.ReceiveJSON(context, new URL(Globals.getActivePartitiveMyTrials(
-                    Manager.getInstance().getPreference(Preferences.id, context), "active")),
-                    jsonCallback).get();
-        } catch (MalformedURLException | InterruptedException | ExecutionException e) {
+            new HTTPRequest.ReceiveJSON(context, new URL(
+                    Globals.getActivePartitiveMyTrials(Manager.getInstance()
+                            .getPreference(Preferences.id, context), "active")
+            ), jsonCallback).execute();
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }

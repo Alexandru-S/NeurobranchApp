@@ -111,6 +111,14 @@ public class EpochHolder extends AppCompatActivity {
                                         for(QuestionFragment fragment : fragments) sum += fragment.getScoreSum();
                                         if (sum >= trial.getPassmark()) new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()), trial.getTrialId()).execute();
 
+                                        try {
+                                            new HTTPRequest.ReceiveJSON(getApplicationContext(),
+                                                    new URL(Globals.createTrialRelationship(trial.getTrialId(),
+                                                            Manager.getInstance().getPreference(Preferences.id, getApplicationContext())))).execute();
+                                        } catch (MalformedURLException e) {
+                                            e.printStackTrace();
+                                        }
+
                                         String result = sum < trial.getPassmark() ? "Unfortunately you are not eligible to join this trial" : "You are eligible for this trial, request to join being sent";
                                         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                                         EpochHolder.this.finish();
