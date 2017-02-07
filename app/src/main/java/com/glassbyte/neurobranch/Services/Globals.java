@@ -7,14 +7,12 @@ import android.util.TypedValue;
  * Created by ed on 10/06/16.
  */
 public class Globals {
-    //splash
-    public static final int SPLASH_DURATION = 2000;
+    public static final boolean isDebug = true;
 
     //networking
-    public static final String BACKEND_URL = "http://www.neurobranchbeta.com";
-    public static final String EMULATOR_LOOPBACK = "http://10.0.2.2:3000";
-
-    public static final String HOST_ADDRESS = BACKEND_URL;
+    private static final String BACKEND_URL = "http://www.neurobranchbeta.com";
+    private static final String EMULATOR_LOOPBACK = "http://10.0.2.2:80";
+    public static final String HOST_ADDRESS = isDebug ? EMULATOR_LOOPBACK : BACKEND_URL;
 
     public static final String POST_TRIAL_RESPONSE = HOST_ADDRESS + "insert";
     public static final String POST_QUESTION_RESPONSE = HOST_ADDRESS + "api/responsedata";

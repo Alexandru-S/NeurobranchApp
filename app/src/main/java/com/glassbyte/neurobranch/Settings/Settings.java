@@ -56,7 +56,7 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
             String id = jsonObject.getString("_id");
             String email = jsonObject.getString("email");
             int trialsPartaken = jsonObject.getJSONArray("subscribed").length();
-            String partaken = "Has been verified for a trial " +
+            String partaken = "You have been verified for a trial " +
                     trialsPartaken + (trialsPartaken == 1 ? " time." : " times.");
 
             createSettings(id, email, partaken);

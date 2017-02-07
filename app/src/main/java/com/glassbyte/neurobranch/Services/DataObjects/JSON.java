@@ -27,6 +27,7 @@ public class JSON {
         static final String TRIAL_STATE = "state";
         static final String TRIAL_RESEARCHER_ID = "researcherid";
         static final String TRIAL_CURRENT_DURATION = "currentduration";
+        static final String TRIAL_LAST_WINDOW = "lastwindow";
     }
 
     public static ArrayList<Object> parseQuestions(JSONArray receivedQuestions) {
@@ -93,13 +94,13 @@ public class JSON {
                 Long dateEnded = trial.getLong(DataFormatting.TRIAL_DATE_ENDED);
                 Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
+                int currentDay = trial.getInt(DataFormatting.TRIAL_LAST_WINDOW);
                 boolean hasEligibility = trial.getBoolean(DataFormatting.TRIAL_ELIGIBILITY_FORM);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc,
                         institute, duration, frequency, waiver,
                         dateCreated, dateStarted, dateEnded, state,
-                        researcherId, currentDuration, hasEligibility));
+                        researcherId, currentDay, hasEligibility));
             }
         } catch (JSONException e) {
             e.printStackTrace();

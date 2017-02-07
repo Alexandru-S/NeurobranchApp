@@ -40,7 +40,7 @@ public class Trial implements Serializable {
                 trialDetails.getLong(JSON.DataFormatting.TRIAL_DATE_ENDED),
                 Attributes.getTrialState(trialDetails.getString(JSON.DataFormatting.TRIAL_STATE)),
                 trialDetails.getString(JSON.DataFormatting.TRIAL_RESEARCHER_ID),
-                trialDetails.getInt(JSON.DataFormatting.TRIAL_CURRENT_DURATION),
+                trialDetails.getInt(JSON.DataFormatting.TRIAL_LAST_WINDOW),
                 trialDetails.getBoolean(JSON.DataFormatting.TRIAL_ELIGIBILITY_FORM));
     }
 

@@ -88,7 +88,8 @@ public abstract class QuestionFragment extends Fragment {
         questionProgressParams.setMargins(0, 0, 0, Globals.getDp(this.getActivity(), 16));
         questionProgress_tv.setLayoutParams(questionProgressParams);
 
-        String progression = (getQuestionIndex() + 1) + "/" + getMaxIndex();
+        String progression = (getQuestionIndex() + 1) + "/" + getMaxIndex() +
+                " (swipe left and right to move between questions)";
         questionProgress_tv.setText(progression);
         questionProgress_tv.setId(View.generateViewId());
         idList.add(questionProgress_tv.getId());

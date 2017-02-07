@@ -17,9 +17,7 @@ import com.glassbyte.neurobranch.Dialogs.QuestionsDialog;
 import com.glassbyte.neurobranch.Dialogs.TrialInfo;
 import com.glassbyte.neurobranch.Portal.QuestionPrefabs.EpochHolder;
 import com.glassbyte.neurobranch.R;
-import com.glassbyte.neurobranch.Services.DataObjects.Epoch;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
-import com.glassbyte.neurobranch.Services.Enums.PreferenceValues;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
@@ -157,15 +155,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
     @Override
     public void onLoadCompleted(JSONArray object) {
-        int currentWindow = -1;
+        int lastMostRecentWindowFromResponses = -1;
 
         try {
-            currentWindow = object.getJSONObject(0).getInt("window");
+            lastMostRecentWindowFromResponses = object.getJSONObject(0).getInt("window");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        final QuestionsDialog questionsDialog = new QuestionsDialog(getCurrTrial(), currentWindow);
+        QuestionsDialog questionsDialog = new QuestionsDialog()
+                .setTrial(getCurrTrial())
+                .setLastWindow(lastMostRecentWindowFromResponses);
+
         questionsDialog.show(fragmentManager, "answerQs");
         questionsDialog.setTrialAnswerDialogListener(new QuestionsDialog.SetTrialAnswerListener() {
             @Override

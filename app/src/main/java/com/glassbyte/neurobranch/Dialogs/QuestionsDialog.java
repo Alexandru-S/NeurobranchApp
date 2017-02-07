@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
+import com.glassbyte.neurobranch.Services.DataObjects.Question;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 
 /**
@@ -32,11 +33,16 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
         this.setTrialAnswerListener = setTrialAnswerListener;
     }
 
-    @SuppressLint("ValidFragment")
-    public QuestionsDialog(Trial trial, int lastWindow) {
+    public QuestionsDialog setTrial(Trial trial) {
         this.trial = trial;
+        return this;
+    }
+
+    public QuestionsDialog setLastWindow(int lastWindow) {
         this.lastWindow = lastWindow;
-        isAnswerable = lastWindow < trial.getCurrentDay();
+        this.isAnswerable = lastWindow < trial.getCurrentDay();
+        System.out.println(lastWindow + " " + trial.getCurrentDay()git );
+        return this;
     }
 
     @NonNull
@@ -53,7 +59,7 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
                         })
                         .setNegativeButton("Cancel", null);
             } else {
-                builder.setMessage("No new question for this trial, check again later or wait for a notification to come in.")
+                builder.setMessage("No new questions for this trial, check again later or wait for a notification to come in.")
                         .setNegativeButton("Cancel", null);
             }
         } else {

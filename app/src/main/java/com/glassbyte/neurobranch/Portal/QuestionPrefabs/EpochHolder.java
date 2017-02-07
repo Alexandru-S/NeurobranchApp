@@ -39,7 +39,6 @@ public class EpochHolder extends AppCompatActivity {
 
     ViewPager viewPager;
     String questionId, candidateId;
-
     Trial trial;
 
     @Override
@@ -141,7 +140,6 @@ public class EpochHolder extends AppCompatActivity {
 
                 }
             });
-
         } catch (Exception e) {
             e.printStackTrace();
         }

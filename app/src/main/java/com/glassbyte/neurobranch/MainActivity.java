@@ -14,15 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.glassbyte.neurobranch.Authentication.AuthenticationActivity;
-import com.glassbyte.neurobranch.Portal.MainSections.DefaultPortalFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.MyTrialsFragment;
 import com.glassbyte.neurobranch.Portal.MainSections.TrialsAvailableFragment;
 import com.glassbyte.neurobranch.Services.Enums.Preferences;
+import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Sync.AlarmReceiver;
 import com.glassbyte.neurobranch.Services.Sync.SyncService;
-import com.glassbyte.neurobranch.Services.Sync.WebServer;
 import com.glassbyte.neurobranch.Settings.Settings;
 
 public class MainActivity extends AppCompatActivity
@@ -36,8 +35,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //debug remove alarm at restart
-        alarmReceiver.cancelAlarm(this);
+        // TODO debug alarm at restart to force sync
+        if(Globals.isDebug) alarmReceiver.cancelAlarm(this);
 
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent(this, SyncService.class),
                 PendingIntent.FLAG_NO_CREATE) != null);
@@ -125,9 +124,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.home) {
-            Fragments.setFragment(getSupportFragmentManager(), new DefaultPortalFragment());
-        } else if (id == R.id.my_trials) {
+        if (id == R.id.my_trials) {
             Fragments.setFragment(getSupportFragmentManager(), new MyTrialsFragment());
         } else if (id == R.id.trials_available) {
             Fragments.setFragment(getSupportFragmentManager(), new TrialsAvailableFragment());
