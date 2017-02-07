@@ -30,7 +30,8 @@ public class SyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         System.out.println("Invoking web service");
-        WebServer.pollTrialStates(getApplicationContext());
+        if(!Manager.getInstance().getPreference(Preferences.id, getApplicationContext()).equals(""))
+            WebServer.pollTrialStates(getApplicationContext());
     }
 }
 

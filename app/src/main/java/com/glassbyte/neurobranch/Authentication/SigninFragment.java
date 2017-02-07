@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 public class SigninFragment extends Fragment {
     View view;
     Button btn_login;
-    TextView tv_signup, tv_lost_password;
+    TextView tv_signup;
 
     EditText et_email, et_password;
     String email, password;
@@ -47,7 +47,6 @@ public class SigninFragment extends Fragment {
 
         btn_login = (Button) view.findViewById(R.id.btn_sign_in);
         tv_signup = (TextView) view.findViewById(R.id.tv_sign_up);
-        tv_lost_password = (TextView) view.findViewById(R.id.tv_lost_password);
 
         et_email = (EditText) view.findViewById(R.id.et_email);
         et_password = (EditText) view.findViewById(R.id.et_password);
@@ -72,10 +71,9 @@ public class SigninFragment extends Fragment {
 
                         @Override
                         public void onLoginFailed() {
-                            Toast.makeText(getContext(), "Incorrect login details provided!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
                     };
-                    System.out.println(getEmail() + " " + getPassword());
                     if (getEmail() != null || getPassword() != null)
                         new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
                 }
@@ -86,13 +84,6 @@ public class SigninFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Manager.getInstance().setFragment(getFragmentManager(), new SignupFragment());
-            }
-        });
-
-        tv_lost_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Manager.getInstance().setFragment(getFragmentManager(), new LostPasswordFragment());
             }
         });
 

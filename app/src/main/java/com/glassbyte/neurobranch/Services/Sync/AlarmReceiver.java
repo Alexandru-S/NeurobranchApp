@@ -14,12 +14,9 @@ import java.util.Calendar;
  * Created by ed on 25/09/2016
  */
 public class AlarmReceiver extends WakefulBroadcastReceiver {
-
-    // TODO set to every 15 mins, debug with notifications when working on backend and then set to every hour before release?
-
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    private static final int INTERVAL = 1000;
+    private static final int INTERVAL = 1000 * 60; //1000 * 60 * 5; // TODO 5 mins, set to 1 hour for release
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,7 +43,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 PackageManager.DONT_KILL_APP);
     }
 
-    //if user isn't part of any trials? -- unused currently
     public void cancelAlarm(Context context) {
         if (alarmManager != null)
             alarmManager.cancel(pendingIntent);

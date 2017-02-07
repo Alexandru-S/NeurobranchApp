@@ -24,6 +24,7 @@ import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
+import com.glassbyte.neurobranch.Services.Helpers.Fragments;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Interfaces.JSONCallback;
@@ -103,12 +104,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                             .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                                            Preferences.id, getContext()), trial.getTrialId()).execute();
                                     try {
+                                        new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                                Preferences.id, getContext()), trial.getTrialId()).execute();
                                         new HTTPRequest.ReceiveJSON(getContext(),
                                                 new URL(Globals.createTrialRelationship(trial.getTrialId(),
                                                         Manager.getInstance().getPreference(Preferences.id, getContext())))).execute();
+                                        Fragments.setFragment(fragmentManager, new TrialsAvailableFragment());
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
@@ -134,7 +136,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     @Override
     public void onRetrieved(JSONObject jsonObject) {
         Manager.getInstance().notifyUserWeb(getContext(), getTrial());
-        System.out.println(Manager.parseMongoId(getTrial()));
+    }
+
+    @Override
+    public void onFail() {
+
     }
 
     public Context getContext() {

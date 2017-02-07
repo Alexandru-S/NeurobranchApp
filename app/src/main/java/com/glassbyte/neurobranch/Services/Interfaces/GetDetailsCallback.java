@@ -7,4 +7,5 @@ import org.json.JSONObject;
  */
 public interface GetDetailsCallback {
     void onRetrieved(JSONObject jsonObject);
+    void onFail();
 }

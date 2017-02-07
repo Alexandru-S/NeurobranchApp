@@ -11,7 +11,9 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 
 import com.glassbyte.neurobranch.R;
+import com.glassbyte.neurobranch.Services.Enums.Preferences;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 import com.glassbyte.neurobranch.Services.Interfaces.GetDetailsCallback;
 import com.glassbyte.neurobranch.Services.Sync.WebServer;
 
@@ -25,7 +27,7 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
     SharedPreferences sharedPreferences;
     PreferenceScreen preferenceScreen;
 
-    Preference idPreference, emailPreference, verifiedPreference;
+    Preference idPreference, emailPreference, previousTrialsPreference;
 
     @SuppressLint("ValidFragment")
     @Override
@@ -53,18 +55,23 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
         try {
             String id = jsonObject.getString("_id");
             String email = jsonObject.getString("email");
-            String isVerified = jsonObject.getString("isverified");
+            int trialsPartaken = jsonObject.getJSONArray("subscribed").length();
+            String partaken = "Has been verified for a trial " +
+                    trialsPartaken + (trialsPartaken == 1 ? " time." : " times.");
 
-            if(isVerified.equals("true")) isVerified = "Verified";
-            else isVerified = "Unverified";
-
-            createSettings(id, email, isVerified);
+            createSettings(id, email, partaken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void createSettings(String id, String email, String isVerified) {
+    @Override
+    public void onFail() {
+        createSettings(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
+                "Connect to internet to see", "Connect to internet to see");
+    }
+
+    private void createSettings(String id, String email, String partaken) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
         preferenceScreen = getPreferenceManager().createPreferenceScreen(Settings.this);
 
@@ -85,15 +92,15 @@ public class Settings extends PreferenceActivity implements GetDetailsCallback {
         emailPreference.setSummary(email);
         emailPreference.setKey("email_pref");
 
-        verifiedPreference = new Preference(Settings.this);
-        verifiedPreference.setTitle("Verification Status");
-        verifiedPreference.setSummary(isVerified);
+        previousTrialsPreference = new Preference(Settings.this);
+        previousTrialsPreference.setTitle("Past Trials History");
+        previousTrialsPreference.setSummary(partaken);
 
         preferenceScreen.addPreference(profileSection);
 
         profileSection.addPreference(idPreference);
         profileSection.addPreference(emailPreference);
-        profileSection.addPreference(verifiedPreference);
+        profileSection.addPreference(previousTrialsPreference);
 
         setPreferenceScreen(preferenceScreen);
     }

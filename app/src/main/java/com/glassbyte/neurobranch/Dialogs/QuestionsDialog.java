@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 
 /**
@@ -42,30 +43,23 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(trial.getTitle());
-        if (isAnswerable) {
-            builder.setMessage("New questions can be answered, click on respond in order to answer these now.")
-                    .setPositiveButton("Respond", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            setTrialAnswerListener.onAnswerClick(QuestionsDialog.this);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
+        if (trial.getTrialState().equals(Attributes.TrialState.active)) {
+            if (isAnswerable) {
+                builder.setMessage("New questions can be answered, click on respond in order to answer these now.")
+                        .setPositiveButton("Respond", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                setTrialAnswerListener.onAnswerClick(QuestionsDialog.this);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+            } else {
+                builder.setMessage("No new question for this trial, check again later or wait for a notification to come in.")
+                        .setNegativeButton("Cancel", null);
+            }
         } else {
-            builder.setMessage("No new question for this trial, check again later or wait for a notification to come in.")
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
+            builder.setMessage("You have not been verified yet as a candidate.")
+                    .setNegativeButton("Cancel", null);
         }
-
-        if (isAnswerable) message = "New questions available to be answered";
-        else message = "No new questions";
-
 
         return builder.create();
     }

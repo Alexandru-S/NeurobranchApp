@@ -40,7 +40,7 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
         this.title = trial.getTitle();
         this.desc = trial.getBriefDescription();
         this.institute = trial.getInstitute();
-        this.startTime = trial.getDateStarted();
+        this.startTime = trial.getDateCreated();
     }
 
     @NonNull

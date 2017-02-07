@@ -11,10 +11,10 @@ public class Globals {
     public static final int SPLASH_DURATION = 2000;
 
     //networking
-    public static final String BACKEND_URL = "http://ec2-54-229-150-246.eu-west-1.compute.amazonaws.com";
+    public static final String BACKEND_URL = "http://www.neurobranchbeta.com";
     public static final String EMULATOR_LOOPBACK = "http://10.0.2.2:3000";
 
-    public static final String HOST_ADDRESS = EMULATOR_LOOPBACK;
+    public static final String HOST_ADDRESS = BACKEND_URL;
 
     public static final String POST_TRIAL_RESPONSE = HOST_ADDRESS + "insert";
     public static final String POST_QUESTION_RESPONSE = HOST_ADDRESS + "api/responsedata";
