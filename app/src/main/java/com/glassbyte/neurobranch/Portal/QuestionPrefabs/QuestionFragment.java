@@ -23,7 +23,6 @@ import java.util.Objects;
  */
 public abstract class QuestionFragment extends Fragment {
     private ArrayList<String> answers = new ArrayList<>();
-    private ArrayList<Integer> scores = new ArrayList<>();
 
     private ArrayList<Object> properties = new ArrayList<>();
     private ArrayList<Integer> idList = new ArrayList<>();
@@ -36,14 +35,13 @@ public abstract class QuestionFragment extends Fragment {
 
     private TextView questionTitle_tv, questionProgress_tv;
 
-    public QuestionFragment(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
+    public QuestionFragment(ArrayList<Object> properties, int maxIndex, int questionIndex) {
         questionParams = (ArrayList<String>) properties.get(questionIndex);
         this.questionTitle = questionParams.get(0);
         this.questionType = questionParams.get(1);
         if (questionParams.size() > 2) {
-            for (int i = 2; i < questionParams.size(); i += isEligibility ? 2 : 1) {
+            for (int i = 2; i < questionParams.size(); i++) {
                 this.answers.add(questionParams.get(i));
-                if(isEligibility) this.scores.add(Integer.valueOf(questionParams.get(i + 1)));
             }
         }
 
@@ -114,18 +112,7 @@ public abstract class QuestionFragment extends Fragment {
 
     public abstract void generateAnswers();
 
-    public abstract ArrayList<String> getAnswersChosen();
-
-    public abstract ArrayList<Integer> getScoresChosen();
-
-    public int getScoreSum() {
-        Integer sum = 0;
-        for(Integer integer : getScoresChosen()) {
-            sum += integer;
-        }
-
-        return sum;
-    }
+    public abstract ArrayList getAnswersChosen();
 
     public boolean hasAnswers() {
         return getQuestionType().equals(Attributes.QuestionType.scale.name()) ||
@@ -139,10 +126,6 @@ public abstract class QuestionFragment extends Fragment {
 
     public ArrayList<Object> getProperties() {
         return properties;
-    }
-
-    public ArrayList<Integer> getScores() {
-        return scores;
     }
 
     public String getQuestionTitle() {

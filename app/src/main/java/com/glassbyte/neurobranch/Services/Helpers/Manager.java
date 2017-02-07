@@ -25,8 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Manager {
 
-    private final static AtomicInteger integer = new AtomicInteger(0);
-
     private static Manager manager = new Manager();
 
     public static Manager getInstance() {
@@ -46,27 +44,26 @@ public class Manager {
         fragmentManager.beginTransaction().replace(R.id.auth_frame, fragment).commit();
     }
 
-    private int getNotificationId() {
-        return integer.incrementAndGet();
-    }
-
     public void notifyUserWeb(Context context, Trial trial) {
         Intent intent = new Intent(context, EpochHolder.class);
         intent.putExtra("TRIAL", trial);
         notifyUser(context, intent, trial);
     }
 
-    public void launchQuestionHolder(Context context, Trial trial, boolean isEligibility) {
-        Intent intent = new Intent(context, EpochHolder.class);
-        intent.putExtra("TRIAL", trial);
-        intent.putExtra("IS_ELIGIBILITY", isEligibility);
-        context.startActivity(intent);
-    }
-
-    public static void cancelNotification(Context context, int id) {
+    public static void cancelNotification(Context context, Trial trial) {
         NotificationManager manager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(id);
+        int notificationId = parseMongoId(trial);
+        manager.cancel(notificationId);
+    }
+
+    public static int parseMongoId(Trial trial) {
+        int id = 0;
+
+        for (int i = trial.getTrialId().length() - 1; i > -1; i--)
+            id += ((int) trial.getTrialId().charAt(i)) * ((i) * 16);
+
+        return id;
     }
 
     private void notifyUser(Context context, Intent intent, Trial trial) {
@@ -80,13 +77,15 @@ public class Manager {
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
         taskStackBuilder.addParentStack(EpochHolder.class).addNextIntent(intent);
 
-        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(
+                0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(getNotificationId(), builder.build());
+
+        // TODO 0 is placeholder, replace with trial id parsed to int
+        notificationManager.notify(parseMongoId(trial), builder.build());
     }
 }

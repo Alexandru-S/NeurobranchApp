@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 import com.glassbyte.neurobranch.Services.Globals;
 import com.glassbyte.neurobranch.Services.Helpers.Formatting;
 
@@ -35,11 +36,11 @@ public class TrialInfo extends android.support.v4.app.DialogFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public TrialInfo(String title, String desc, String institute, long startTime) {
-        this.title = title;
-        this.desc = desc;
-        this.institute = institute;
-        this.startTime = startTime;
+    public TrialInfo(Trial trial) {
+        this.title = trial.getTitle();
+        this.desc = trial.getBriefDescription();
+        this.institute = trial.getInstitute();
+        this.startTime = trial.getDateStarted();
     }
 
     @NonNull

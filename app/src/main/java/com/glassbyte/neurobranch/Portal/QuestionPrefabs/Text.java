@@ -26,8 +26,8 @@ public class Text extends QuestionFragment {
     private EditText editText;
     private ArrayList<String> answerChosen = new ArrayList<>();
 
-    public Text(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
-        super(properties, maxIndex, questionIndex, isEligibility);
+    public Text(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+        super(properties, maxIndex, questionIndex);
     }
 
     @Override
@@ -55,10 +55,5 @@ public class Text extends QuestionFragment {
     public ArrayList<String> getAnswersChosen() {
         answerChosen.add(editText.getText().toString());
         return answerChosen;
-    }
-
-    @Override
-    public ArrayList<Integer> getScoresChosen() {
-        return null;
     }
 }

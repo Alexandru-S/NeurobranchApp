@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,14 +39,15 @@ import java.util.ArrayList;
 /**
  * Created by ed on 25/06/16.
  */
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder> implements GetDetailsCallback, JSONCallback {
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHolder>
+        implements GetDetailsCallback, JSONCallback {
     private ArrayList<Trial> trials;
     private android.support.v4.app.FragmentManager fragmentManager;
-    private Context context;
     private Trial trial, currTrial;
     private Fragment fragment;
 
-    public CardAdapter(ArrayList<Trial> trials, Fragment fragment, android.support.v4.app.FragmentManager fragmentManager) {
+    public CardAdapter(ArrayList<Trial> trials, Fragment fragment,
+                       android.support.v4.app.FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
         this.trials = trials;
         this.fragment = fragment;
@@ -57,10 +59,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         return new DataObjectHolder(view, parent.getContext());
     }
 
-    public static String capitalise(String line) {
-        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
-    }
-
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         this.trial = trials.get(position);
@@ -70,45 +68,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         holder.description.setText(Formatting.truncateText(trial.getBriefDescription(), Formatting.MAX_DESC_SIZE));
         holder.institute.setText(trial.getInstitute());
 
-        String tags = "";
-
-        if (trial.getTags() != null) {
-            for (int i = 0; i < trial.getTags().size(); i++) {
-                String tag = trial.getTags().get(i);
-                if (i == 0 || i == trial.getTags().size()) tags += tag;
-                else tags += ", " + tag;
+        holder.trialDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (trial.isClickable())
+                    alertDescription(trial, holder.itemView.getContext());
             }
-        }
-        holder.tags.setText(tags);
-
-        this.context = holder.title.getContext();
-
-        if (trial.isClickable()) {
-            holder.description.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDescription(trial, context);
-                }
-            });
-            holder.institute.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDescription(trial, context);
-                }
-            });
-            holder.title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDescription(trial, context);
-                }
-            });
-            holder.tags.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDescription(trial, context);
-                }
-            });
-        }
+        });
     }
 
     private void alertDescription(final Trial trial, final Context context) {
@@ -116,12 +82,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
         if (fragment.getClass().equals(MyTrialsFragment.class)) {
             try {
                 this.currTrial = trial;
-                new HTTPRequest.ReceiveJSON(getContext(), new URL(Globals.getLatestWindow(trial.getTrialId(), Manager.getInstance().getPreference(Preferences.id, getContext()))), CardAdapter.this).execute();
+                new HTTPRequest.ReceiveJSON(getContext(),
+                        new URL(Globals.getLatestWindow(trial.getTrialId(),
+                                Manager.getInstance().getPreference(Preferences.id, getContext()))),
+                        CardAdapter.this).execute();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         } else {
-            TrialInfo trialInfo = new TrialInfo(trial.getTitle(), trial.getDetailedDescription(), trial.getInstitute(), trial.getDateCreated());
+            TrialInfo trialInfo = new TrialInfo(trial);
             trialInfo.show(fragmentManager, "info");
             trialInfo.setCancelable(false);
             trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
@@ -134,37 +103,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                             .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (trial.isHasEligibility()) {
-                                        new AlertDialog.Builder(context)
-                                                .setTitle("Trial Eligibility Form")
-                                                .setMessage("This trial requires candidates complete an eligibility form before partaking in it. " +
-                                                        "If you agree to answer these questions, another form will be shown to you by clicking \"I agree\" below.")
-                                                .setCancelable(false)
-                                                .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Manager.getInstance().launchQuestionHolder(getContext(), trial, true);
-                                                    }
-                                                })
-                                                .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                    }
-                                                })
-                                                .show();
-                                    } else {
-                                        //disabled to prevent accidental joining
-                                        new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
-                                                Preferences.id, getContext()), trial.getTrialId()).execute();
-                                        try {
-                                            new HTTPRequest.ReceiveJSON(getContext(),
-                                                    new URL(Globals.createTrialRelationship(trial.getTrialId(),
-                                                            Manager.getInstance().getPreference(Preferences.id, getContext())))).execute();
-                                        } catch (MalformedURLException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Toast.makeText(getContext(), "Trial request successful", Toast.LENGTH_LONG).show();
+                                    new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(
+                                            Preferences.id, getContext()), trial.getTrialId()).execute();
+                                    try {
+                                        new HTTPRequest.ReceiveJSON(getContext(),
+                                                new URL(Globals.createTrialRelationship(trial.getTrialId(),
+                                                        Manager.getInstance().getPreference(Preferences.id, getContext())))).execute();
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
                                     }
+                                    Toast.makeText(getContext(), "Trial request successful", Toast.LENGTH_LONG).show();
                                 }
                             })
                             .setNegativeButton("I disagree", new DialogInterface.OnClickListener() {
@@ -185,20 +133,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
     @Override
     public void onRetrieved(JSONObject jsonObject) {
-        try {
-            Manager.getInstance().notifyUserWeb(getContext(), getTrial());
-            if (jsonObject.getString("isverified").equals(PreferenceValues.verified.name())) {
-                Manager.getInstance().notifyUserWeb(getContext(), getTrial());
-            } else {
-                Toast.makeText(getContext(), "Please verify your account in order to join trials", Toast.LENGTH_LONG).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Manager.getInstance().notifyUserWeb(getContext(), getTrial());
+        System.out.println(Manager.parseMongoId(getTrial()));
     }
 
     public Context getContext() {
-        return context;
+        return fragment.getContext();
     }
 
     public Trial getTrial() {
@@ -233,8 +173,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     class DataObjectHolder extends RecyclerView.ViewHolder {
-        TextView title, description, institute, tags;
+        TextView title, description, institute;
         Context context;
+        RelativeLayout trialDetails;
 
         DataObjectHolder(final View itemView, Context context) {
             super(itemView);
@@ -242,7 +183,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
             title = (TextView) itemView.findViewById(R.id.trial_title);
             description = (TextView) itemView.findViewById(R.id.trial_desc);
             institute = (TextView) itemView.findViewById(R.id.trial_institute);
-            tags = (TextView) itemView.findViewById(R.id.trial_tags);
+            trialDetails = (RelativeLayout) itemView.findViewById(R.id.trial_details);
         }
 
         public Context getContext() {

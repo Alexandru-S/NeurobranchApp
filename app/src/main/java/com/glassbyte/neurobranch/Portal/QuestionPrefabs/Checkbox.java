@@ -17,10 +17,9 @@ import java.util.ArrayList;
 public class Checkbox extends QuestionFragment {
     private ArrayList<CheckBox> checkboxes = new ArrayList<>();
     private ArrayList<String> answersChosen = new ArrayList<>();
-    private ArrayList<Integer> scoresChosen = new ArrayList<>();
 
-    public Checkbox(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
-        super(properties, maxIndex, questionIndex, isEligibility);
+    public Checkbox(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+        super(properties, maxIndex, questionIndex);
     }
 
     @Override
@@ -54,17 +53,6 @@ public class Checkbox extends QuestionFragment {
 
         }
         return answersChosen;
-    }
-
-    @Override
-    public ArrayList<Integer> getScoresChosen() {
-        scoresChosen.clear();
-        for(CheckBox checkBox : getCheckboxes()) {
-            if (checkBox.isChecked())
-                scoresChosen.add(getScores().get(checkboxes.indexOf(checkBox)));
-
-        }
-        return scoresChosen;
     }
 
     public ArrayList<CheckBox> getCheckboxes() {

@@ -24,10 +24,9 @@ public class Radio extends QuestionFragment {
     private RadioGroup radioGroup;
     private ArrayList<Integer> radioButtons = new ArrayList<>();
     private ArrayList<String> answerChosen = new ArrayList<>();
-    private ArrayList<Integer> scoreChosen = new ArrayList<>();
 
-    public Radio(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
-        super(properties, maxIndex, questionIndex, isEligibility);
+    public Radio(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+        super(properties, maxIndex, questionIndex);
     }
 
     @Override
@@ -63,19 +62,6 @@ public class Radio extends QuestionFragment {
             answerChosen.set(index, checkedItem);
         }
         return answerChosen;
-    }
-
-    @Override
-    public ArrayList<Integer> getScoresChosen() {
-        if(radioGroup.getCheckedRadioButtonId() > -1) {
-            int index = radioButtons.indexOf(radioGroup.getCheckedRadioButtonId());
-            Integer checkedItem = getScores().get(radioButtons.indexOf(radioGroup.getCheckedRadioButtonId()));
-            for (int i = 0; i < radioButtons.size(); i++) {
-                scoreChosen.add(i, 0);
-            }
-            scoreChosen.set(index, checkedItem);
-        }
-        return scoreChosen;
     }
 
     public RadioGroup getRadioGroup() {

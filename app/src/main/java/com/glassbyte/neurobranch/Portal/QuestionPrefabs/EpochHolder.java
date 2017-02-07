@@ -46,23 +46,12 @@ public class EpochHolder extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         this.trial = (Trial) intent.getSerializableExtra("TRIAL");
-        Bundle details = getIntent().getExtras();
-        final boolean isEligibility = details.getBoolean("IS_ELIGIBILITY");
 
         try {
-            if (isEligibility) {
-                properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
-                        this, new URL(Globals.retrieveEligibilityQuestions(trial.getTrialId())),
-                        null, trial.getTrialId(), getQuestionId(), getCandidateId()).execute().get());
-            } else {
-                properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
-                        this, new URL(Globals.retrieveTrialQuestions(trial.getTrialId())),
-                        null, trial.getTrialId(), getQuestionId(), getCandidateId()).execute().get());
-            }
+            properties = JSON.parseQuestions(new HTTPRequest.ReceiveJSON(
+                    this, new URL(Globals.retrieveTrialQuestions(trial.getTrialId())),
+                    null, trial.getTrialId(), getQuestionId(), getCandidateId()).execute().get());
 
-        } catch (InterruptedException | ExecutionException | MalformedURLException e) {
-            e.printStackTrace();
-        } finally {
             ArrayList<Question> questions = new ArrayList<>();
             for (int i = 0; i < properties.size(); i++) {
                 ArrayList<String> questionParams = (ArrayList<String>) properties.get(i);
@@ -78,15 +67,15 @@ public class EpochHolder extends AppCompatActivity {
                 questions.add(question);
             }
 
-            for(Question question : questions) {
-                if(question.getType() == Attributes.QuestionType.checkbox) {
-                    fragments.add(new Checkbox(properties, questions.size(), questions.indexOf(question), isEligibility));
-                } else if(question.getType() == Attributes.QuestionType.radio) {
-                    fragments.add(new Radio(properties, questions.size(), questions.indexOf(question), isEligibility));
-                } else if(question.getType() == Attributes.QuestionType.scale) {
-                    fragments.add(new Scale(properties, questions.size(), questions.indexOf(question), isEligibility));
-                } else if(question.getType() == Attributes.QuestionType.text) {
-                    fragments.add(new Text(properties, questions.size(), questions.indexOf(question), isEligibility));
+            for (Question question : questions) {
+                if (question.getType() == Attributes.QuestionType.checkbox) {
+                    fragments.add(new Checkbox(properties, questions.size(), questions.indexOf(question)));
+                } else if (question.getType() == Attributes.QuestionType.radio) {
+                    fragments.add(new Radio(properties, questions.size(), questions.indexOf(question)));
+                } else if (question.getType() == Attributes.QuestionType.scale) {
+                    fragments.add(new Scale(properties, questions.size(), questions.indexOf(question)));
+                } else if (question.getType() == Attributes.QuestionType.text) {
+                    fragments.add(new Text(properties, questions.size(), questions.indexOf(question)));
                 }
             }
 
@@ -94,7 +83,7 @@ public class EpochHolder extends AppCompatActivity {
             setContentView(R.layout.question_holder);
 
             final FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-            if(fragments.size() > 1) floatingActionButton.hide();
+            if (fragments.size() > 1) floatingActionButton.hide();
             else floatingActionButton.show();
 
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -106,35 +95,18 @@ public class EpochHolder extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (isEligibility) {
-                                        int sum = 0;
-                                        for(QuestionFragment fragment : fragments) sum += fragment.getScoreSum();
-                                        if (sum >= trial.getPassmark()) new HTTPRequest.JoinTrial(Manager.getInstance().getPreference(Preferences.id, getApplicationContext()), trial.getTrialId()).execute();
+                                    for (QuestionFragment fragment : fragments) {
+                                        Response response = new Response(Response.generateResponse(
+                                                trial.getTrialId(), getQuestionId(),
+                                                Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
+                                                fragment, trial.getCurrentDay()));
 
-                                        try {
-                                            new HTTPRequest.ReceiveJSON(getApplicationContext(),
-                                                    new URL(Globals.createTrialRelationship(trial.getTrialId(),
-                                                            Manager.getInstance().getPreference(Preferences.id, getApplicationContext())))).execute();
-                                        } catch (MalformedURLException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        String result = sum < trial.getPassmark() ? "Unfortunately you are not eligible to join this trial" : "You are eligible for this trial, request to join being sent";
-                                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                                        EpochHolder.this.finish();
-                                    } else {
-                                        for(QuestionFragment fragment : fragments) {
-                                            Response response = new Response(Response.generateResponse(
-                                                    trial.getTrialId(), getQuestionId(),
-                                                    Manager.getInstance().getPreference(Preferences.id, getApplicationContext()),
-                                                    fragment, trial.getCurrentDay()));
-
-                                            new HTTPRequest.PostTrialResponse(response).execute();
-                                        }
-                                        String toastMessage = fragments.size() > 1 ? "Responses being sent" : "Response being sent";
-                                        Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
-                                        EpochHolder.this.finish();
+                                        System.out.println(Manager.parseMongoId(trial));
+                                        Manager.cancelNotification(getApplicationContext(), trial);
+                                        new HTTPRequest.PostTrialResponse(response).execute();
                                     }
+                                    Toast.makeText(getApplicationContext(), "Responding to " + trial.getTitle(), Toast.LENGTH_LONG).show();
+                                    EpochHolder.this.finish();
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -157,7 +129,7 @@ public class EpochHolder extends AppCompatActivity {
 
                 @Override
                 public void onPageSelected(int position) {
-                    if(position == fragments.size() - 1) {
+                    if (position == fragments.size() - 1) {
                         floatingActionButton.show();
                     } else {
                         floatingActionButton.hide();
@@ -170,12 +142,14 @@ public class EpochHolder extends AppCompatActivity {
                 }
             });
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(viewPager.getCurrentItem() == 0) {
+        if (viewPager.getCurrentItem() == 0) {
             new AlertDialog.Builder(this)
                     .setTitle("Exiting questions area")
                     .setMessage("By clicking okay you will exit the questions area and lose any input data entered.")
@@ -197,9 +171,13 @@ public class EpochHolder extends AppCompatActivity {
         }
     }
 
-    public String getQuestionId() { return questionId; }
+    public String getQuestionId() {
+        return questionId;
+    }
 
-    public void setQuestionId(String questionId) { this.questionId = questionId; }
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
 
     public String getCandidateId() {
         return candidateId;

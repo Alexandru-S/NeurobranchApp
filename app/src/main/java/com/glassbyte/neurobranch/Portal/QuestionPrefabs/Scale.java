@@ -23,8 +23,8 @@ public class Scale extends QuestionFragment {
     private ArrayList seekValue = new ArrayList();
     private int seekProgression;
 
-    public Scale(ArrayList<Object> properties, int maxIndex, int questionIndex, boolean isEligibility) {
-        super(properties, maxIndex, questionIndex, isEligibility);
+    public Scale(ArrayList<Object> properties, int maxIndex, int questionIndex) {
+        super(properties, maxIndex, questionIndex);
     }
 
     @Override
@@ -62,11 +62,6 @@ public class Scale extends QuestionFragment {
         seekValue.clear();
         seekValue.add(seekProgression);
         return seekValue;
-    }
-
-    @Override
-    public ArrayList<Integer> getScoresChosen() {
-        return null;
     }
 
     private void setProgressBarColour(int progress) {

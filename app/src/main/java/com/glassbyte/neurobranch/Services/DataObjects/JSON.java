@@ -16,9 +16,7 @@ public class JSON {
         static final String TRIAL_NAME = "title";
         static final String TRIAL_BRIEF_DESCRIPTION = "briefdescription";
         static final String TRIAL_DETAILED_DESCRIPTION = "detaileddescription";
-        static final String TRIAL_TYPE = "trialtype";
         static final String TRIAL_INSTITUTE = "institute";
-        static final String TRIAL_TAGS = "tags";
         static final String TRIAL_DURATION = "duration";
         static final String TRIAL_FREQUENCY = "frequency";
         static final String TRIAL_WAIVER = "waiverform";
@@ -26,10 +24,8 @@ public class JSON {
         static final String TRIAL_DATE_CREATED = "datecreated";
         static final String TRIAL_DATE_STARTED = "datestarted";
         static final String TRIAL_DATE_ENDED = "dateended";
-        static final String TRIAL_CANDIDATE_QUOTA = "candidatequota";
         static final String TRIAL_STATE = "state";
         static final String TRIAL_RESEARCHER_ID = "researcherid";
-        static final String TRIAL_PASS_MARK = "min_pass_mark";
         static final String TRIAL_CURRENT_DURATION = "currentduration";
     }
 
@@ -41,6 +37,8 @@ public class JSON {
                 ArrayList<String> questionSet = new ArrayList<>();
 
                 JSONObject questionElement = receivedQuestions.getJSONObject(i);
+
+                System.out.println(questionElement);
                 String questionTitle = questionElement.getString("title");
                 String type = Attributes.getQuestionType(questionElement.getString("question_type")).name();
 
@@ -84,9 +82,7 @@ public class JSON {
                 String title = trial.getString(JSON.DataFormatting.TRIAL_NAME);
                 String briefDesc = trial.getString(DataFormatting.TRIAL_BRIEF_DESCRIPTION);
                 String detailedDesc = trial.getString(DataFormatting.TRIAL_DETAILED_DESCRIPTION);
-                String type = trial.getString(JSON.DataFormatting.TRIAL_TYPE);
                 String institute = trial.getString(DataFormatting.TRIAL_INSTITUTE);
-                ArrayList<String> tags = parseJSONArray((JSONArray) trial.get(DataFormatting.TRIAL_TAGS));
 
                 int duration = trial.getInt(DataFormatting.TRIAL_DURATION);
                 String frequency = trial.getString(DataFormatting.TRIAL_FREQUENCY);
@@ -95,53 +91,19 @@ public class JSON {
                 Long dateCreated = trial.getLong(DataFormatting.TRIAL_DATE_CREATED);
                 Long dateStarted = trial.getLong(DataFormatting.TRIAL_DATE_STARTED);
                 Long dateEnded = trial.getLong(DataFormatting.TRIAL_DATE_ENDED);
-                int candidateQuota = trial.getInt(DataFormatting.TRIAL_CANDIDATE_QUOTA);
                 Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                int passmark = trial.getInt(DataFormatting.TRIAL_PASS_MARK);
                 int currentDuration = trial.getInt(DataFormatting.TRIAL_CURRENT_DURATION);
                 boolean hasEligibility = trial.getBoolean(DataFormatting.TRIAL_ELIGIBILITY_FORM);
 
-                trials.add(new Trial(id, title, briefDesc, detailedDesc, type,
-                        institute, tags, duration, frequency, waiver,
-                        dateCreated, dateStarted, dateEnded, candidateQuota, state,
-                        researcherId, passmark, currentDuration, hasEligibility));
+                trials.add(new Trial(id, title, briefDesc, detailedDesc,
+                        institute, duration, frequency, waiver,
+                        dateCreated, dateStarted, dateEnded, state,
+                        researcherId, currentDuration, hasEligibility));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return trials;
-    }
-
-    static ArrayList<String> parseJSONArray(JSONArray array) {
-        ArrayList<String> objects = new ArrayList<>();
-
-        for (int i = 0; i < array.length(); i++) {
-            try {
-                JSONObject object = array.getJSONObject(i);
-                objects.add(object.getString("tag"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return objects;
-    }
-
-    static JSONObject parseList(ArrayList<Object> list) {
-        JSONObject response = new JSONObject();
-        try {
-            response.put("questiontype", list.get(0));
-            response.put("questionindex", list.get(1));
-
-            for (int i = 2; i < list.size(); i++) {
-                ArrayList<String> answers = (ArrayList<String>) list.get(i);
-                for (int j = 0; j < answers.size(); j++) {
-                    response.put("answer" + j, answers.get(j));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return response;
     }
 }
