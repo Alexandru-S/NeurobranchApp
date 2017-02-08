@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import com.glassbyte.neurobranch.Services.Globals;
+
 import java.util.Calendar;
 
 /**
@@ -16,7 +18,9 @@ import java.util.Calendar;
 public class AlarmReceiver extends WakefulBroadcastReceiver {
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    private static final int INTERVAL = 1000 * 60; //1000 * 60 * 5; // TODO 5 mins, set to 1 hour for release
+
+    // debug 1 min v release every hour
+    private static final long INTERVAL = Globals.isDebug ? (1000 * 60) : AlarmManager.INTERVAL_HOUR;
 
     @Override
     public void onReceive(Context context, Intent intent) {

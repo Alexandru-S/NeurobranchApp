@@ -7,7 +7,7 @@ import android.util.TypedValue;
  * Created by ed on 10/06/16.
  */
 public class Globals {
-    public static final boolean isDebug = true;
+    public static final boolean isDebug = false;
 
     //networking
     private static final String BACKEND_URL = "http://www.neurobranchbeta.com";

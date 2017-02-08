@@ -41,7 +41,7 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
     public QuestionsDialog setLastWindow(int lastWindow) {
         this.lastWindow = lastWindow;
         this.isAnswerable = lastWindow < trial.getCurrentDay();
-        System.out.println(lastWindow + " " + trial.getCurrentDay()git );
+        System.out.println(lastWindow + " " + trial.getCurrentDay());
         return this;
     }
 
