@@ -2,6 +2,7 @@ package com.glassbyte.neurobranch.Services.Helpers;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Manager {
 
     private static Manager manager = new Manager();
+    private ProgressDialog progressDialog;
 
     public static Manager getInstance() {
         return manager;
@@ -64,6 +66,21 @@ public class Manager {
             id += ((int) trial.getTrialId().charAt(i)) * ((i) * 16);
 
         return id;
+    }
+
+    public void notifyIndefinite(Context context) {
+        if(progressDialog == null)
+            progressDialog = new ProgressDialog(context);
+        if(progressDialog.getContext() != context)
+            progressDialog.cancel();
+            progressDialog = new ProgressDialog(context);
+
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.show();
+    }
+
+    public void cancelNotifyIndefinite() {
+        progressDialog.cancel();
     }
 
     private void notifyUser(Context context, Intent intent, Trial trial) {

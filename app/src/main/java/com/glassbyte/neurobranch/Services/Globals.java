@@ -12,7 +12,7 @@ public class Globals {
     //networking
     private static final String BACKEND_URL = "http://www.neurobranchbeta.com";
     private static final String EMULATOR_LOOPBACK = "http://10.0.2.2:80";
-    public static final String HOST_ADDRESS = isDebug ? EMULATOR_LOOPBACK : BACKEND_URL;
+    public static final String HOST_ADDRESS = BACKEND_URL;
 
     public static final String POST_TRIAL_RESPONSE = HOST_ADDRESS + "insert";
     public static final String POST_QUESTION_RESPONSE = HOST_ADDRESS + "api/responsedata";
@@ -38,8 +38,12 @@ public class Globals {
         return HOST_ADDRESS + "/api/get-candidate-my-trials/" + candidateid;
     }
 
-    public static String getActivePartitiveMyTrials(String candidateid, String state) {
-        return HOST_ADDRESS + "/api/get-candidate-trials/" + candidateid + "/state/" + state;
+    public static String getActivePartitiveMyTrials(String candidateid) {
+        return HOST_ADDRESS + "/api/get-candidate-trials/" + candidateid + "/state/active";
+    }
+
+    public static String getActivePartitiveUnansweredTrials(String candidateid) {
+        return HOST_ADDRESS + "/api/get-candidate-unanswered-trials/" + candidateid;
     }
 
     public static String getExcludedTrials(String candidateid) {
@@ -52,6 +56,10 @@ public class Globals {
 
     public static String getLatestWindow(String trialid, String candidateid) {
         return HOST_ADDRESS + "/api/get-latest-window/trialid/" + trialid + "/candidateid/" + candidateid;
+    }
+
+    public static String getLastResponse(String trialid, String candidateid) {
+        return HOST_ADDRESS + "/api/get-last-candidate-response/" + trialid + "/" + candidateid;
     }
 
     public static String createTrialRelationship(String trialid, String candidateid) {

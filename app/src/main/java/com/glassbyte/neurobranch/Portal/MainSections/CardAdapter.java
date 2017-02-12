@@ -77,24 +77,29 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
     }
 
     private void alertDescription(final Trial trial, final Context context) {
+        Manager.getInstance().notifyIndefinite(getContext());
+
         //if the current trial accessed is already in the user's subscribed list of trials
         if (fragment.getClass().equals(MyTrialsFragment.class)) {
+            Manager.getInstance().notifyIndefinite(getContext());
             try {
                 this.currTrial = trial;
                 new HTTPRequest.ReceiveJSON(getContext(),
-                        new URL(Globals.getLatestWindow(trial.getTrialId(),
+                        new URL(Globals.getLastResponse(trial.getTrialId(),
                                 Manager.getInstance().getPreference(Preferences.id, getContext()))),
                         CardAdapter.this).execute();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         } else {
+            Manager.getInstance().cancelNotifyIndefinite();
             TrialInfo trialInfo = new TrialInfo(trial);
             trialInfo.show(fragmentManager, "info");
             trialInfo.setCancelable(false);
             trialInfo.setTrialInfoDialogListener(new TrialInfo.SetTrialInfoListener() {
                 @Override
                 public void onJoinClick(TrialInfo dialogFragment) {
+
                     new AlertDialog.Builder(context)
                             .setTitle("Trial Waiver Form")
                             .setMessage(trial.getWaiver())
@@ -112,6 +117,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
+
                                     Toast.makeText(getContext(), "Trial request successful", Toast.LENGTH_LONG).show();
                                 }
                             })
@@ -155,10 +161,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.DataObjectHold
 
     @Override
     public void onLoadCompleted(JSONArray object) {
+        Manager.getInstance().cancelNotifyIndefinite();
         int lastMostRecentWindowFromResponses = -1;
 
         try {
-            lastMostRecentWindowFromResponses = object.getJSONObject(0).getInt("window");
+            lastMostRecentWindowFromResponses = object.getJSONObject(0).getInt("last_response_window");
         } catch (JSONException e) {
             e.printStackTrace();
         }

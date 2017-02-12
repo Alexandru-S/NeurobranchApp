@@ -74,8 +74,6 @@ public class JSON {
     public static ArrayList<Trial> parseTrialJSON(JSONArray retrievedTrials) {
         ArrayList<Trial> trials = new ArrayList<>();
         try {
-            System.out.println(retrievedTrials);
-
             for (int i = 0; i < retrievedTrials.length(); i++) {
                 JSONObject trial = retrievedTrials.getJSONObject(i);
 
@@ -94,7 +92,7 @@ public class JSON {
                 Long dateEnded = trial.getLong(DataFormatting.TRIAL_DATE_ENDED);
                 Attributes.TrialState state = Attributes.getTrialState(trial.getString(DataFormatting.TRIAL_STATE));
                 String researcherId = trial.getString(DataFormatting.TRIAL_RESEARCHER_ID);
-                int currentDay = trial.getInt(DataFormatting.TRIAL_LAST_WINDOW);
+                int currentDay = Integer.parseInt(trial.getString(DataFormatting.TRIAL_LAST_WINDOW));
                 boolean hasEligibility = trial.getBoolean(DataFormatting.TRIAL_ELIGIBILITY_FORM);
 
                 trials.add(new Trial(id, title, briefDesc, detailedDesc,

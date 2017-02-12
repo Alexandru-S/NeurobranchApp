@@ -81,11 +81,12 @@ public class TrialsAvailableFragment extends android.support.v4.app.Fragment imp
                 ArrayList<Trial> trials = new ArrayList<>();
                 trials.add(new Trial("Trial Loading...", "Please wait while trials are loaded",
                         "You", false));
-                new HTTPRequest.ReceiveJSON(getActivity(), new URL(Globals.getExcludedTrials(
-                        Manager.getInstance().getPreference(Preferences.id, getContext())
-                )), TrialsAvailableFragment.this).execute();
-                adapter = new CardAdapter(trials, TrialsAvailableFragment.this,
-                        getActivity().getSupportFragmentManager());
+
+                String id = Manager.getInstance().getPreference(Preferences.id, getContext());
+                URL endpoint = new URL(Globals.getExcludedTrials(id));
+
+                new HTTPRequest.ReceiveJSON(getActivity(), endpoint, TrialsAvailableFragment.this).execute();
+                adapter = new CardAdapter(trials, TrialsAvailableFragment.this, getActivity().getSupportFragmentManager());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

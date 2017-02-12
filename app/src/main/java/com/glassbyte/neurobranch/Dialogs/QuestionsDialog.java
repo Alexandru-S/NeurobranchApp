@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.glassbyte.neurobranch.Services.DataObjects.Attributes;
 import com.glassbyte.neurobranch.Services.DataObjects.Question;
 import com.glassbyte.neurobranch.Services.DataObjects.Trial;
+import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 /**
  * Created by Ed on 26/06/2016.
@@ -18,13 +19,11 @@ import com.glassbyte.neurobranch.Services.DataObjects.Trial;
 @SuppressLint("ValidFragment")
 public class QuestionsDialog extends android.support.v4.app.DialogFragment {
 
-    Trial trial;
-    int lastWindow;
-    SetTrialAnswerListener setTrialAnswerListener;
-    boolean isAnswerable;
-    String message;
+    private Trial trial;
+    private int lastWindow;
+    private SetTrialAnswerListener setTrialAnswerListener;
+    private boolean isAnswerable;
 
-    //listener that the corresponding button implements
     public interface SetTrialAnswerListener {
         void onAnswerClick(QuestionsDialog dialogFragment);
     }
@@ -41,12 +40,13 @@ public class QuestionsDialog extends android.support.v4.app.DialogFragment {
     public QuestionsDialog setLastWindow(int lastWindow) {
         this.lastWindow = lastWindow;
         this.isAnswerable = lastWindow < trial.getCurrentDay();
-        System.out.println(lastWindow + " " + trial.getCurrentDay());
+        System.out.println(isAnswerable + " " + lastWindow + " " + trial.getCurrentDay());
         return this;
     }
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Manager.getInstance().cancelNotifyIndefinite();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(trial.getTitle());
         if (trial.getTrialState().equals(Attributes.TrialState.active)) {

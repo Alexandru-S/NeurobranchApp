@@ -61,8 +61,8 @@ public class HTTPRequest {
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
-                httpURLConnection.setConnectTimeout(10 * 1000);
-                httpURLConnection.setReadTimeout(10 * 1000);
+                httpURLConnection.setConnectTimeout(30 * 1000);
+                httpURLConnection.setReadTimeout(30 * 1000);
 
                 //headers
                 Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
@@ -140,8 +140,8 @@ public class HTTPRequest {
                 connection.setRequestProperty("Content-length", "0");
                 connection.setUseCaches(false);
                 connection.setAllowUserInteraction(false);
-                connection.setConnectTimeout(10 * 1000);
-                connection.setReadTimeout(10 * 1000); // 10 seconds
+                connection.setConnectTimeout(30 * 1000);
+                connection.setReadTimeout(30 * 1000); // 30 seconds
                 connection.connect();
 
                 int status = connection.getResponseCode();
@@ -215,8 +215,8 @@ public class HTTPRequest {
                 connection.setRequestProperty("Content-length", "0");
                 connection.setUseCaches(false);
                 connection.setAllowUserInteraction(false);
-                connection.setConnectTimeout(10 * 1000);
-                connection.setReadTimeout(10 * 1000); // 10 seconds
+                connection.setConnectTimeout(30 * 1000);
+                connection.setReadTimeout(30 * 1000); // 30 seconds
                 connection.connect();
 
                 int status = connection.getResponseCode();
@@ -286,8 +286,8 @@ public class HTTPRequest {
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
-                httpURLConnection.setConnectTimeout(10 * 1000);
-                httpURLConnection.setReadTimeout(10 * 1000); // 10 seconds
+                httpURLConnection.setConnectTimeout(30 * 1000);
+                httpURLConnection.setReadTimeout(30 * 1000); // 30 seconds
                 httpURLConnection.connect();
 
                 //body
@@ -326,7 +326,6 @@ public class HTTPRequest {
         protected void onPostExecute(String s) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                System.out.println(jsonObject);
                 if(jsonObject.get("isMatch").equals(true)) {
                     loginCallback.onLoggedIn(jsonObject.get("id").toString());
                 } else {
@@ -371,8 +370,8 @@ public class HTTPRequest {
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
-                httpURLConnection.setConnectTimeout(10 * 1000);
-                httpURLConnection.setReadTimeout(10 * 1000); // 10 seconds
+                httpURLConnection.setConnectTimeout(30 * 1000);
+                httpURLConnection.setReadTimeout(30 * 1000); // 30 seconds
                 httpURLConnection.connect();
 
                 //body
@@ -443,8 +442,8 @@ public class HTTPRequest {
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
-                httpURLConnection.setConnectTimeout(10 * 1000);
-                httpURLConnection.setReadTimeout(10 * 1000); // 10 seconds
+                httpURLConnection.setConnectTimeout(30 * 1000);
+                httpURLConnection.setReadTimeout(30 * 1000); // 30 seconds
                 httpURLConnection.connect();
 
                 //body

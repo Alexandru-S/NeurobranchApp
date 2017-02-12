@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO debug alarm at restart to force sync
+        // debug for force resynchronisation
         if(Globals.isDebug) alarmReceiver.cancelAlarm(this);
 
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent(this, SyncService.class),
@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(0).setChecked(true);
             navigationView.setNavigationItemSelectedListener(this);
         }
-
         new Fragments.AsyncSetFrag(getSupportFragmentManager(), new TrialsAvailableFragment()).execute();
     }
 
@@ -129,6 +128,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.trials_available) {
             Fragments.setFragment(getSupportFragmentManager(), new TrialsAvailableFragment());
         } else if (id == R.id.signout) {
+            // disable notifications, reset ID to null, and return to sign in screen
+            alarmReceiver.cancelAlarm(getApplicationContext());
             Manager.getInstance().setPreference(Preferences.id, null, MainActivity.this);
             startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
             MainActivity.this.finish();

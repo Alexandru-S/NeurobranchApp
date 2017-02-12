@@ -34,8 +34,7 @@ public class WebServer {
             public void onLoadCompleted(JSONArray object) {
                 ArrayList<Trial> trials = new ArrayList<>();
                 if (object != null) {
-                    System.out.println("partitive trials " + object);
-                    System.out.println(object.length() + " trial(s) currently partitive + active");
+                    // have latest window of trials
                     for (int i = 0; i < object.length(); i++) {
                         try {
                             trials.add(new Trial(object.getJSONObject(i)));
@@ -43,8 +42,29 @@ public class WebServer {
                             e.printStackTrace();
                         }
                     }
-                    for (Trial trial : trials) {
-                        Manager.getInstance().notifyUserWeb(context, trial);
+
+                    String candidateId = Manager.getInstance().getPreference(Preferences.id, context);
+                    for(final Trial trial : trials) {
+                        JSONCallback checkAnswerable = new JSONCallback() {
+                            @Override
+                            public void onLoadCompleted(JSONArray windowObject) {
+                                try {
+                                    int lastAnsweredWindow = windowObject.getJSONObject(0).getInt("last_response_window");
+                                    System.out.println(trial.getTitle() + " " + lastAnsweredWindow + " " + trial.getCurrentDay());
+                                    if (lastAnsweredWindow < trial.getCurrentDay())
+                                        Manager.getInstance().notifyUserWeb(context, trial);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        try {
+                            new HTTPRequest.ReceiveJSON(context,
+                                    new URL(Globals.getLastResponse(trial.getTrialId(), candidateId)),
+                                    checkAnswerable).execute();
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     System.out.println("No trials currently partitive + active for user");
@@ -53,8 +73,8 @@ public class WebServer {
         };
         try {
             new HTTPRequest.ReceiveJSON(context, new URL(
-                    Globals.getActivePartitiveMyTrials(Manager.getInstance()
-                            .getPreference(Preferences.id, context), "active")
+                    Globals.getActivePartitiveMyTrials(
+                            Manager.getInstance().getPreference(Preferences.id, context))
             ), jsonCallback).execute();
         } catch (MalformedURLException e) {
             e.printStackTrace();

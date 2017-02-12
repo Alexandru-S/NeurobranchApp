@@ -13,17 +13,15 @@ import android.widget.Toast;
 
 import com.glassbyte.neurobranch.R;
 import com.glassbyte.neurobranch.Services.HTTP.HTTPRequest;
+import com.glassbyte.neurobranch.Services.Helpers.Connectivity;
 import com.glassbyte.neurobranch.Services.Helpers.Manager;
 
 /**
  * Created by ed on 10/06/16.
  */
 public class SignupFragment extends Fragment {
-    View view;
-    Button btn_signup;
-    EditText et_email, et_verify_email, et_password, et_verify_password;
+    private EditText et_email, et_verify_email, et_password, et_verify_password;
     private String email, verifyEmail, password, verifyPassword;
-    TextView tv_redirectSignin;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,14 +32,9 @@ public class SignupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.signup_layout, container, false);
+        View view = inflater.inflate(R.layout.signup_layout, container, false);
 
-        btn_signup = (Button) view.findViewById(R.id.btn_signup_signup);
-        et_email = (EditText) view.findViewById(R.id.et_email_signup);
-        et_verify_email = (EditText) view.findViewById(R.id.et_email_signup_verify);
-        et_password = (EditText) view.findViewById(R.id.et_password_signup);
-        et_verify_password = (EditText) view.findViewById(R.id.et_password_signup_verify);
-        tv_redirectSignin = (TextView) view.findViewById(R.id.tv_sign_up_redirect);
+        TextView tv_redirectSignin = (TextView) view.findViewById(R.id.tv_sign_up_redirect);
         tv_redirectSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +42,12 @@ public class SignupFragment extends Fragment {
             }
         });
 
+        et_email = (EditText) view.findViewById(R.id.et_email_signup);
+        et_verify_email = (EditText) view.findViewById(R.id.et_email_signup_verify);
+        et_password = (EditText) view.findViewById(R.id.et_password_signup);
+        et_verify_password = (EditText) view.findViewById(R.id.et_password_signup_verify);
+
+        Button btn_signup = (Button) view.findViewById(R.id.btn_signup_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,16 +56,20 @@ public class SignupFragment extends Fragment {
                 setPassword(et_password.getText().toString());
                 setVerifyPassword(et_verify_password.getText().toString());
 
-                if(!isEmailMatch()) {
+                if (!isEmailMatch()) {
                     Toast.makeText(getContext(), "Email addresses do not match!", Toast.LENGTH_SHORT).show();
                 }
-                if(!isPasswordMatch()) {
+                if (!isPasswordMatch()) {
                     Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
                 }
-                if(isEmailMatch() && isPasswordMatch()) {
-                    new HTTPRequest.CreateCandidateAccount(getEmail(), getPassword()).execute();
-                    Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
-                    //Toast.makeText(getContext(), "Please verify your account for enabling all functionality.", Toast.LENGTH_LONG).show();
+                if (isEmailMatch() && isPasswordMatch()) {
+                    if (Connectivity.isNetworkConnected(getContext())) {
+                        new HTTPRequest.CreateCandidateAccount(getEmail(), getPassword()).execute();
+                        Toast.makeText(getContext(), "Creating account for " + getEmail(), Toast.LENGTH_SHORT).show();
+                        Manager.getInstance().setFragment(getFragmentManager(), new SigninFragment());
+                    } else {
+                        Toast.makeText(getContext(), "No internet connection!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

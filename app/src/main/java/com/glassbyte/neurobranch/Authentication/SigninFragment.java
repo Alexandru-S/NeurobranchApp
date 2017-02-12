@@ -54,28 +54,31 @@ public class SigninFragment extends Fragment {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setEmail(et_email.getText().toString());
+                setEmail(et_email.getText().toString().trim());
                 setPassword(et_password.getText().toString());
 
                 if (getEmail().isEmpty() || getPassword().isEmpty()) {
                     Toast.makeText(getActivity(), "Please input all fields for login", Toast.LENGTH_LONG).show();
                 } else {
+                    Manager.getInstance().notifyIndefinite(getContext());
                     LoginCallback loginCallback = new LoginCallback() {
                         @Override
                         public void onLoggedIn(String id) {
+                            Manager.getInstance().cancelNotifyIndefinite();
                             Manager.getInstance().setPreference(Preferences.id, id, getActivity());
-
                             startActivity(new Intent(getContext(), MainActivity.class));
-                            getActivity().finish();
+                            SigninFragment.this.getActivity().finish();
                         }
 
                         @Override
                         public void onLoginFailed() {
-                            Toast.makeText(getContext(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
+                            Manager.getInstance().cancelNotifyIndefinite();
+                            Toast.makeText(getContext(), "Login unsuccessful", Toast.LENGTH_SHORT).show();
                         }
                     };
-                    if (getEmail() != null || getPassword() != null)
+                    if (getEmail() != null || getPassword() != null) {
                         new HTTPRequest.CandidateLogin(getEmail(), getPassword(), loginCallback).execute();
+                    }
                 }
             }
         });
